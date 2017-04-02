@@ -57,9 +57,12 @@ nnoremap <Leader>ch :A<CR>
 nnoremap <leader>ff @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
 
 let g:tagbar_autoclose = 1
+
 let g:NERDTreeDirArrows = 1
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
+let g:NERDTreeGlyphReadOnly = "RO"
+
 noremap <F3>  :NERDTreeToggle<CR>
 noremap <Leader>t <ESC>:TagbarToggle<cr>
 
