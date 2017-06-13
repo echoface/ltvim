@@ -1,8 +1,6 @@
 set nocp
 set magic							            " 设置 regulation express
-set cindent
-set cinoptions=l1
-set cinoptions+=:0
+
 set tabstop=2
 set expandtab
 set showmatch
@@ -22,6 +20,11 @@ set history=1000 						      " 历史记录数量
 set selection=inclusive           "
 set backspace=indent,eol,start
 
+setlocal cindent
+" c++0x lambda expr indent
+setlocal cino=j1,(0,ws,Ws
+set cinoptions=l1
+set cinoptions+=:0
 
 syntax on
 filetype on
