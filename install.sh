@@ -1,5 +1,8 @@
 #!/bin/sh
 
-cp -rf vim ~/.vim
+cp -rf ./vim_config/vim ~/.vim
+cp -rf ./vim_config/vimrc ~/.vimrc
 
-cp vimrc ~/.vimrc
+# fix error cuased by lc
+echo "export LC_CTYPE=en_US.UTF-8" >> ~/.bashrc
+echo "export LC_ALL=en_US.UTF-8" >> ~/.bashrc
