@@ -75,6 +75,7 @@ Bundle 'The-NERD-Commenter'
 Bundle 'Valloric/ListToggle'
 Bundle 'scrooloose/nerdtree'
 Bundle 'Valloric/YouCompleteMe'
+Bundle 'skywind3000/asyncrun.vim'
 "Bundle 'davidhalter/jedi-vim'
 Bundle 'octol/vim-cpp-enhanced-highlight'
 

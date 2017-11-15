@@ -1,6 +1,7 @@
 #!/bin/sh
 
-cp -rf ./vim_config/vim ~/.vim
+mkdir ~/.vim
+cp -rf ./vim_config/vim/* ./vim_config/vim/.* ~/.vim/
 cp -rf ./vim_config/vimrc ~/.vimrc
 
 # fix error cuased by lc
