@@ -67,6 +67,7 @@ noremap <Leader>t <ESC>:TagbarToggle<cr>
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
+Bundle 'ctrlp.vim'
 Bundle 'EasyMotion'
 Bundle 'synmark.vim'
 Bundle 'gmarik/vundle'
@@ -76,6 +77,7 @@ Bundle 'Valloric/ListToggle'
 Bundle 'scrooloose/nerdtree'
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'skywind3000/asyncrun.vim'
+Bundle 'hynek/vim-python-pep8-indent'
 "Bundle 'davidhalter/jedi-vim'
 Bundle 'octol/vim-cpp-enhanced-highlight'
 
@@ -88,18 +90,33 @@ let g:cpp_class_scope_highlight = 1
 """""""""""""""""""""" configure for youcompleteme """"""""""""""""""""""""""""""
 let g:ycm_confirm_extra_conf=0
 let g:ycm_show_diagnostics_ui = 0
-let g:ycm_complete_in_strings = 1
+let g:ycm_complete_in_strings = 0
 "let g:ycm_use_ultisnips_completer = 1
 "let g:ycm_seed_identifiers_with_syntax = 0
 "let g:ycm_min_num_of_chars_for_completion = 4
 "let g:ycm_collect_identifiers_from_tags_files=0
 "let g:ycm_min_num_identifier_candidate_chars = 3
 "let g:ycm_autoclose_preview_window_after_completion=1
-"let g:ycm_global_ycm_extra_conf = '~/.vim/ycm.py'
+let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
 nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
+
+"   ====================== asyncrun cmd config ==============
+augroup vimrc
+  autocmd User AsyncRunStart call asyncrun#quickfix_toggle(8, 1)
+augroup END
+
+:noremap <F9> :call asyncrun#quickfix_toggle(8)<cr>
+:noremap <F10> :AsyncRun grep -rwn <cword> .<cr>
+:noremap <leader><leader>s :AsyncRun grep -rwn <cword> .<cr>
+
+function Search(dir)
+  :AsyncRun grep -rwn <cword> a:dir
+endfunction
+" ========================== end ============================
 
 highlight WhitespaceEOL ctermbg=red guibg=red
 match WhitespaceEOL /\s\+$/
+
 
 function RemoveTrailingWhitespace()
   if &ft != "diff"
@@ -110,11 +127,12 @@ function RemoveTrailingWhitespace()
   endif
 endfunction
 
-autocmd BufWritePre cpp,c,*.py call RemoveTrailingWhitespace()
+"autocmd BufWritePre *.cpp,*.c,*.h,*.cc call RemoveTrailingWhitespace()
+autocmd BufWritePre python,c,cpp call RemoveTrailingWhitespace()
 
 autocmd BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
 
-au BufNewFile,BufRead *.py
+au BufNewFile,BufRead python
     \ set tabstop=4 |
     \ set expandtab |
     \ set autoindent |
@@ -128,6 +146,6 @@ au Filetype cpp,c
     \ setlocal cindent |
     \ setlocal cinoptions=l1 |
     \ setlocal cinoptions+=:0 |
-    \ setlocal cino=j1,(0,ws,Ws |
+    \ setlocal cino=l1,j1,(0,ws,Ws |
     \ setlocal expandtab tabstop=2 shiftwidth=2 |
 
