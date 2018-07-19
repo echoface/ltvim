@@ -1,4 +1,7 @@
+# a vim config and script for my workspace
 
+- ycm 配置支持优先使用`compile_commands.json` database 这样有更好的补全体验， 更加节省内存
+- 添加asyncrun 脚本， 支持<leader><leader>s 搜索工程目录当前光标所在单词的使用并通过quickfix打开
 
 # Molokai Color Scheme Setting
 
