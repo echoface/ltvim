@@ -3,7 +3,7 @@ set magic							            " 设置 regulation express
 set showmatch
 set autoindent                    "自动对齐
 set matchtime=2
-
+set nowrap
 set incsearch
 set noswapfile
 set ignorecase
@@ -29,8 +29,6 @@ filetype indent on
 
 set pumheight=20
 set completeopt=menu,menuone
-":highlight Pmenu ctermfg=darkblue ctermbg=white
-":highlight PmenuSel ctermfg=white ctermbg=lightblue
 
 set foldenable				  			" 开始折叠
 set foldmethod=syntax					" 设置语法折叠
@@ -42,26 +40,14 @@ endif
 
 color monokai
 
-
 let mapleader=','
 
 " keymapping
-nnoremap ;  :
-inoremap jj <ESC>
-inoremap JJ <ESC>
-nnoremap <leader>w <c-w>w
-nnoremap <Leader>ch :A<CR>
-nnoremap <leader>ff @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
-
-let g:tagbar_autoclose = 1
-
 let g:NERDTreeDirArrows = 1
 let g:NERDTreeGlyphReadOnly = "RO"
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
 
-noremap <F3>  :NERDTreeToggle<CR>
-noremap <Leader>t <ESC>:TagbarToggle<cr>
 
 """""""""""""""""""""""""""""Bundle settings""""""""""""""""""""""""""
 set rtp+=~/.vim/bundle/vundle/
@@ -75,15 +61,14 @@ Bundle 'majutsushi/tagbar'
 Bundle 'The-NERD-Commenter'
 Bundle 'Valloric/ListToggle'
 Bundle 'scrooloose/nerdtree'
+"Bundle 'davidhalter/jedi-vim'
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'skywind3000/asyncrun.vim'
 Bundle 'hynek/vim-python-pep8-indent'
-"Bundle 'davidhalter/jedi-vim'
 Bundle 'octol/vim-cpp-enhanced-highlight'
 
 filetype plugin indent on
 """"""""""""""""""""""""""""""""" Bundle END""""""""""""""""""""""""""
-
 
 let g:cpp_class_scope_highlight = 1
 
@@ -91,34 +76,54 @@ let g:cpp_class_scope_highlight = 1
 let g:ycm_confirm_extra_conf=0
 let g:ycm_show_diagnostics_ui = 0
 let g:ycm_complete_in_strings = 0
-"let g:ycm_use_ultisnips_completer = 1
-"let g:ycm_seed_identifiers_with_syntax = 0
-"let g:ycm_min_num_of_chars_for_completion = 4
-"let g:ycm_collect_identifiers_from_tags_files=0
-"let g:ycm_min_num_identifier_candidate_chars = 3
-"let g:ycm_autoclose_preview_window_after_completion=1
 let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
-nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
+nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
-"   ====================== asyncrun cmd config ==============
+"====================== asyncrun cmd config ==============
 augroup vimrc
   autocmd User AsyncRunStart call asyncrun#quickfix_toggle(8, 1)
 augroup END
 
-:noremap <F9> :call asyncrun#quickfix_toggle(8)<cr>
-:noremap <F10> :AsyncRun grep -rwn <cword> .<cr>
-:noremap <leader><leader>s :AsyncRun grep -rwn <cword> .<cr>
+nnoremap ;  :
+inoremap jj <ESC>
+nnoremap <leader>w <c-w>w
+nnoremap <Leader>ch :A<CR>
 
-function Search(dir)
-  :AsyncRun grep -rwn <cword> a:dir
+noremap <Leader>tt  :TagbarToggle<CR>
+noremap <leader>ts  :NERDTreeToggle<CR>
+" go recent file
+nnoremap <leader>gr :bp<CR>
+" go buffer
+set wildchar=<Tab> wildmenu wildmode=full
+nnoremap <leader>gb :buffers<CR>:buffer<Space>
+" search current word in workdir
+nnoremap <leader>sc :AsyncRun grep -rwn <cword> .<cr>
+" search directory
+nnoremap <leader>sd :AsyncRun grep -rwn <cword> .
+
+" toogle quickfix
+nnoremap <leader>tq :call asyncrun#quickfix_toggle(8)<cr>
+" foldtoggle
+nnoremap <leader>tf @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
+
+" win switch and banner
+let i = 1
+while i <= 5
+    execute 'nnoremap <Leader>' . i . ' :' . i . 'wincmd w<CR>'
+    let i = i + 1
+endwhile
+function! WindowNumber()
+    return tabpagewinnr(tabpagenr())
 endfunction
+set statusline=buf:[%n]win:[%{WindowNumber()}]\ \ \ %h%m%r%=\ mod:[%{mode()}]\ col:[%c]\ lin:[%l/%L]
+
+
 " ========================== end ============================
 
 highlight WhitespaceEOL ctermbg=red guibg=red
 match WhitespaceEOL /\s\+$/
 
-
-function RemoveTrailingWhitespace()
+function RemoveTrailingSpace()
   if &ft != "diff"
     let b:curcol = col(".")
     let b:curline = line(".")
@@ -126,9 +131,6 @@ function RemoveTrailingWhitespace()
     call cursor(b:curline, b:curcol)
   endif
 endfunction
-
-"autocmd BufWritePre *.cpp,*.c,*.h,*.cc call RemoveTrailingWhitespace()
-autocmd BufWritePre python,c,cpp call RemoveTrailingWhitespace()
 
 autocmd BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
 
@@ -148,4 +150,3 @@ au Filetype cpp,c
     \ setlocal cinoptions+=:0 |
     \ setlocal cino=l1,j1,(0,ws,Ws |
     \ setlocal expandtab tabstop=2 shiftwidth=2 |
-
