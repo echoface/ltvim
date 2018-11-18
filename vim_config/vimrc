@@ -34,11 +34,9 @@ set foldenable				  			" 开始折叠
 set foldmethod=syntax					" 设置语法折叠
 set foldlevelstart=99					" 打开文件是默认不折叠代码
 
-if &term == "xterm"
-  set t_Co=256
-endif
-
-color monokai
+"color monokai
+set hidden
+color molokai
 
 let mapleader=','
 
@@ -58,6 +56,7 @@ Bundle 'EasyMotion'
 Bundle 'synmark.vim'
 Bundle 'gmarik/vundle'
 Bundle 'majutsushi/tagbar'
+Bundle 'ap/vim-buftabline'
 Bundle 'The-NERD-Commenter'
 Bundle 'Valloric/ListToggle'
 Bundle 'scrooloose/nerdtree'
@@ -76,6 +75,7 @@ let g:cpp_class_scope_highlight = 1
 let g:ycm_confirm_extra_conf=0
 let g:ycm_show_diagnostics_ui = 0
 let g:ycm_complete_in_strings = 0
+let g:ycm_goto_buffer_command = 'vertical-split'
 let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
 nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
@@ -93,13 +93,14 @@ noremap <Leader>tt  :TagbarToggle<CR>
 noremap <leader>ts  :NERDTreeToggle<CR>
 " go recent file
 nnoremap <leader>gr :bp<CR>
+nnoremap <leader>gn :bNext<CR>
 " go buffer
 set wildchar=<Tab> wildmenu wildmode=full
-nnoremap <leader>gb :buffers<CR>:buffer<Space>
+nnoremap <leader>gt :buffers<CR>:buffer<Space>
 " search current word in workdir
-nnoremap <leader>sc :AsyncRun grep -rwn <cword> .<cr>
+nnoremap <leader>fc :AsyncRun grep -rwn <cword> .<cr>
 " search directory
-nnoremap <leader>sd :AsyncRun grep -rwn <cword> .
+nnoremap <leader>fd :AsyncRun grep -rwn <cword> .
 
 " toogle quickfix
 nnoremap <leader>tq :call asyncrun#quickfix_toggle(8)<cr>
