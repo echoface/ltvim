@@ -89,8 +89,14 @@ inoremap jj <ESC>
 nnoremap <leader>w <c-w>w
 nnoremap <Leader>ch :A<CR>
 
+" toggle tagbar
 noremap <Leader>tt  :TagbarToggle<CR>
+" toggle siderbar
 noremap <leader>ts  :NERDTreeToggle<CR>
+" toggle quickfix
+nnoremap <leader>tq :call asyncrun#quickfix_toggle(8)<cr>
+" toggle fold
+nnoremap <leader>tf @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
 " go recent file
 nnoremap <leader>gr :bp<CR>
 nnoremap <leader>gn :bNext<CR>
@@ -102,10 +108,6 @@ nnoremap <leader>fc :AsyncRun grep -rwn <cword> .<cr>
 " search directory
 nnoremap <leader>fd :AsyncRun grep -rwn <cword> .
 
-" toogle quickfix
-nnoremap <leader>tq :call asyncrun#quickfix_toggle(8)<cr>
-" foldtoggle
-nnoremap <leader>tf @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
 
 " win switch and banner
 let i = 1
