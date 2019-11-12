@@ -57,11 +57,13 @@ Bundle 'ctrlp.vim'
 Bundle 'EasyMotion'
 Bundle 'synmark.vim'
 Bundle 'gmarik/vundle'
+Bundle 'Yggdroot/LeaderF'
 Bundle 'majutsushi/tagbar'
 Bundle 'ap/vim-buftabline'
 Bundle 'The-NERD-Commenter'
 Bundle 'Valloric/ListToggle'
 Bundle 'scrooloose/nerdtree'
+Bundle 'rhysd/vim-clang-format'
 "Bundle 'davidhalter/jedi-vim'
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'skywind3000/asyncrun.vim'
@@ -102,6 +104,8 @@ nnoremap <leader>tf @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
 " go recent file
 nnoremap <leader>gr :bp<CR>
 nnoremap <leader>gn :bNext<CR>
+" go match []()
+nnoremap <leader>gm %
 " go buffer
 set wildchar=<Tab> wildmenu wildmode=full
 nnoremap <leader>gt :buffers<CR>:buffer<Space>
@@ -155,9 +159,23 @@ au BufNewFile,BufRead python
     \ set fileformat=unix |
 
 " c++0x lambda expr indent
-au Filetype cpp,c
+au Filetype cpp,c,objc
     \ setlocal cindent |
     \ setlocal cinoptions=l1 |
     \ setlocal cinoptions+=:0 |
     \ setlocal cino=l1,j1,(0,ws,Ws |
     \ setlocal expandtab tabstop=2 shiftwidth=2 |
+
+let g:clang_format#style_options = {
+      \ "Standard" : "C++11",
+      \ "ColumnLimit": "120",
+      \ "BinPackParameters":"false",
+      \ "AllowAllParametersOfDeclarationOnNextLine":"false",
+      \ "AlignAfterOpenBracket": "Align",
+      \ "AlwaysBreakTemplateDeclarations" : "true",
+      \ "AllowShortIfStatementsOnASingleLine" : "true"}
+
+" map to <Leader>cf in C++ code
+" autocmd FileType c,cpp,objc ClangFormatAutoEnable
+autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
+autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
