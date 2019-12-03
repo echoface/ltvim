@@ -17,7 +17,7 @@ fi
 
 echo "install .... ...."
 cp -rf ./config/vim  ~/.vim
-cp -rf ./config/vimrc ~/.vimrc
+echo "do a symbal link to ~/.vim/vimrc_coc.nvim or ~/.vim/vimrc_languageclient"
 
 # fix error cuased by lc
 #echo "export LC_CTYPE=en_US.UTF-8" >> ~/.bashrc
