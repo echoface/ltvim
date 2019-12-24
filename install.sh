@@ -3,20 +3,21 @@
 CurDir=$(cd `dirname $0`; pwd)
 cd ${CurDir}
 
-echo `pwd`
+echo "pwd:"`pwd`
 
-if [ -d "~/.vim" ]; then
-  echo "backup ~/.vim folder..."
-  mv ~/.vim ~/.vim.bak
+if [ -d "$HOME/.vim" ]; then
+  echo "backup $HOME/.vim to $HOME/.vim.bak"
+  mv $HOME/.vim $HOME/.vim.bak
 fi
 
-if [ -f "~/.vimrc" ]; then
-  echo "backup ~/.vimrc file..."
-  mv ~/.vimrc ~/.vimrc.bak
+if [ -f "$HOME/.vimrc" ]; then
+  echo "backup $HOME/.vimrc to $HOME/.vimrc.bak"
+  mv $HOME/.vimrc $HOME/.vimrc.bak
 fi
 
 echo "install .... ...."
-cp -rf ./config/vim  ~/.vim
+cp -rf config/vim  $HOME/.vim
+ln -sf $HOME/.vim/vimrc_coc.nvim $HOME/.vimrc
 echo "do a symbal link to ~/.vim/vimrc_coc.nvim or ~/.vim/vimrc_languageclient"
 
 # fix error cuased by lc
