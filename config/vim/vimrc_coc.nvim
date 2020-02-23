@@ -31,7 +31,10 @@ colorscheme molokai
 nnoremap <leader>w  <c-w>
 nnoremap <leader>ts :NERDTreeToggle<CR>
 
+let g:NERDTreeWinSize=24
 let g:NERDTreeQuitOnOpen = 0
+let g:NERDTreeIgnore=['\.pyc','\~$','\.swp','\.o']
+
 
 " >>>>>>>>>>>>>>>>>>> config coc start >>>>>>>>>>>>>>>>>>>>>>>>>
 nmap <leader>gd <Plug>(coc-definition)
