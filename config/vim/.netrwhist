@@ -1,0 +1,5 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =3
+let g:netrw_dirhist_3='/home/gh/huan/GHVim'
+let g:netrw_dirhist_2='/home/gh/huan/GHVim/vim8'
+let g:netrw_dirhist_1='/home/gh/huan/GHVim'

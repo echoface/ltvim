@@ -31,6 +31,8 @@ colorscheme molokai
 nnoremap <leader>w  <c-w>
 nnoremap <leader>ts :NERDTreeToggle<CR>
 
+let g:NERDTreeQuitOnOpen = 0
+
 " >>>>>>>>>>>>>>>>>>> config coc start >>>>>>>>>>>>>>>>>>>>>>>>>
 nmap <leader>gd <Plug>(coc-definition)
 nnoremap <Plug>(coc-definition) :<C-u>call CocActionAsync('jumpDefinition')<CR>
