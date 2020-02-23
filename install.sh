@@ -16,8 +16,9 @@ if [ -f "$HOME/.vimrc" ]; then
 fi
 
 echo "install .... ...."
-ln -sf ${CurDir}/config/vim  $HOME/.vim
-ln -sf $HOME/.vim/vimrc_coc.nvim $HOME/.vimrc
+mkdir -p "$HOME/.echo_vim"
+cp -rf ${CurDir}/config/vim  $HOME/.echo_vim/
+ln -sf $HOME/.echo_vim/vimrc_coc.nvim $HOME/.vimrc
 echo "do a symbal link to ~/.vim/vimrc_coc.nvim or ~/.vim/vimrc_languageclient"
 
 # fix error cuased by lc
