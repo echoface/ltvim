@@ -3,6 +3,11 @@ set hidden
 set nocompatible
 
 set expandtab
+set tabstop=4
+set smartindent                   "智能对齐
+set shiftwidth=4
+set softtabstop=4
+
 set noswapfile
 set ignorecase
 set cmdheight=2
@@ -49,6 +54,8 @@ nnoremap <silent> <leader>ld  :<C-u>CocList diagnostics<cr>
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+
+autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
 "<<<<<<<<<<<<<<<<<<<< end coc concif <<<<<<<<<<<<<<<<<<<<<
 
 " >>>>>>>>>>>>>>>>>>> config leaderF >>>>>>>>>>>>>>>>>>>>>>>>>

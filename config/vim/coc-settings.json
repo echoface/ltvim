@@ -1,11 +1,19 @@
 {
-  "suggest.timeout": 500,
-  "languageserver": {
-    "clangd": {
-      "command": "clangd",
-      "args": ["--background-index", "--clang-tidy"],
-      "filetypes": ["c", "cpp", "objc", "objcpp"],
-      "rootPatterns": ["compile_commands.json", "compile_flags.txt", ".vim/", ".git/", ".hg/"]
+    "suggest.timeout": 500,
+    "languageserver": {
+        "clangd": {
+            "command": "clangd",
+            "args": ["--background-index", "--clang-tidy"],
+            "filetypes": ["c", "cpp", "objc", "objcpp"],
+            "rootPatterns": ["compile_commands.json", "compile_flags.txt", ".vim/", ".git/", ".hg/"]
+        },
+        "golang": {
+            "command": "gopls",
+            "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
+            "filetypes": ["go"],
+            "initializationOptions": {
+                "usePlaceholders": true
+            }
+        }
     }
-  }
 }
