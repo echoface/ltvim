@@ -1,0 +1,21 @@
+source $HOME/.vim/vimrc.base
+
+"""""""""""""""""""""""""""""Plug settings""""""""""""""""""""""""""
+call plug#begin('~/.vim/Plug/')
+source $HOME/.vim/plugin.base
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+call plug#end()
+""""""""""""""""""""""""""""""""" Plug END""""""""""""""""""""""""""
+
+
+" >>>>>>>>>>>>>>>>>>> config coc start >>>>>>>>>>>>>>>>>>>>>>>>>
+nmap <leader>gd <Plug>(coc-definition)
+nmap <leader>gt <Plug>(coc-type-definition)
+nnoremap <silent> <leader>lo  :<C-u>CocList outline<cr>
+nnoremap <silent> <leader>lc  :<C-u>CocList commands<cr>
+nnoremap <silent> <leader>ld  :<C-u>CocList diagnostics<cr>
+
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+"<<<<<<<<<<<<<<<<<<<< end coc concif <<<<<<<<<<<<<<<<<<<<<
