@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ $# -lt 1 ]; then
-  echo "usage:./install [ycm|coc|...]"
+  echo "usage:./install [ycm|coc|lsc|...]"
   exit 1
 fi
 
@@ -41,6 +41,8 @@ if [ "$1" == "coc" ]; then
   ln -sf $HOME/.ltvim/vimrc.coc $HOME/.vimrc
 elif [ "$1" == "ycm" ]; then
   ln -sf $HOME/.ltvim/vimrc.ycm $HOME/.vimrc
+elif [ "$1" == "lsc" ]; then
+  ln -sf $HOME/.ltvim/vimrc.lsc $HOME/.vimrc
 else
   ln -sf $HOME/.ltvim/vimrc.base $HOME/.vimrc
 fi
