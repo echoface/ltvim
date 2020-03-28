@@ -1,0 +1,15 @@
+source $HOME/.vim/vimrc.base
+
+"""""""""""""""""""""""""""""Plug settings""""""""""""""""""""""""""
+call plug#begin('~/.vim/Plug/')
+source $HOME/.vim/plugin.base
+Plug 'liuchengxu/vista.vim'
+Plug 'ycm-core/YouCompleteMe', {'do': './install.py --clangd-completer'}
+call plug#end()
+
+if executable("rg")
+  let g:ycm_clangd_binary_path = 'clangd'
+endif
+
+nmap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR>
+

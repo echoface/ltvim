@@ -1,10 +1,11 @@
-#!/bin/sh
+#!/bin/bash
 
-CurDir=$(cd `dirname $0`; pwd)
-cd ${CurDir}
+if [ $# -lt 1 ]; then
+  echo "usage:./install [ycm|coc|lsc|...]"
+  exit 1
+fi
 
-echo "pwd:"`pwd`
-
+cd $(cd `dirname $0`; pwd)
 if [ -d "$HOME/.vim" ]; then
   echo "backup $HOME/.vim to $HOME/.vim.bak"
   mv $HOME/.vim $HOME/.vim.bak
@@ -15,13 +16,39 @@ if [ -f "$HOME/.vimrc" ]; then
   mv $HOME/.vimrc $HOME/.vimrc.bak
 fi
 
-echo "install .... ...."
-mkdir -p "$HOME/.echo_vim"
-cp -rf ${CurDir}/config/vim/*  $HOME/.echo_vim/
-ln -sf $HOME/.echo_vim $HOME/.vim
-ln -sf $HOME/.echo_vim/vimrc_coc.nvim $HOME/.vimrc
-echo "echo vim configration intall to ~/.echo_vim"
-echo ".vimrc/.vim be symbol link to to ~/.echo_vim"
+read -r -p "will install ltvim to ${HOME}/.ltvim [Y|n]" input
+case $input in
+  [yY][eE][sS]|[yY])
+    ;;
+  [nN][oO]|[nN])
+    echo "nothing change for your vim config"
+    echo "exit..."
+    exit 1
+    ;;
+  *)
+    echo "invlid input, exit..."
+    exit 1
+    ;;
+esac
+
+echo "install vim use config $1 to ${HOME}/.ltvim"
+
+mkdir -p "$HOME/.ltvim"
+cp -rf ./config/vim/*  $HOME/.ltvim/
+ln -sf $HOME/.ltvim $HOME/.vim
+
+if [ "$1" == "coc" ]; then
+  ln -sf $HOME/.ltvim/vimrc.coc $HOME/.vimrc
+elif [ "$1" == "ycm" ]; then
+  ln -sf $HOME/.ltvim/vimrc.ycm $HOME/.vimrc
+elif [ "$1" == "lsc" ]; then
+  ln -sf $HOME/.ltvim/vimrc.lsc $HOME/.vimrc
+else
+  ln -sf $HOME/.ltvim/vimrc.base $HOME/.vimrc
+fi
+
+echo "finish install enjoy HGVim life!!!"
+echo "............................BYE..."
 
 # fix error cuased by lc
 #echo "export LC_CTYPE=en_US.UTF-8" >> ~/.bashrc

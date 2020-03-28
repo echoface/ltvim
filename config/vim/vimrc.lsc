@@ -1,0 +1,40 @@
+
+" import base config for ltvim
+source $HOME/.vim/vimrc.base
+
+"""""""""""""""""""""""""""""Plug settings""""""""""""""""""""""""""
+call plug#begin('~/.vim/Plug/')
+source $HOME/.vim/plugin.base
+Plug 'liuchengxu/vista.vim'
+call plug#end()
+
+" >>>>>>>>>>>>>>>>> config lsc >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+set completeopt=menu,menuone,noinsert,noselect
+let g:lsc_trace_level          = 'off'
+let g:lsc_auto_map             = v:false
+let g:lsc_enable_autocomplete  = v:true
+let g:lsc_enable_diagnostics   = v:false
+let g:lsc_reference_highlights = v:false
+
+let g:lsc_server_commands = {
+      \ 'c': {
+      \       'command': 'clangd',
+      \       'suppress_stderr': v:true
+      \ },
+      \ 'cpp': {
+      \       'command': 'clangd',
+      \       'suppress_stderr': v:true
+      \ },
+      \}
+
+let g:lsc_auto_map = {
+      \ 'ShowHover': v:false,
+      \ 'Rename': '<leader>rn',
+      \ 'NextReference': '<C-n>',
+      \ 'PreviousReference': '<C-p>',
+      \ 'Completion': 'completefunc',
+      \ 'GoToDefinition': '<leader>gd',
+      \ 'FindReferences': '<leader>gr',
+      \ 'FindCodeActions': '<leader>act',
+      \ 'FindImplementations': '<leader>gi',
+      \}

@@ -1,0 +1,131 @@
+" <<<<<<<<<<<<<<<<<<<<< base <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+set magic                         " 设置 regulation express
+set hidden
+set nocompatible
+
+set showmatch
+set autoindent                    "自动对齐
+set matchtime=2
+
+set nowrap
+set incsearch
+set noswapfile
+set ignorecase
+
+set encoding=utf-8
+set termencoding=utf-8
+
+" indent default setting
+set tabstop=2
+set expandtab
+set smartindent                   "智能对齐
+set scrolloff=3                   " 光标移动到buffer的顶部和底部时保持3行距离
+set laststatus=2                  " 启动显示状态行(1),总是显示状态行(2)
+set history=1000                  " 历史记录数量
+set shiftwidth=2
+set softtabstop=2
+set selection=inclusive           "
+set backspace=indent,eol,start
+
+set cmdheight=2
+set pumheight=20
+set completeopt=menu,menuone
+
+set foldenable                " 开始折叠
+set foldmethod=syntax         " 设置语法折叠
+set foldlevelstart=99         " 打开文件是默认不折叠代码
+
+nnoremap ;  :
+let mapleader=','
+colorscheme molokai
+
+syntax on
+filetype on
+syntax enable
+filetype plugin indent on
+
+" base key mapping
+nnoremap ;  :
+nnoremap <leader>w  <c-w>
+nnoremap <leader>ch :A<CR>
+nnoremap <leader>tq :call asyncrun#quickfix_toggle(8)<cr>
+nnoremap <leader>tf @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
+" <<<<<<<<<<<<<<<<<<<<< base end <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+"""""""""""""""""""""""""""""Plug settings""""""""""""""""""""""""""
+call plug#begin('~/.vim/Plug/')
+source $HOME/.vim/plugin.base
+call plug#end()
+""""""""""""""""""""""""""""""""" Plug END""""""""""""""""""""""""""
+
+let g:cpp_class_scope_highlight = 1
+
+" >>>>>>>>>>>>>>>>>>>>>>> config nerdtree >>>>>>>>>>>>>>>>>>
+let g:NERDTreeWinSize=32
+let g:NERDTreeQuitOnOpen = 0
+let g:NERDTreeDirArrows = 1
+let g:NERDTreeGlyphReadOnly = "RO"
+let g:NERDTreeDirArrowExpandable = '▸'
+let g:NERDTreeDirArrowCollapsible = '▾'
+let NERDTreeIgnore=['\.pyc','\~$','\.swp','\.o']
+
+noremap <leader>ts  :NERDTreeToggle<CR>
+
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+" <<<<<<<<<<<<<<<<<<<<<<< config nerdtree >>>>>>>>>>>>>>>>>>>
+
+" >>>>>>>>>>>>>>>>>>>>>>>> async run >>>>>>>>>>>>>>>>>>>>>>>>
+autocmd User AsyncRunStart call asyncrun#quickfix_toggle(8, 1)
+" <<<<<<<<<<<<<<<<<<<<<<<< async run end <<<<<<<<<<<<<<<<<<<<
+
+" >>>>>>>>>>>>>>>>>>> config leaderF >>>>>>>>>>>>>>>>>>>>>>>>>
+let g:Lf_ShortcutF = '<C-P>'
+if executable("rg")
+  " recall last search. If the result window is closed, reopen it.
+  noremap <leader>go :<C-U>Leaderf! rg --stayOpen --recall<CR>
+  " search word under cursor, the pattern is treated as regex, and enter normal mode directly
+  noremap <leader>fc :<C-U><C-R>=printf("Leaderf! rg -e %s ", expand("<cword>"))<CR>
+  " search word under cursor literally only in current buffer
+  noremap <leader>fb :<C-U><C-R>=printf("Leaderf! rg -F --current-buffer -e %s ", expand("<cword>"))<CR>
+else
+  set wildchar=<Tab> wildmenu wildmode=full
+  nnoremap <leader>go :buffers<CR>:buffer<Space>
+  nnoremap <leader>fd :AsyncRun grep -rwn <cword> .
+  nnoremap <leader>fc :AsyncRun grep -rwn <cword> .<cr>
+endif
+" <<<<<<<<<<<<<<<<<<<<< end leaderF <<<<<<<<<<<<<<<<<<<<<<<<<<
+
+" >>>>>>>>>>>>>>>>>>>>> highlight empty >>>>>>>>>>>>>>>>
+highlight WhitespaceEOL ctermbg=red guibg=red
+match WhitespaceEOL /\s\+$/
+
+function RemoveTrailingSpace()
+  if &ft != "diff"
+    let b:curcol = col(".")
+    let b:curline = line(".")
+    silent! %s/\s\+$//
+    call cursor(b:curline, b:curcol)
+  endif
+endfunction
+autocmd BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
+" >>>>>>>>>>>>>>>>>>>>> highlight end>>>>>>>>>>>>>>>>
+
+au BufNewFile,BufRead python
+    \ set tabstop=4 |
+    \ set expandtab |
+    \ set autoindent |
+    \ set shiftwidth=4 |
+    \ set textwidth=79 |
+    \ set softtabstop=4 |
+    \ set fileformat=unix
+
+" c++0x lambda expr indent
+au Filetype cpp,c,objc
+    \ setlocal cindent |
+    \ setlocal cinoptions=l1 |
+    \ setlocal cinoptions+=:0 |
+    \ setlocal cino=l1,j1,(0,ws,Ws |
+    \ setlocal expandtab tabstop=2 shiftwidth=2
+
