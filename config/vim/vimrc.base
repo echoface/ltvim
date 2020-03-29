@@ -48,7 +48,6 @@ filetype plugin indent on
 nnoremap ;  :
 nnoremap <leader>w  <c-w>
 nnoremap <leader>ch :A<CR>
-nnoremap <leader>tq :call asyncrun#quickfix_toggle(8)<cr>
 nnoremap <leader>tf @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
 " <<<<<<<<<<<<<<<<<<<<< base end <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -81,19 +80,19 @@ autocmd User AsyncRunStart call asyncrun#quickfix_toggle(8, 1)
 " <<<<<<<<<<<<<<<<<<<<<<<< async run end <<<<<<<<<<<<<<<<<<<<
 
 " >>>>>>>>>>>>>>>>>>> config leaderF >>>>>>>>>>>>>>>>>>>>>>>>>
-let g:Lf_ShortcutF = '<C-P>'
+"let g:Lf_ShortcutF = '<C-P>'
+let g:Lf_ShortcutF = "<leader>ff"
 if executable("rg")
-  " recall last search. If the result window is closed, reopen it.
-  noremap <leader>go :<C-U>Leaderf! rg --stayOpen --recall<CR>
-  " search word under cursor, the pattern is treated as regex, and enter normal mode directly
+  noremap <leader>tq :<C-U>Leaderf! rg --recall<CR>
+  noremap <leader>go :<C-U><C-R>=printf("Leaderf buffer %s", "")<CR><CR>
   noremap <leader>fc :<C-U><C-R>=printf("Leaderf! rg -e %s ", expand("<cword>"))<CR>
-  " search word under cursor literally only in current buffer
   noremap <leader>fb :<C-U><C-R>=printf("Leaderf! rg -F --current-buffer -e %s ", expand("<cword>"))<CR>
 else
   set wildchar=<Tab> wildmenu wildmode=full
+  nnoremap <leader>tq :call asyncrun#quickfix_toggle(8)<cr>
   nnoremap <leader>go :buffers<CR>:buffer<Space>
-  nnoremap <leader>fd :AsyncRun grep -rwn <cword> .
   nnoremap <leader>fc :AsyncRun grep -rwn <cword> .<cr>
+  nnoremap <leader>fd :AsyncRun grep -rwn <cword> .
 endif
 " <<<<<<<<<<<<<<<<<<<<< end leaderF <<<<<<<<<<<<<<<<<<<<<<<<<<
 
