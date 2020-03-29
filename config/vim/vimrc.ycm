@@ -13,3 +13,6 @@ endif
 
 nmap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR>
 
+command YcmFixit :YcmCompleter FixIt
+command YcmFomart :YcmCompleter Format
+command YcmRename :YcmCompleter RefactorRename
