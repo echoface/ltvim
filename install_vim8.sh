@@ -15,7 +15,7 @@ case $input in
     ;;
 esac
 
-git clone https://gitee.com/zhihuihuan/vim.git .ltvim8 --depth=1
+git clone https://gitee.com/ltecho/vim.git .ltvim8 --depth=1
 cd .ltvim8
 ./configure  --prefix=$HOME \
   --with-features=huge \
