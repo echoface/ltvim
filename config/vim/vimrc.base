@@ -8,6 +8,7 @@ set autoindent                    "自动对齐
 set matchtime=2
 
 set nowrap
+set hlsearch
 set incsearch
 set noswapfile
 set ignorecase
@@ -35,7 +36,13 @@ set foldenable                " 开始折叠
 set foldmethod=syntax         " 设置语法折叠
 set foldlevelstart=99         " 打开文件是默认不折叠代码
 
-set signcolumn=yes
+" Recently vim can merge signcolumn and number column into one
+if has("patch-8.1.1564")
+  set signcolumn=number
+else
+  set signcolumn=yes
+endif
+set shortmess+=c
 
 nnoremap ;  :
 let mapleader=','
