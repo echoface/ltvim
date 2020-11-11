@@ -3,16 +3,21 @@ source $HOME/.vim/vimrc.base
 """""""""""""""""""""""""""""Plug settings""""""""""""""""""""""""""
 call plug#begin('~/.vim/Plug/')
 source $HOME/.vim/plugin.base
+Plug 'preservim/tagbar'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 """"""""""""""""""""""""""""""""" Plug END""""""""""""""""""""""""""
 
+nmap <leader>tg :TagbarToggle<CR>
 
-" >>>>>>>>>>>>>>>>>>> config coc start >>>>>>>>>>>>>>>>>>>>>>>>>
+" >>>>>>>>>>>>>>>>>>>       coc        >>>>>>>>>>>>>>>>>>>>>>>>>
+" ==                                                          ==
+" ==                  config coc start                        ==
+" ==                                                          ==
 " Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
 " Remap keys for applying codeAction to the current buffer.
-nmap <leader>ac  <Plug>(coc-codeaction)
+nmap <leader>ca  <Plug>(coc-codeaction)
 " Apply AutoFix to problem on the current line.
 nmap <leader>qf  <Plug>(coc-fix-current)
 " Formatting selected code.
@@ -21,11 +26,9 @@ xmap <leader>fm  <Plug>(coc-format-selected)
 nnoremap <leader>doc :call <SID>show_documentation()<CR>
 
 " see coc.nvim/plugin/coco.vim for more mapping details
-nmap <leader>gdl :<C-u>call CocActionAsync('jumpDeclaration')<CR>
-nmap <leader>gdf :<C-u>call CocActionAsync("jumpDefinition")<CR>
-nmap <leader>gr  :<C-u>call CocActionAsync('jumpReferences')<CR>
-nmap <leader>gt  :<C-u>call CocActionAsync('jumpTypeDefinition')<CR>
-nmap <leader>gi  :<C-u>call CocActionAsync('jumpImplementation')<CR>
+nmap <leader>gd :<C-u>call CocActionAsync('jumpDeclaration')<CR>
+nmap <leader>gi :<C-u>call CocActionAsync("jumpDefinition")<CR>
+nmap <leader>gr :<C-u>call CocActionAsync('jumpReferences')<CR>
 
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
@@ -55,4 +58,8 @@ endfunction
 " Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
-"<<<<<<<<<<<<<<<<<<<< end coc concif <<<<<<<<<<<<<<<<<<<<<
+" ==                                                          ==
+" ==                  config coc end                          ==
+" ==                                                          ==
+" >>>>>>>>>>>>>>>>>>>       coc        >>>>>>>>>>>>>>>>>>>>>>>>>
+
