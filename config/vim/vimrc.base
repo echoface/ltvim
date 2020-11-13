@@ -7,7 +7,6 @@ set showmatch
 set autoindent                    "自动对齐
 set matchtime=2
 
-set nowrap
 set hlsearch
 set incsearch
 set noswapfile
@@ -37,11 +36,13 @@ set foldmethod=syntax         " 设置语法折叠
 set foldlevelstart=99         " 打开文件是默认不折叠代码
 
 " Recently vim can merge signcolumn and number column into one
-if has("patch-8.1.1564")
-  set signcolumn=number
-else
-  set signcolumn=yes
-endif
+"if has("patch-8.1.1564")
+"  set number
+"  set signcolumn=number
+"else
+set signcolumn=yes
+"endif
+
 set shortmess+=c
 
 nnoremap ;  :
@@ -89,17 +90,30 @@ autocmd User AsyncRunStart call asyncrun#quickfix_toggle(8, 1)
 " <<<<<<<<<<<<<<<<<<<<<<<< async run end <<<<<<<<<<<<<<<<<<<<
 
 " >>>>>>>>>>>>>>>>>>> config leaderF >>>>>>>>>>>>>>>>>>>>>>>>>
-"let g:Lf_ShortcutF = '<C-P>'
+
+" don't show the help in normal mode
+let g:Lf_HideHelp = 1
+let g:Lf_UseCache = 1
+let g:Lf_UseVersionControlTool = 0
+let g:Lf_IgnoreCurrentBufferName = 1
+let g:Lf_WildIgnore = {
+      \ 'dir': ['.svn','.git','.hg', '*build*', '.clangd', '.vscode', '*blade*'],
+      \ 'file': ['*.sw?','~$*','*.bak','*.exe','*.o','*.so','*.py[co]']
+      \}
+
 let g:Lf_ShortcutF = "<leader>ff"
+noremap <leader>gm :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
+noremap <leader>gl :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
+noremap <leader>gb :<C-U><C-R>=printf("Leaderf buffer %s", "")<CR><CR>
+
 if executable("rg")
   noremap <leader>tq :<C-U>Leaderf! rg --recall<CR>
-  noremap <leader>go :<C-U><C-R>=printf("Leaderf buffer %s", "")<CR><CR>
   noremap <leader>fc :<C-U><C-R>=printf("Leaderf! rg -e %s ", expand("<cword>"))<CR>
   noremap <leader>fb :<C-U><C-R>=printf("Leaderf! rg -F --current-buffer -e %s ", expand("<cword>"))<CR>
+	xnoremap <leader>fv :<C-U><C-R>=printf("Leaderf! rg -F -e %s ", leaderf#Rg#visual())<CR>
 else
   set wildchar=<Tab> wildmenu wildmode=full
   nnoremap <leader>tq :call asyncrun#quickfix_toggle(8)<cr>
-  nnoremap <leader>go :buffers<CR>:buffer<Space>
   nnoremap <leader>fc :AsyncRun grep -rwn <cword> .<cr>
   nnoremap <leader>fd :AsyncRun grep -rwn <cword> .
 endif
