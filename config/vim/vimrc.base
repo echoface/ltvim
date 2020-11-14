@@ -1,49 +1,36 @@
 " <<<<<<<<<<<<<<<<<<<<< base <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-set magic                         " 设置 regulation express
 set hidden
-set nocompatible
-
-set showmatch
-set autoindent                    "自动对齐
-set matchtime=2
-
 set hlsearch
+set showmatch
 set incsearch
-set noswapfile
 set ignorecase
 
+set nobackup
+set noswapfile
+set nowritebackup
+set nocompatible
+
+set cmdheight=2
+set shortmess+=c
+set updatetime=300
+set scrolloff=3                   " 光标移动到buffer的顶部和底部时保持3行距离
+set laststatus=2                  " 启动显示状态行(1),总是显示状态行(2)
+set signcolumn=no                 " no diagnostic
+
 set encoding=utf-8
+set fileformat=unix
 set termencoding=utf-8
 
 " indent default setting
-set tabstop=2
 set expandtab
-set smartindent                   "智能对齐
-set scrolloff=3                   " 光标移动到buffer的顶部和底部时保持3行距离
-set laststatus=2                  " 启动显示状态行(1),总是显示状态行(2)
-set history=1000                  " 历史记录数量
+set tabstop=2
 set shiftwidth=2
 set softtabstop=2
-set selection=inclusive           "
-set backspace=indent,eol,start
-
-set cmdheight=2
-set pumheight=20
-set completeopt=menu,menuone
 
 set foldenable                " 开始折叠
 set foldmethod=syntax         " 设置语法折叠
 set foldlevelstart=99         " 打开文件是默认不折叠代码
 
-" Recently vim can merge signcolumn and number column into one
-"if has("patch-8.1.1564")
-"  set number
-"  set signcolumn=number
-"else
-set signcolumn=yes
-"endif
-
-set shortmess+=c
 
 nnoremap ;  :
 let mapleader=','
@@ -59,6 +46,11 @@ nnoremap ;  :
 nnoremap <leader>w  <c-w>
 nnoremap <leader>ch :A<CR>
 nnoremap <leader>tf @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
+
+inoremap <C-e> <C-o>$
+inoremap <C-a> <C-o>0
+inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
+inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
 " <<<<<<<<<<<<<<<<<<<<< base end <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
@@ -68,7 +60,12 @@ source $HOME/.vim/plugin.base
 call plug#end()
 """"""""""""""""""""""""""""""""" Plug END""""""""""""""""""""""""""
 
+let g:cpp_member_highlight = 1
+let g:cpp_simple_highlight = 1
+let g:cpp_attributes_highlight = 1
 let g:cpp_class_scope_highlight = 1
+"let g:cpp_no_function_highlight = 1
+
 
 " >>>>>>>>>>>>>>>>>>>>>>> config nerdtree >>>>>>>>>>>>>>>>>>
 let g:NERDTreeWinSize=32
@@ -77,7 +74,7 @@ let g:NERDTreeDirArrows = 1
 let g:NERDTreeGlyphReadOnly = "RO"
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
-let NERDTreeIgnore=['\.pyc','\~$','\.swp','\.o']
+let NERDTreeIgnore=['\.pyc','\~$','\.swp', '\.o']
 
 noremap <leader>ts  :NERDTreeToggle<CR>
 
@@ -93,18 +90,14 @@ autocmd User AsyncRunStart call asyncrun#quickfix_toggle(8, 1)
 
 " don't show the help in normal mode
 let g:Lf_HideHelp = 1
-let g:Lf_UseCache = 1
-let g:Lf_UseVersionControlTool = 0
-let g:Lf_IgnoreCurrentBufferName = 1
 let g:Lf_WildIgnore = {
       \ 'dir': ['.svn','.git','.hg', '*build*', '.clangd', '.vscode', '*blade*'],
       \ 'file': ['*.sw?','~$*','*.bak','*.exe','*.o','*.so','*.py[co]']
       \}
 
-let g:Lf_ShortcutF = "<leader>ff"
+"<leader>b <leader>f default bind to search files/buffers
 noremap <leader>gm :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
 noremap <leader>gl :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
-noremap <leader>gb :<C-U><C-R>=printf("Leaderf buffer %s", "")<CR><CR>
 
 if executable("rg")
   noremap <leader>tq :<C-U>Leaderf! rg --recall<CR>
@@ -140,8 +133,7 @@ au BufNewFile,BufRead python
     \ set autoindent |
     \ set shiftwidth=4 |
     \ set textwidth=79 |
-    \ set softtabstop=4 |
-    \ set fileformat=unix
+    \ set softtabstop=4
 
 " c++0x lambda expr indent
 au Filetype cpp,c,objc

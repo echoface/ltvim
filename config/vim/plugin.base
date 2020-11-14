@@ -4,5 +4,5 @@ Plug 'preservim/nerdtree'
 Plug 'preservim/nerdcommenter'
 Plug 'skywind3000/asyncrun.vim'
 "Plug 'easymotion/vim-easymotion'
-Plug 'hynek/vim-python-pep8-indent'
+"Plug 'hynek/vim-python-pep8-indent'
 Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
