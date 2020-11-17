@@ -3,32 +3,32 @@ source $HOME/.vim/vimrc.base
 """""""""""""""""""""""""""""Plug settings""""""""""""""""""""""""""
 call plug#begin('~/.vim/Plug/')
 source $HOME/.vim/plugin.base
-Plug 'preservim/tagbar'
 Plug 'honza/vim-snippets'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 """"""""""""""""""""""""""""""""" Plug END""""""""""""""""""""""""""
 
-nmap <leader>tg :TagbarToggle<CR>
-
 " >>>>>>>>>>>>>>>>>>>       coc        >>>>>>>>>>>>>>>>>>>>>>>>>
 " ==                  config coc start                        ==
 " ==                                                          ==
-nmap <leader>rn <Plug>(coc-rename)
-nmap <leader>ca  <Plug>(coc-codeaction)
-nmap <leader>qf  <Plug>(coc-fix-current)
-xmap <leader>fm  <Plug>(coc-format-selected)
+nmap <leader>rn   <Plug>(coc-rename)
+nmap <leader>ac   <Plug>(coc-codeaction)
+nmap <leader>fix  <Plug>(coc-fix-current)
+xmap <leader>fmt  <Plug>(coc-format-selected)
 
 " see coc.nvim/plugin/coco.vim for more mapping details
-nmap <leader>gd :<C-u>call CocActionAsync('jumpDeclaration')<CR>
-nmap <leader>gi :<C-u>call CocActionAsync("jumpDefinition")<CR>
-nmap <leader>gr :<C-u>call CocActionAsync('jumpReferences')<CR>
+nmap <leader>gr     :<C-u>call CocActionAsync('jumpReferences')<CR>
+nmap <leader>gi     :<C-u>call CocActionAsync("jumpDefinition")<CR>
+nmap <leader>gd     :<C-u>call CocActionAsync('jumpDeclaration')<CR>
 
 "list diagnostic
 nmap <leader>ld :CocDiagnostics<CR>
+nnoremap <leader>ch :CocCommand clangd.switchSourceHeader<CR>
 
 let g:coc_snippet_next = '<c-j>'
 let g:coc_snippet_prev = '<c-k>'
+
+inoremap <silent><expr> <leader>cc coc#refresh()
 
 inoremap <silent><expr> <cr>
       \ pumvisible() ? coc#_select_confirm() :
@@ -44,25 +44,15 @@ function! s:check_back_space() abort
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
+function GoHeaderSource()
+  :CocCommand clangd.switchSourceHeader
+endfunction
+
 autocmd CursorHold * silent call CocActionAsync('highlight')
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
-function! StatusDiagnostic() abort
-  let info = get(b:, 'coc_diagnostic_info', {})
-  if empty(info) | return '' | endif
-  let msgs = []
-  if get(info, 'error', 0)
-    call add(msgs, 'E' . info['error'])
-  endif
-  if get(info, 'warning', 0)
-    call add(msgs, 'W' . info['warning'])
-  endif
-  return join(msgs, ' '). ' ' . get(g:, 'coc_status', '')
-endfunction
 
-"set statusline^=%{coc#status()}
-set statusline^=%{StatusDiagnostic()}
-
+set statusline^=%{coc#status()}
 " ==                                                          ==
 " ==                  config coc end                          ==
 " >>>>>>>>>>>>>>>>>>>       coc        >>>>>>>>>>>>>>>>>>>>>>>>>

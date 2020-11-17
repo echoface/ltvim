@@ -1,5 +1,6 @@
 {
     "suggest.timeout": 500,
+    "diagnostic.checkCurrentLine": true,
     "languageserver": {
         "golang": {
             "command": "gopls",
@@ -10,5 +11,12 @@
             }
         }
     },
-    "clangd.arguments": ["--background-index", "--clang-tidy", "--header-insertion=never"]
+    "clangd.arguments": [
+      "-j=4",
+      "--clang-tidy",
+      "--limit-results=20",
+      "--background-index",
+      "--header-insertion=never"
+    ],
+    "diagnostic.messageTarget": "echo"
 }

@@ -54,5 +54,16 @@ inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 "<<<<<<<<<<<<<<<<<<<< end coc concif <<<<<<<<<<<<<<<<<<<<<
+
+扩展列表
+coc-tag
+coc-snippets
+coc-lists
+coc-highlight
+coc-sh
+coc-python
+coc-json
+coc-clangd
+
 ```
 

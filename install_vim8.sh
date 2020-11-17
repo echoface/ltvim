@@ -1,6 +1,42 @@
 #!/bin/bash
 
-read -r -p "install vim8 to your ${HOME}? [Y|n]" input
+PREFIX=$HOME
+
+optspec=":h-:"
+while getopts "$optspec" optchar; do
+  case "${optchar}" in
+    -)
+      case "${OPTARG}" in
+        prefix)
+          PREFIX="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
+          ;;
+        prefix=*)
+          PREFIX=${OPTARG#*=}
+          ;;
+        *)
+          if [ "$OPTERR" = 1 ] && [ "${optspec:0:1}" != ":" ]; then
+            echo "Unknown option --${OPTARG}" >&2
+          fi
+          ;;
+      esac;;
+    h)
+      echo "usage: $0 [-h] [--prefix[=]<value>]" >&2
+      exit 2
+      ;;
+    *)
+      if [ "$OPTERR" != 1 ] || [ "${optspec:0:1}" = ":" ]; then
+        echo "Non-option argument: '-${OPTARG}'" >&2
+      fi
+      echo "usage: $0 [-h] [--prefix[=]<value>]" >&2
+      exit 2
+      ;;
+  esac
+done
+
+DependenciesHint="make sure ncurses5-dev,python2-dev,python3-dev installed"
+echo -e "\n${DependenciesHint}\n"
+
+read -r -p "vim8 will install to path ${PREFIX}? other path with --prefix args [Y|n]" input
 case $input in
   [yY][eE][sS]|[yY])
     ;;
@@ -18,14 +54,12 @@ esac
 git clone https://gitee.com/ltecho/vim.git .ltvim8 --depth=1
 cd .ltvim8
 ./configure                                                           \
-  --prefix=$HOME                                                      \
+  --prefix=$PREFIX                                                    \
   --with-features=huge                                                \
   --disable-gui --without-x                                           \
   --enable-fontset --with-compiledby="HuanGong"                       \
   --enable-cscope --enable-fail-if-missing --enable-multibyte         \
   --enable-python3interp --enable-pythoninterp                        \
-  --with-python-config-dir=/usr/lib64/python2.7//config               \
-  --with-python3-config-dir=/usr/lib64/python3.6/config-3.6m-x86_64-linux-gnu
 
 make -j4
 make install
