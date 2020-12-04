@@ -10,12 +10,15 @@ set nowritebackup
 set nocompatible
 set backspace=indent,eol,start
 
-"set cmdheight=2
-set shortmess+=c
+set cmdheight=1
 set updatetime=300
-set scrolloff=3                   " 光标移动到buffer的顶部和底部时保持3行距离
+set scrolloff=5                   " 光标移动到buffer的顶部和底部时保持3行距离
 set laststatus=2                  " 启动显示状态行(1),总是显示状态行(2)
-set signcolumn=no                 " no diagnostic
+
+if v:version > 703
+  set shortmess+=c
+  set signcolumn=no                 " no diagnostic
+endif
 
 set encoding=utf-8
 set fileformat=unix
@@ -31,20 +34,14 @@ set foldenable                " 开始折叠
 set foldmethod=syntax         " 设置语法折叠
 set foldlevelstart=99         " 打开文件是默认不折叠代码
 
-
-nnoremap ;  :
-let mapleader=','
-
-set t_Co=256
-colorscheme monokai
-
-syntax on
-filetype on
 syntax enable
 filetype plugin indent on
 
 " base key mapping
+colorscheme desert
+
 nnoremap ;  :
+let mapleader=','
 nnoremap <leader>w  <c-w>
 nnoremap <leader>tf @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
 
@@ -61,6 +58,7 @@ source $HOME/.vim/plugin.base
 call plug#end()
 """"""""""""""""""""""""""""""""" Plug END""""""""""""""""""""""""""
 
+
 " """"""""""""""""""""" tarbar   """"""""""""""""""""""
 let g:tagbar_indent = 1
 nmap <leader>tg :TagbarToggle<CR>
@@ -68,46 +66,46 @@ nmap <leader>tg :TagbarToggle<CR>
 
 
 " """"""""""""""""""""" nerdtree """"""""""""""""""""""
-let g:NERDTreeWinSize=24
-let g:NERDTreeDirArrows = 1
+let g:NERDTreeWinSize=32
+"let g:NERDTreeDirArrows = 1
 let g:NERDTreeQuitOnOpen = 0
-let g:NERDTreeGlyphReadOnly = "RO"
-let g:NERDTreeDirArrowExpandable = '▸'
-let g:NERDTreeDirArrowCollapsible = '▾'
 let NERDTreeIgnore=['\.pyc','\~$','\.swp', '\.o', 'blade-bin', 'build64*']
 
 noremap <leader>ts  :NERDTreeToggle<CR>
 " """"""""""""""""""""" nerdtree """"""""""""""""""""""
 
-" >>>>>>>>>>>>>>>>>>>>>>>> async run >>>>>>>>>>>>>>>>>>>>>>>>
+" >>>>>>>>>>>>>>>>>>>>> async run >>>>>>>>>>>>>>>>>>>>>>>>
 autocmd User AsyncRunStart call asyncrun#quickfix_toggle(8, 1)
-" <<<<<<<<<<<<<<<<<<<<<<<< async run end <<<<<<<<<<<<<<<<<<<<
+" <<<<<<<<<<<<<<<<<<<<<< async run end <<<<<<<<<<<<<<<<<<<<
 
-" >>>>>>>>>>>>>>>>>>> config leaderF >>>>>>>>>>>>>>>>>>>>>>>>>
+" >>>>>>>>>>>>>>>>>>> config leaderF >>>>>>>>>>>>>>>>>>>>>>
 let g:Lf_HideHelp = 1
 let g:Lf_WildIgnore = {
       \ 'dir': ['.svn','.git','.hg', '*build*', '.clangd', '.vscode', '*blade*'],
       \ 'file': ['*.sw?','~$*','*.bak','*.exe','*.o','*.so','*.py[co]']
       \}
 
-"<leader>b <leader>f default bind to search files/buffers
+"<leader>b <leader>f default bind to search files/buffers, we disable it
+let g:Lf_ShortcutF = '<c-p>'
+let g:Lf_ShortcutB = '<leader>gb'
 noremap <leader>gm :LeaderfMru<CR>
 noremap <leader>gb :LeaderfBuffer<CR>
+noremap <leader>gf :LeaderfFunction<CR>
 
 if executable("rg")
-  noremap <leader>tq :<C-U>Leaderf! rg --recall<CR>
-  noremap <leader>fc :<C-U><C-R>=printf("Leaderf! rg -e %s ", expand("<cword>"))<CR>
-  noremap <leader>fb :<C-U><C-R>=printf("Leaderf! rg -F --current-buffer -e %s ", expand("<cword>"))<CR>
+  "toggle leaderf result window
+  noremap  <leader>tq :<C-U>Leaderf! rg --recall<CR>
+  noremap  <leader>fc :<C-U><C-R>=printf("Leaderf! rg -e %s ", expand("<cword>"))<CR>
+  noremap  <leader>fb :<C-U><C-R>=printf("Leaderf! rg -F --current-buffer -e %s ", expand("<cword>"))<CR>
 	xnoremap <leader>fv :<C-U><C-R>=printf("Leaderf! rg -F -e %s ", leaderf#Rg#visual())<CR>
 else
   set wildchar=<Tab> wildmenu wildmode=full
   nnoremap <leader>tq :call asyncrun#quickfix_toggle(8)<cr>
-  nnoremap <leader>fc :AsyncRun grep -rwn <cword> .<cr>
-  nnoremap <leader>fd :AsyncRun grep -rwn <cword> .
+  nnoremap <leader>fc :AsyncRun grep -rwn <cword> .
 endif
-" <<<<<<<<<<<<<<<<<<<<< end leaderF <<<<<<<<<<<<<<<<<<<<<<<<<<
+" <<<<<<<<<<<<<<<<<<<<< end leaderF <<<<<<<<<<<<<<<<<<<<<<<
 
-" >>>>>>>>>>>>>>>>>>>>> highlight empty >>>>>>>>>>>>>>>>
+" >>>>>>>>>>>>>>>>>>>>> highlight >>>>>>>>>>>>>>>>>>>>>>>>>
 highlight WhitespaceEOL ctermbg=red guibg=red
 match WhitespaceEOL /\s\+$/
 
@@ -120,7 +118,19 @@ function RemoveTrailingSpace()
   endif
 endfunction
 autocmd BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
-" >>>>>>>>>>>>>>>>>>>>> highlight end>>>>>>>>>>>>>>>>
+" >>>>>>>>>>>>>>>>>>>>> highlight end >>>>>>>>>>>>>>>>>>>>
+
+" >>>>>>>>>>>>>>>>>>>>> buffer helper start >>>>>>>>>>>>>>
+"command! BufOnly silent! execute "%bd|e#|bd#"
+command! BufOnly silent! :call CloseAllBuffersButCurrent()<CR>
+function! CloseAllBuffersButCurrent()
+  let curr = bufnr("%")
+  let last = bufnr("$")
+
+  if curr > 1    | silent! execute "1,".(curr-1)."bd"     | endif
+  if curr < last | silent! execute (curr+1).",".last."bd" | endif
+endfunction
+" >>>>>>>>>>>>>>>>>>>>> buffer helper end >>>>>>>>>>>>>>>>
 
 au BufNewFile,BufRead python
     \ set tabstop=4 |
