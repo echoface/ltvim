@@ -1,4 +1,4 @@
-# a vim config and script for HuanGong vim workspace
+# A out-of-box vim toolkit bundle
 
 在Language server变得像现在这样成熟之前, 一直配置使用YoucompleteMe作为主力插件使用, 不过随着
 LanguageServer的崛起, NeoVim、vim8的发展, 开始了一些变化, YouCompleteMe的作者也在积极的做lsp
@@ -66,4 +66,3 @@ coc-json
 coc-clangd
 
 ```
-
