@@ -1,7 +1,7 @@
 Plug 'preservim/tagbar'
 Plug 'vim-scripts/a.vim'
 Plug 'preservim/nerdtree'
-Plug 'kamykn/dark-theme.vim'
+Plug 'antoyo/vim-licenses'
 Plug 'preservim/nerdcommenter'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'easymotion/vim-easymotion'

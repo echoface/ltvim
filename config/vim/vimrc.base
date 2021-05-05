@@ -132,6 +132,13 @@ function! CloseAllBuffersButCurrent()
 endfunction
 " >>>>>>>>>>>>>>>>>>>>> buffer helper end >>>>>>>>>>>>>>>>
 
+" >>>>>>>>>>>>>>>>>>>>>>> license >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+let g:licenses_authors_name = 'Huan.Gong <gonghuan.dev@gmail.com>'
+let g:licenses_default_commands = ['lgpl', 'gpl', 'mit', 'apache']
+" <<<<<<<<<<<<<<<<<<<<<< license end <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
 au BufNewFile,BufRead python
     \ set tabstop=4 |
     \ set expandtab |
