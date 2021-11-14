@@ -4,6 +4,18 @@
 LanguageServer的崛起, NeoVim、vim8的发展, 开始了一些变化, YouCompleteMe的作者也在积极的做lsp
 的整合,鉴于自己的使用习惯与对环境setup的要求, 目前配置了三套兼容且方便的配置
 
+## NVIM
+
+update: now migrate to nvim
+
+nvim 的迭代和崛起, 带动了整个vim生态的前进, 最近neovim发布buildin lsp之后, 各插件大神在短短一段时间
+开发除了一系列的配套插件, 经过**简单** 的体验, 在原来基础上配置出一套nvim的插件配置.
+
+located: `ltvim/nvim`
+目前对nvim同样配置了两套配置文件, 基于coc.nvim 与 nvim buildin lsp的配置, 目前使用buildin lsp
+可以通过修改`$Home/.config/nvim/init.vim` 切换到coc 引擎
+
+## VIM8
 - base
 仅仅包行基本的插件与配置文件, 且基础的使用依赖均在仓库中带了对应可以使用的版本, 对无网络环境
 也可以做一个基本的配置使用
@@ -55,14 +67,14 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 "<<<<<<<<<<<<<<<<<<<< end coc concif <<<<<<<<<<<<<<<<<<<<<
 
-扩展列表
+### coc 推荐扩展列表
 coc-tag
-coc-snippets
-coc-lists
-coc-highlight
 coc-sh
-coc-python
+coc-go
 coc-json
+coc-lists
 coc-clangd
-
+coc-pyright
+coc-snippets
+coc-highlight
 ```
