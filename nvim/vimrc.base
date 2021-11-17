@@ -22,9 +22,9 @@ set termencoding=utf-8
 
 " indent default setting
 set expandtab
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
 
 set foldenable                " 开始折叠
 set foldmethod=syntax         " 设置语法折叠
@@ -34,7 +34,7 @@ syntax enable
 filetype plugin indent on
 
 " base key mapping
-colorscheme monokai 
+colorscheme monokai
 
 nnoremap ;  :
 let mapleader=','
@@ -48,11 +48,6 @@ inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
 " <<<<<<<<<<<<<<<<<<<<< base end <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
-" """"""""""""""""""""" tarbar   """"""""""""""""""""""
-let g:tagbar_indent = 1
-nmap <leader>tg :TagbarToggle<CR>
-" """"""""""""""""""" tarbar end """"""""""""""""""""""
-
 " """"""""""""""""""""" nerdtree """"""""""""""""""""""
 let g:NERDTreeWinSize=32
 "let g:NERDTreeDirArrows = 1
@@ -62,30 +57,12 @@ let NERDTreeIgnore=['\.pyc','\~$','\.swp', '\.o', 'blade-bin', 'build64*']
 nnoremap <leader>ts  :NERDTreeToggle<CR>
 " """"""""""""""""""""" nerdtree """"""""""""""""""""""
 
-
 " >>>>>>>>>>>>>>>>>>>>> async run >>>>>>>>>>>>>>>>>>>>>>>>
 nnoremap <leader>fcw :AsyncRun grep -rwn <cword> .
 autocmd User AsyncRunStart call asyncrun#quickfix_toggle(8, 1)
 " <<<<<<<<<<<<<<<<<<<<<< async run end <<<<<<<<<<<<<<<<<<<<
 
-
-" >>>>>>>>>>>>>>>>>>>>> highlight >>>>>>>>>>>>>>>>>>>>>>>>>
-highlight WhitespaceEOL ctermbg=red guibg=red
-match WhitespaceEOL /\s\+$/
-
-function RemoveTrailingSpace()
-  if &ft != "diff"
-    let b:curcol = col(".")
-    let b:curline = line(".")
-    silent! %s/\s\+$//
-    call cursor(b:curline, b:curcol)
-  endif
-endfunction
-autocmd BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
-" >>>>>>>>>>>>>>>>>>>>> highlight end >>>>>>>>>>>>>>>>>>>>
-
 " >>>>>>>>>>>>>>>>>>>>> buffer helper start >>>>>>>>>>>>>>
-"command! BufOnly silent! execute "%bd|e#|bd#"
 command! BufOnly silent! :call CloseAllBuffersButCurrent()<CR>
 function! CloseAllBuffersButCurrent()
   let curr = bufnr("%")
@@ -101,7 +78,7 @@ au BufNewFile,BufRead python
     \ set expandtab |
     \ set autoindent |
     \ set shiftwidth=4 |
-    \ set textwidth=79 |
+    \ set textwidth=120 |
     \ set softtabstop=4
 
 " c++0x lambda expr indent
@@ -110,5 +87,5 @@ au Filetype cpp,c,objc
     \ setlocal cinoptions=l1 |
     \ setlocal cinoptions+=:0 |
     \ setlocal cino=l1,j1,(0,ws,Ws |
-    \ setlocal expandtab tabstop=2 shiftwidth=2
+    \ setlocal expandtab softtabstop=2 tabstop=2 shiftwidth=2
 

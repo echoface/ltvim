@@ -7,10 +7,12 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'ray-x/lsp_signature.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+Plug 'nvim-telescope/telescope-live-grep-raw.nvim'
 
 " nvim build-in lsp configure
-Plug 'rinx/lspsaga.nvim' " a fork version fix bug
 Plug 'neovim/nvim-lspconfig'
+
+Plug 'tami5/lspsaga.nvim', {'branch': 'nvim51'} " a fork version fix bug
 
 Plug 'honza/vim-snippets'
 Plug 'dcampos/cmp-snippy'
@@ -26,7 +28,7 @@ Plug 'hrsh7th/cmp-nvim-lsp'
 call plug#end()
 """"""""""""""""""""""""""""""""" Plug END""""""""""""""""""""""""""
 
-"source ~/.config/nvim/vimrc.base
+source ~/.config/nvim/vimrc.base
 
 " nvim native lsp client, some this build-in function use Telescope
 nnoremap <silent><C-p> <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
@@ -37,10 +39,13 @@ nnoremap <silent><leader>rn <cmd>lua vim.lsp.buf.rename()<CR>
 "nnoremap <silent><leader>gs <cmd>lua vim.lsp.buf.document_symbol()<CR>
 "nnoremap <silent><leader>rn <cmd>lua vim.lsp.buf.rename()<CR>
 "nnoremap <silent><leader>act <cmd>lua vim.lsp.buf.code_action()<CR>
+"nnoremap <silent>D <cmd>lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})
+"or use this autocmd CursorHold,CursorHoldI * lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})
 
 " lspsaga not a well maintained repo, so just deprecated most of its function
-nnoremap <silent><leader>K :Lspsaga hover_doc<CR>
-nnoremap <silent><leader>H :Lspsaga signature_help<CR>
+nnoremap <silent>K :Lspsaga hover_doc<CR>
+nnoremap <silent>H :Lspsaga preview_definition<CR>
+nnoremap <silent>D :Lspsaga show_line_diagnostics<CR>
 
 nnoremap <leader>ft <cmd>Telescope tags<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
@@ -51,11 +56,17 @@ nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
 
 nnoremap <leader>fr <cmd>Telescope lsp_references<cr>
+nnoremap <leader>gr <cmd>Telescope lsp_references<cr>
 nnoremap <leader>fd <cmd>Telescope lsp_definitions<cr>
+nnoremap <leader>gd <cmd>Telescope lsp_definitions<cr>
 nnoremap <leader>fs <cmd>Telescope lsp_document_symbols<cr>
-nnoremap <leader>fe <cmd>Telescope lsp_document_diagnostics<cr>
+nnoremap <leader>gs <cmd>Telescope lsp_document_symbols<cr>
 nnoremap <leader>fws <cmd>Telescope lsp_workspace_symbols<cr>
-nnoremap <leader>fse <cmd>Telescope lsp_document_diagnostics<cr>
+nnoremap <leader>gws <cmd>Telescope lsp_workspace_symbols<cr>
+nnoremap <leader>fe <cmd>Telescope lsp_document_diagnostics<cr>
+nnoremap <leader>ge <cmd>Telescope lsp_document_diagnostics<cr>
+nnoremap <leader>fwe <cmd>Telescope lsp_workspace_diagnostics<cr>
+nnoremap <leader>gwe <cmd>Telescope lsp_workspace_diagnostics<cr>
 nnoremap <leader>act <cmd>Telescope lsp_code_actions<cr>
 vnoremap <leader>act <cmd>Telescope lsp_range_code_actions<cr>
 
@@ -63,18 +74,24 @@ command GitBranch             :Telescope git_branches
 command ListFiles             :Telescope find_files
 command ListBuffers           :Telescope buffers
 command ListMRUFiles          :Telescope oldfiles
+
 command LspRename             :lua vim.lsp.buf.rename()
-command LspCodeAction         :Telescope lsp_code_actions 
+command LspFormat             :lua vim.lsp.buf.formatting()
+command LspCodeAction         :Telescope lsp_code_actions
 command LspDiagnostics        :Telescope lsp_document_diagnostics
 command LspListSymbols        :Telescope lsp_document_symbols
 command LspListAllSymbols     :Telescope lsp_workspace_symbols
 
 set completeopt=menuone,noselect
+autocmd BufWritePre *.go lua vim.lsp.buf.formatting()
 
 lua << EOF
 vim.g.fzf_preview_window = {'down:+{2}-/2'}
 
 -- setup nvm-cmp
+require('telescope').load_extension('fzf')
+--require("telescope").extensions.live_grep_raw.live_grep_raw()
+
 local cmp = require "cmp"
 cmp.setup {
   snippet = {
@@ -143,49 +160,12 @@ require "lsp_signature".setup({
     }
 })
 
---[[
-require('lspsaga').init_lsp_saga({
-  debug = false,
-  -- use_saga_diagnostic_sign = true,
-  -- diagnostic sign
-  -- warn_sign = 'W',
-  -- hint_sign = 'H',
-  -- infor_sign = 'I',
-  -- error_sign = 'E',
-  -- dianostic_header_icon = 'D',
-  -- code action title icon
-  code_action_icon = '?',
-  code_action_prompt = {
-    enable = true,
-    sign = true,
-    sign_priority = 40,
-    virtual_text = false,
-  },
-  -- finder_definition_icon = "  ",
-  --finder_reference_icon = "  ",
-  --max_preview_lines = 10,
-  --finder_action_keys = {
-  --  open = "o",
-  --  vsplit = "s",
-  --  split = "i",
-  --  quit = "q",
-  --  scroll_down = "<C-f>",
-  --  scroll_up = "<C-b>",
-  --},
-  --code_action_keys = {
-  --  quit = "q",
-  --  exec = "<CR>",
-  --},
-  --rename_action_keys = {
-  --  quit = "<C-c>",
-  --  exec = "<CR>",
-  --},
-  --rename_prompt_prefix = "➤",
-  --definition_preview_icon = "  ",
-  --border_style = "single",
-  --server_filetype_map = {},
+vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+  signs = true,
+  underline = true,
+  virtual_text = false, -- if true, too disputed, so close it
+  update_in_insert = false,
 })
---]]
 
 -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())

@@ -3,6 +3,7 @@ call plug#begin('~/.config/nvim/Plug')
 
 source ~/.config/nvim/plugin.base
 
+Plug 'Shougo/echodoc.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'antoinemadec/coc-fzf', {'branch': 'release'}
 call plug#end()
