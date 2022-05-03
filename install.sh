@@ -32,9 +32,9 @@ case $input in
 esac
 
 echo "install vim use config $1 to ${HOME}/.ltvim"
-if [ -d "$HOME/.ltvim" ]; then
-  rm -rf $HOME/.ltvim
-fi
+#if [ -d "$HOME/.ltvim" ]; then
+#  rm -rf $HOME/.ltvim
+#fi
 mkdir -p "$HOME/.ltvim"
 cp -r vim nvim $HOME/.ltvim/
 

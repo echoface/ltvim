@@ -32,7 +32,7 @@ Plug 'liuchengxu/vista.vim'
 Plug 'ycm-core/YouCompleteMe', {'do': './install.py --clangd-completer'}
 call plug#end()
 
-if executable("rg")
+if executable("clangd")
   let g:ycm_clangd_binary_path = 'clangd'
 endif
 
