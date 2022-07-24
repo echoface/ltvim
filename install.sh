@@ -6,17 +6,30 @@ if [ $# -lt 1 ]; then
 fi
 
 cd $(cd `dirname $0`; pwd)
-if [ -d "$HOME/.vim" ]; then
-  echo "backup $HOME/.vim to $HOME/.vim.bak"
-  mv $HOME/.vim $HOME/.vim.bak
-fi
 
-if [ -f "$HOME/.vimrc" ]; then
-  echo "backup $HOME/.vimrc to $HOME/.vimrc.bak"
-  mv $HOME/.vimrc $HOME/.vimrc.bak
-fi
+backupvim () {
+  dt=`date "+%Y%m%d-%H%M%S"`
+  if [ -d "$HOME/.config/nvim" ]; then
+    mv $HOME/.config/nvim $HOME/.config/nvim.${dt}
+    echo "backup $HOME/.config/nvim to $HOME/.config/nvim.${dt}"
+  elif [ -f "$HOME/.config/nvim" ]; then
+    rm $HOME/.config/nvim
+  fi
 
-read -r -p "will install ltvim to ${HOME}/.ltvim [Y|n]" input
+  if [ -d "$HOME/.vim" ]; then
+    mv $HOME/.vim $HOME/.vim.bak.${dt}
+    echo "backup $HOME/.vim to $HOME/.vim.bak.${dt}"
+  elif [ -f "$HOME/.vim" ]; then
+    rm $HOME/.vim
+  fi
+  
+  if [ -f "$HOME/.vimrc" ]; then
+    mv $HOME/.vimrc $HOME/.vimrc.bak.${dt}
+    echo "backup $HOME/.vimrc to $HOME/.vimrc.bak.${dt}"
+  fi
+}
+
+read -r -p "setup your $! config now?[Y|n]" input
 case $input in
   [yY][eE][sS]|[yY])
     ;;
@@ -31,39 +44,27 @@ case $input in
     ;;
 esac
 
-echo "install vim use config $1 to ${HOME}/.ltvim"
-#if [ -d "$HOME/.ltvim" ]; then
-#  rm -rf $HOME/.ltvim
-#fi
-mkdir -p "$HOME/.ltvim"
-cp -r vim nvim $HOME/.ltvim/
+
+backupvim()
 
 if [ "$1" == "coc" ]; then
-  ln -sf $HOME/.ltvim/vim $HOME/.vim
-  ln -sf $HOME/.ltvim/vimrc.coc $HOME/.vimrc
+  ln -sf `pwd`/vim $HOME/.vim
+  ln -sf `pwd`/vimrc.coc $HOME/.vimrc
 elif [ "$1" == "ycm" ]; then
-  ln -sf $HOME/.ltvim/vim $HOME/.vim
-  ln -sf $HOME/.ltvim/vimrc.ycm $HOME/.vimrc
+  ln -sf `pwd`/vim $HOME/.vim
+  ln -sf `pwd`/vimrc.ycm $HOME/.vimrc
 elif [ "$1" == "base" ]; then
-  ln -sf $HOME/.ltvim/vim $HOME/.vim
-  ln -sf $HOME/.ltvim/vimrc.base $HOME/.vimrc
+  ln -sf `pwd`/vim $HOME/.vim
+  ln -sf `pwd`/vimrc.base $HOME/.vimrc
 elif [ "$1" == "nvim" ]; then
-  if [ -d "$HOME/.config/nvim" ]; then
-    dt=`date "+%Y%m%d-%H%M%S"`
-    mv $HOME/.config/nvim $HOME/.config/nvim.${dt}
-    echo "backup $HOME/.config/nvim to $HOME/.config/nvim.${dt}"
-  elif [ -f "$HOME/.config/nvim" ]; then
-    rm $HOME/.config/nvim
-    echo "del file $HOME/.config/nvim"
-  fi
-  ln -sf $HOME/.ltvim/nvim $HOME/.config/nvim
+  ln -sf `pwd`/nvimv2 $HOME/.config/nvim
 else
   echo "arg:$1 not supported"
   exit -1
 fi
 
-echo "finish install enjoy ltvim life!!!"
-echo "............................BYE..."
+echo "finish install and enjoy ltvim now!!!"
+echo "...............................BYE..."
 
 # fix error cuased by lc
 #echo "export LC_CTYPE=en_US.UTF-8" >> ~/.bashrc
