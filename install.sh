@@ -45,7 +45,7 @@ case $input in
 esac
 
 
-backupvim()
+backupvim
 
 if [ "$1" == "coc" ]; then
   ln -sf `pwd`/vim $HOME/.vim
