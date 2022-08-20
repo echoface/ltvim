@@ -1,8 +1,0 @@
-Plug 'vim-scripts/a.vim'
-Plug 'honza/vim-snippets'
-Plug 'preservim/nerdtree'
-Plug 'preservim/nerdcommenter'
-Plug 'skywind3000/asyncrun.vim'
-Plug 'easymotion/vim-easymotion'
-Plug 'ntpeters/vim-better-whitespace'
-Plug 'octol/vim-cpp-enhanced-highlight'

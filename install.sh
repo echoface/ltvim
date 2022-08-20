@@ -57,7 +57,7 @@ elif [ "$1" == "base" ]; then
   ln -sf `pwd`/vim $HOME/.vim
   ln -sf `pwd`/vimrc.base $HOME/.vimrc
 elif [ "$1" == "nvim" ]; then
-  ln -sf `pwd`/nvimv2 $HOME/.config/nvim
+  ln -sf `pwd`/nvim $HOME/.config/nvim
 else
   echo "arg:$1 not supported"
   exit -1
