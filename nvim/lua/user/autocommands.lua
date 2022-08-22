@@ -32,8 +32,6 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 -- exit vim when only nvimtree buffer
 -- vim.cmd "autocmd BufEnter * ++nested if winnr('$') == 1 && bufname() == 'NvimTree_' . tabpagenr() | quit | endif"
 
-vim.cmd "autocmd BufNewFile,BufRead *.go setlocal noet ts=4 sw=4 sts=4"
-
 -- Fixes Autocomment
 vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
   callback = function()
