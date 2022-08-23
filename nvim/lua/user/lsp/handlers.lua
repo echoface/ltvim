@@ -52,7 +52,7 @@ M.setup = function()
 
   -- auto formatting
   vim.cmd [[autocmd BufWritePre *.go lua vim.lsp.buf.formatting_sync()]]
-  vim.cmd('command! LspFmt lua vim.lsp.buf.formatting()<cr>')
+
 end
 
 local function lsp_keymaps(bufnr)
@@ -65,15 +65,21 @@ local function lsp_keymaps(bufnr)
   keymap(bufnr, "n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
   keymap(bufnr, "n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
   -- lsp action instruction
-  keymap(bufnr, "n", "lr", "<cmd>lua vim.lsp.buf.rename()<cr>", opts)
-  keymap(bufnr, "n", "lf", "<cmd>lua vim.lsp.buf.formatting()<cr>", opts)
-  keymap(bufnr, "n", "la", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
-  keymap(bufnr, "n", "lt", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
-  keymap(bufnr, "n", "ls", "<cmd>lua vim.lsp.buf.document_symbol()<CR>", opts)
-  keymap(bufnr, "n", "ld", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
+  --keymap(bufnr, "n", "lr", "<cmd>lua vim.lsp.buf.rename()<cr>", opts)
+  --keymap(bufnr, "n", "lf", "<cmd>lua vim.lsp.buf.formatting()<cr>", opts)
+  --keymap(bufnr, "n", "la", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
+  --keymap(bufnr, "n", "lt", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
+  --keymap(bufnr, "n", "ls", "<cmd>lua vim.lsp.buf.document_symbol()<CR>", opts)
+  --keymap(bufnr, "n", "ld", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
   --keymap(bufnr, "n", "le", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
   --keymap(bufnr, "n", "ldj", "<cmd>lua vim.diagnostic.goto_next({buffer=0})<cr>", opts)
   --keymap(bufnr, "n", "ldk", "<cmd>lua vim.diagnostic.goto_prev({buffer=0})<cr>", opts)
+  vim.cmd('command! LspRename lua vim.lsp.buf.rename()<cr>')
+  vim.cmd('command! LspFmt lua vim.lsp.buf.formatting()<cr>')
+  vim.cmd('command! LspFix lua vim.lsp.buf.code_action()<cr>')
+  vim.cmd('command! LspSig lua vim.lsp.buf.signature_help()<cr>')
+  vim.cmd('command! LspTag lua vim.lsp.buf.document_symbol()<cr>')
+  vim.cmd('command! Diagnostics lua vim.diagnostic.open_float()<cr>')
 end
 
 M.on_attach = function(client, bufnr)

@@ -29,7 +29,9 @@ telescope.setup {
 
 -- Telescope
 local keymap = vim.keymap.set
+local opts = { noremap = true, silent = true }
 keymap("n", "<leader>ft", ":Telescope tags<CR>", opts)
+keymap("n", "<leader>fc", ":Telescope commands<CR>", opts)
 keymap("n", "<leader>fb", ":Telescope buffers<CR>", opts)
 keymap("n", "<leader>fp", ":Telescope projects<CR>", opts)
 keymap("n", "<leader>fr", ":Telescope oldfiles<CR>", opts)
