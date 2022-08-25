@@ -12,7 +12,7 @@ local tree_cb = nvim_tree_config.nvim_tree_callback
 
 nvim_tree.setup {
   update_focused_file = {
-    enable = true,
+    enable = false,
     update_cwd = true,
   },
   renderer = {
@@ -27,7 +27,7 @@ nvim_tree.setup {
   },
   diagnostics = {
     enable = true,
-    show_on_dirs = true,
+    show_on_dirs = false,
     icons = {
       hint = "h",
       info = "i",
@@ -39,6 +39,7 @@ nvim_tree.setup {
     width = 30,
     height = 30,
     side = "left",
+    adaptive_size = true,
     mappings = {
       list = {
         { key = { "l", "<CR>", "o" }, cb = tree_cb "edit" },
