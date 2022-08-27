@@ -38,5 +38,8 @@ vim.opt.fillchars.eob=" "
 vim.opt.shortmess:append "c"
 vim.opt.whichwrap:append("<,>,[,]")
 vim.opt.iskeyword:append("-")
+vim.opt.startofline = false                     -- don't jump to startofline for g,G,<C-jumpcmd>
+vim.opt.virtualedit = "all"                     -- keep curosr in fixed column
 
+vim.cmd "autocmd BufNewFile,BufRead *.lua setlocal ts=2 sw=2 sts=2"
 vim.cmd "autocmd BufNewFile,BufRead *.go setlocal noet ts=4 sw=4 sts=4"

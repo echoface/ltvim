@@ -9,6 +9,10 @@ if not config_status_ok then
 end
 
 local tree_cb = nvim_tree_config.nvim_tree_callback
+vim.api.nvim_set_keymap("n", "<leader>ts", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
+-- exit vim when only nvimtree buffer
+vim.cmd "autocmd BufEnter * ++nested if winnr('$') == 1 && bufname() == 'NvimTree_' . tabpagenr() | quit | endif"
+
 
 nvim_tree.setup {
   update_focused_file = {
