@@ -4,7 +4,6 @@ local keymap = vim.keymap.set
 local opts = { silent = true }
 
 --Remap space as leader key
---keymap("", "<Space>", "<Nop>", opts)
 --vim.g.mapleader = " "
 vim.g.mapleader = ","
 
@@ -41,9 +40,6 @@ keymap("n", "<S-h>", ":bprevious<CR>", opts)
 -- Clear highlights
 keymap("n", "<leader>h", "<cmd>nohlsearch<CR>", opts)
 
--- Close buffers
-keymap("n", "<S-q>", "<cmd>Bdelete!<CR>", opts)
-
 -- Better paste
 keymap("v", "p", '"_dP', opts)
 
@@ -55,12 +51,6 @@ keymap("i", "jk", "<ESC>", opts)
 -- Stay in indent mode
 keymap("v", "<", "<gv", opts)
 keymap("v", ">", ">gv", opts)
-
--- Plugins --
-
--- NvimTree
--- keymap("n", "<leader>e", ":NvimTreeToggle<CR>", opts)
-keymap("n", "<leader>ts", ":NvimTreeToggle<CR>", opts)
 
 -- Git
 keymap("n", "<leader>tg", "<cmd>lua _LAZYGIT_TOGGLE()<CR>", opts)

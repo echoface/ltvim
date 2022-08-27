@@ -45,15 +45,24 @@ return packer.startup(function(use)
   use { "moll/vim-bbye", tag="*"}
   use { "goolord/alpha-nvim", commit="d688f46"}
   use { "nvim-lua/plenary.nvim", commit="31807ee"} -- Useful lua functions used by lots of plugins
-  use { "windwp/nvim-autopairs", commit="0a18e10"} -- Autopairs, integrates with both cmp and treesitter
   use { "numToStr/Comment.nvim", tag="v0.6.1"}
   use { "akinsho/toggleterm.nvim", commit="62683d9"}
   use { "ahmedkhalf/project.nvim", commit="090bb11"}
   use { "akinsho/bufferline.nvim", tag="*"}
   use { "lewis6991/impatient.nvim", commit="b842e16"}
-  use { "kyazdani42/nvim-tree.lua", commit="81eb718"}
   use { "nvim-lualine/lualine.nvim", commit="9076378"}
-  use { "lukas-reineke/indent-blankline.nvim", tag="*"}
+  use { "windwp/nvim-autopairs", commit="0a18e10"} -- Autopairs, integrates with both cmp and treesitter
+  -- use { "lukas-reineke/indent-blankline.nvim", tag="*"} -- slow down cursor move
+
+  -- file browser tree
+  -- use{
+	--	"nvim-neo-tree/neo-tree.nvim", branch = "main",
+  --  requires = { "nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim" },
+  --}
+  use {
+    "kyazdani42/nvim-tree.lua", tag="*",
+    requires = {"kyazdani42/nvim-web-devicons"},
+  }
 
   -- Colorschemes
   use { "lunarvim/darkplus.nvim"}
@@ -61,6 +70,7 @@ return packer.startup(function(use)
   -- cmp plugins
   use { "hrsh7th/nvim-cmp", tag="v0.0.1"} -- The completion plugin
   use { "hrsh7th/cmp-path", commit="447c87c"}     -- path completions
+  use { "hrsh7th/cmp-cmdline"} -- cmdline completions
   use { "hrsh7th/cmp-buffer", commit="3022dbc"}   -- buffer completions
   use { "hrsh7th/cmp-nvim-lsp", commit="affe808"}
   use { "hrsh7th/cmp-nvim-lua", commit="d276254"}
@@ -71,11 +81,15 @@ return packer.startup(function(use)
   use { "rafamadriz/friendly-snippets"} -- a bunch of snippets to use
 
   -- LSP
-  use { "neovim/nvim-lspconfig", tag="*"} -- enable LSP
+  -- use { "RRethy/vim-illuminate"}
+  use { "neovim/nvim-lspconfig", tag="*"}       -- enable LSP
   use { "ray-x/lsp_signature.nvim", tag="*"}
-  use { "williamboman/nvim-lsp-installer", commit="ae913cb"} -- simple to use language server installer
+  use { "williamboman/mason.nvim"}              -- install lsp/dap/linters
+  use { "williamboman/mason-lspconfig.nvim"}
   use { "jose-elias-alvarez/null-ls.nvim", commit="9d1f8dc"} -- for formatters and linters
-  use { "RRethy/vim-illuminate", commit = "c82e6d04f27a41d7fdcad9be0bce5bb59fcb78e5"}
+  -- go
+  -- use("ray-x/go.nvim")
+  -- use("ray-x/guihua.lua")
 
   -- Telescope
   use { "nvim-telescope/telescope.nvim", tag = "0.1.0"}
@@ -84,6 +98,7 @@ return packer.startup(function(use)
   use {"nvim-treesitter/nvim-treesitter"}
 
   -- Git
+  use { "APZelos/blamer.nvim", tag = "*"}
   use { "lewis6991/gitsigns.nvim", tag = "*" }
 
   -- DAP

@@ -39,9 +39,9 @@ vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
   end,
 })
 
--- Highlight Yanked Text
-vim.api.nvim_create_autocmd({ "TextYankPost" }, {
-  callback = function()
-    vim.highlight.on_yank { higroup = "Visual", timeout = 200 }
-  end,
-})
+-- Highlight Yanked Text; out of range exception here when virtualedit enabled
+-- vim.api.nvim_create_autocmd({ "TextYankPost" }, {
+--   callback = function()
+--     vim.highlight.on_yank { higroup = "Visual", timeout = 200 }
+--   end,
+-- })
