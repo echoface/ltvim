@@ -55,14 +55,14 @@ return packer.startup(function(use)
   -- use { "lukas-reineke/indent-blankline.nvim", tag="*"} -- slow down cursor move
 
   -- file browser tree
-  -- use{
-	--	"nvim-neo-tree/neo-tree.nvim", branch = "main",
-  --  requires = { "nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim" },
-  --}
-  use {
-    "kyazdani42/nvim-tree.lua", tag="*",
-    requires = {"kyazdani42/nvim-web-devicons"},
+  use{
+    "nvim-neo-tree/neo-tree.nvim", tag = "*",
+    requires = { "nvim-lua/plenary.nvim", "kyazdani42/nvim-web-devicons", "MunifTanjim/nui.nvim" },
   }
+  --use {
+  --  "kyazdani42/nvim-tree.lua", tag="*",
+  --  requires = {"kyazdani42/nvim-web-devicons"},
+  --}
 
   -- Colorschemes
   use { "lunarvim/darkplus.nvim"}
@@ -74,11 +74,16 @@ return packer.startup(function(use)
   use { "hrsh7th/cmp-buffer", commit="3022dbc"}   -- buffer completions
   use { "hrsh7th/cmp-nvim-lsp", commit="affe808"}
   use { "hrsh7th/cmp-nvim-lua", commit="d276254"}
-  use { "saadparwaiz1/cmp_luasnip", commit="a9de941"} -- snippet completions
+  use { "onsails/lspkind-nvim"}
 
-  -- snippets
-  use { "L3MON4D3/LuaSnip"} --snippet engine
-  use { "rafamadriz/friendly-snippets"} -- a bunch of snippets to use
+  --snippet engine
+  -- use { "saadparwaiz1/cmp_luasnip",
+  --  requires = {"saadparwaiz1/cmp_luasnip", "L3MON4D3/LuaSnip", "rafamadriz/friendly-snippets"}
+  -- }
+  use {
+    "hrsh7th/cmp-vsnip",
+    requires = {"hrsh7th/vim-vsnip-integ", "hrsh7th/vim-vsnip", "rafamadriz/friendly-snippets"}
+  }
 
   -- LSP
   -- use { "RRethy/vim-illuminate"}
