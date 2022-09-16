@@ -7,15 +7,13 @@ local actions = require "telescope.actions"
 
 telescope.setup {
   defaults = {
-
     prompt_prefix = "> ",
     selection_caret = "< ",
     -- prompt_prefix = " ",
     -- selection_caret = " ",
     path_display = { "smart" },
     file_ignore_patterns = { ".git/", "node_modules" },
-    layout_config = { height = 0.95, width = 0.9, preview_width=0.6 },
-
+    -- layout_config = { height = 0.95, width = 0.9, preview_width=0.6 },
     mappings = {
       i = {
         ["<Down>"] = actions.cycle_history_next,
@@ -25,12 +23,29 @@ telescope.setup {
       },
     },
   },
+  extensions = {
+    file_browser = {
+      -- theme = "ivy",
+      -- disables netrw and use telescope-file-browser in its place
+      hijack_netrw = true,
+      mappings = {
+        ["i"] = {
+          -- your custom insert mode mappings
+        },
+        ["n"] = {
+          -- your custom normal mode mappings
+        },
+      },
+    },
+  },
 }
+require("telescope").load_extension("file_browser")
 
 -- Telescope
 local keymap = vim.keymap.set
 local opts = { noremap = true, silent = true }
-keymap("n", "<leader>ft", ":Telescope tags<CR>", opts)
+-- keymap("n", "<leader>ft", ":Telescope tags<CR>", opts)
+keymap("n", "<leader>ft", ":Telescope file_browser<CR>", opts)
 keymap("n", "<leader>fc", ":Telescope commands<CR>", opts)
 keymap("n", "<leader>fb", ":Telescope buffers<CR>", opts)
 keymap("n", "<leader>fp", ":Telescope projects<CR>", opts)

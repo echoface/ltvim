@@ -42,6 +42,7 @@ packer.init {
 return packer.startup(function(use)
   -- plugins here
   use { "wbthomason/packer.nvim", commit = "90b323b" } -- Have packer manage itself
+
   use { "moll/vim-bbye", tag="*"}
   use { "goolord/alpha-nvim", commit="d688f46"}
   use { "nvim-lua/plenary.nvim", commit="31807ee"} -- Useful lua functions used by lots of plugins
@@ -55,31 +56,26 @@ return packer.startup(function(use)
   -- use { "lukas-reineke/indent-blankline.nvim", tag="*"} -- slow down cursor move
 
   -- file browser tree
-  use{
-    "nvim-neo-tree/neo-tree.nvim", tag = "*",
-    requires = { "nvim-lua/plenary.nvim", "kyazdani42/nvim-web-devicons", "MunifTanjim/nui.nvim" },
-  }
-  --use {
-  --  "kyazdani42/nvim-tree.lua", tag="*",
-  --  requires = {"kyazdani42/nvim-web-devicons"},
+  --use{
+  --  "nvim-neo-tree/neo-tree.nvim", tag = "*",
+  --  requires = { "nvim-lua/plenary.nvim", "kyazdani42/nvim-web-devicons", "MunifTanjim/nui.nvim" },
   --}
+  use {
+    "kyazdani42/nvim-tree.lua", tag="*",
+    requires = {"kyazdani42/nvim-web-devicons"},
+  }
 
   -- Colorschemes
   use { "lunarvim/darkplus.nvim"}
 
   -- cmp plugins
   use { "hrsh7th/nvim-cmp", tag="v0.0.1"} -- The completion plugin
-  use { "hrsh7th/cmp-path", commit="447c87c"}     -- path completions
-  use { "hrsh7th/cmp-cmdline"} -- cmdline completions
-  use { "hrsh7th/cmp-buffer", commit="3022dbc"}   -- buffer completions
-  use { "hrsh7th/cmp-nvim-lsp", commit="affe808"}
-  use { "hrsh7th/cmp-nvim-lua", commit="d276254"}
-  use { "onsails/lspkind-nvim"}
+  use { "hrsh7th/cmp-path"}     -- path completions
+  use { "hrsh7th/cmp-cmdline"}  -- cmdline completions
+  use { "hrsh7th/cmp-buffer"}   -- buffer completions
+  use { "hrsh7th/cmp-nvim-lsp"}
+  use { "hrsh7th/cmp-nvim-lua"}
 
-  --snippet engine
-  -- use { "saadparwaiz1/cmp_luasnip",
-  --  requires = {"saadparwaiz1/cmp_luasnip", "L3MON4D3/LuaSnip", "rafamadriz/friendly-snippets"}
-  -- }
   use {
     "hrsh7th/cmp-vsnip",
     requires = {"hrsh7th/vim-vsnip-integ", "hrsh7th/vim-vsnip", "rafamadriz/friendly-snippets"}
@@ -98,6 +94,8 @@ return packer.startup(function(use)
 
   -- Telescope
   use { "nvim-telescope/telescope.nvim", tag = "0.1.0"}
+  use { "nvim-telescope/telescope-file-browser.nvim" }
+  use {'nvim-telescope/telescope-ui-select.nvim' }
 
   -- Treesitter
   use {"nvim-treesitter/nvim-treesitter"}
