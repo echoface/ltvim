@@ -8,7 +8,7 @@ require "user.telescope"
 require "user.treesitter"
 require "user.comment"
 require "user.gitsigns"
-require "user.nvim-tree"
+require "user.nvimtree"
 require "user.lualine"          -- slow down move speed,but acceptable
 require "user.autopairs"        -- slow down move speed,but acceptable
 require "user.bufferline"
