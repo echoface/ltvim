@@ -53,13 +53,7 @@ return packer.startup(function(use)
   use { "lewis6991/impatient.nvim", commit="b842e16"}
   use { "nvim-lualine/lualine.nvim", commit="9076378"}
   use { "windwp/nvim-autopairs", commit="0a18e10"} -- Autopairs, integrates with both cmp and treesitter
-  -- use { "lukas-reineke/indent-blankline.nvim", tag="*"} -- slow down cursor move
 
-  -- file browser tree
-  --use{
-  --  "nvim-neo-tree/neo-tree.nvim", tag = "*",
-  --  requires = { "nvim-lua/plenary.nvim", "kyazdani42/nvim-web-devicons", "MunifTanjim/nui.nvim" },
-  --}
   use {
     "kyazdani42/nvim-tree.lua", tag="*",
     requires = {"kyazdani42/nvim-web-devicons"},
@@ -94,7 +88,6 @@ return packer.startup(function(use)
 
   -- Telescope
   use { "nvim-telescope/telescope.nvim", tag = "0.1.0"}
-  use { "nvim-telescope/telescope-file-browser.nvim" }
   use {'nvim-telescope/telescope-ui-select.nvim' }
 
   -- Treesitter
