@@ -1,15 +1,21 @@
 " >>>>>>>>>>>>>>>>>>> config leaderF >>>>>>>>>>>>>>>>>>>>>>
+
+let g:Lf_ShortcutB = '<leader>fb'
+let g:Lf_ShortcutF = "<leader>ff"
+
 let g:Lf_HideHelp = 1
+let g:Lf_PreviewInPopup = 1
+let g:Lf_WindowPosition = 'popup'
 let g:Lf_WildIgnore = {
       \ 'dir': ['.svn','.git','.hg', '*build*', '.clangd', '.vscode', '*blade*'],
       \ 'file': ['*.sw?','~$*','*.bak','*.exe','*.o','*.so','*.py[co]']
       \}
+let g:Lf_CommandMap = {'<C-K>': ['<Up>'], '<C-J>': ['<Down>']}
 
-let g:Lf_ShortcutF = '<c-p>'
-let g:Lf_ShortcutB = '<leader>fb'
-noremap <leader>fr :LeaderfMru<CR>
-noremap <leader>fb :LeaderfBuffer<CR>
-noremap <leader>ff :LeaderfFunction<CR>
+noremap <leader>fb :<C-U><C-R>=printf("Leaderf buffer %s", "")<CR><CR>
+noremap <leader>fm :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
+noremap <leader>ft :<C-U><C-R>=printf("Leaderf bufTag %s", "")<CR><CR>
+noremap <leader>fl :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
 
 if executable("rg")
   noremap  <leader>tq :<C-U>Leaderf! rg --recall<CR>

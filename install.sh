@@ -1,13 +1,13 @@
 #!/bin/bash
 
 if [ $# -lt 1 ]; then
-  echo "usage:./install [ycm|coc|base|nvim]"
+  echo "usage:./install [ycm|coc|hg|base|nvim]"
   exit 1
 fi
 
 cd $(cd `dirname $0`; pwd)
 
-backupvim () {
+backupnvim () {
   dt=`date "+%Y%m%d-%H%M%S"`
   if [ -d "$HOME/.config/nvim" ]; then
     mv $HOME/.config/nvim $HOME/.config/nvim.${dt}
@@ -15,7 +15,10 @@ backupvim () {
   elif [ -f "$HOME/.config/nvim" ]; then
     rm $HOME/.config/nvim
   fi
+}
 
+backupvim() {
+  dt=`date "+%Y%m%d-%H%M%S"`
   if [ -d "$HOME/.vim" ]; then
     mv $HOME/.vim $HOME/.vim.bak.${dt}
     echo "backup $HOME/.vim to $HOME/.vim.bak.${dt}"
@@ -45,18 +48,25 @@ case $input in
 esac
 
 
-backupvim
 
 if [ "$1" == "coc" ]; then
+  backupvim
   ln -sf `pwd`/vim $HOME/.vim
-  ln -sf `pwd`/vimrc.coc $HOME/.vimrc
+  ln -sf `pwd`/vim/vimrc.coc $HOME/.vimrc
 elif [ "$1" == "ycm" ]; then
+  backupvim
   ln -sf `pwd`/vim $HOME/.vim
-  ln -sf `pwd`/vimrc.ycm $HOME/.vimrc
+  ln -sf `pwd`/vim/vimrc.ycm $HOME/.vimrc
 elif [ "$1" == "base" ]; then
+  backupvim
   ln -sf `pwd`/vim $HOME/.vim
-  ln -sf `pwd`/vimrc.base $HOME/.vimrc
+  ln -sf `pwd`/vim/vimrc.base $HOME/.vimrc
+elif [ "$1" == "hg" ]; then
+  backupvim
+  ln -sf `pwd`/vim $HOME/.vim
+  ln -sf `pwd`/vim/vimrc.hg $HOME/.vimrc
 elif [ "$1" == "nvim" ]; then
+  backupnvim
   ln -sf `pwd`/nvim $HOME/.config/nvim
 else
   echo "arg:$1 not supported"

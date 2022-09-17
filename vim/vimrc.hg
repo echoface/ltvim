@@ -8,7 +8,7 @@ source ~/.vim/user/plugin.vim
 
 " extension  plugin
 Plug 'octol/vim-cpp-enhanced-highlight'
-Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
+Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
 
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
