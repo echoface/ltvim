@@ -1,0 +1,38 @@
+" basic vim options config
+source ~/.vim/user/options.vim
+
+"""""""""""""""""""""""""""""Plug settings""""""""""""""""""""""""""
+call plug#begin('~/.vim/Plug/')
+" base plugin always needed
+source ~/.vim/user/plugin.vim
+
+" extension  plugin
+Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
+
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'prabirshrestha/asyncomplete-buffer.vim'
+
+Plug 'SirVer/ultisnips'
+Plug 'prabirshrestha/async.vim'
+Plug 'thomasfaingnaert/vim-lsp-snippets'
+Plug 'thomasfaingnaert/vim-lsp-ultisnips'
+call plug#end()
+""""""""""""""""""""""""""""""""" Plug END""""""""""""""""""""""""""
+
+source ~/.vim/user/lspcmp.vim
+source ~/.vim/user/leaderf.vim
+source ~/.vim/user/nerdtree.vim
+
+" >>>>>>>>>>>>>>>>>>>>> async run >>>>>>>>>>>>>>>>>>>>>>>>
+autocmd User AsyncRunStart call asyncrun#quickfix_toggle(8, 1)
+" <<<<<<<<<<<<<<<<<<<<<< async run end <<<<<<<<<<<<<<<<<<<<
+
+" >>>>>>>>>>>>>>>>>>>>>>> license >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+let g:licenses_authors_name = 'Huan.Gong <gonghuan.dev@gmail.com>'
+let g:licenses_default_commands = ['lgpl', 'gpl', 'mit', 'apache']
+" <<<<<<<<<<<<<<<<<<<<<< license end <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+

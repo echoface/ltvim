@@ -2,7 +2,8 @@ source $HOME/.vim/vimrc.base
 
 """""""""""""""""""""""""""""Plug settings""""""""""""""""""""""""""
 call plug#begin('~/.vim/Plug/')
-source $HOME/.vim/plugin.base
+source ~/.vim/user/plugin.vim
+
 Plug 'liuchengxu/vista.vim'
 Plug 'ycm-core/YouCompleteMe', {'do': './install.py --clangd-completer'}
 call plug#end()
