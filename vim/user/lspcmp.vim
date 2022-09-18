@@ -1,11 +1,12 @@
-
-nnoremap <leader>gh :LspHover<cr>
-nnoremap <leader>gd :LspDefinition<cr>
-nnoremap <leader>gr :LspReferences<cr>
-nnoremap <leader>gn :LspNextDiagnostic<cr>
-nnoremap <leader>gp :LspPreviousDiagnostic<cr>
-
-nnoremap <leader>rn :LspRename<cr>
+nnoremap K  :LspHover<cr>
+nnoremap gr :LspReferences<cr>
+nnoremap gd :LspDefinition<cr>
+nnoremap gD :LspDeclaration<cr>
+nnoremap gi :LspImplementation<cr>
+nnoremap rn :LspRename<cr>
+nnoremap ca :LspCodeAction<cr>
+nnoremap gn :LspNextDiagnostic<cr>
+nnoremap gp :LspPreviousDiagnostic<cr>
 
 " > default mappings inspect tab key, so here change another
 let g:UltiSnipsExpandTrigger='<c-s>'
@@ -14,12 +15,13 @@ let g:UltiSnipsExpandTrigger='<c-s>'
 "   g:UltiSnipsJumpForwardTrigger          <c-j>
 "   g:UltiSnipsJumpBackwardTrigger         <c-k>
 
-let g:lsp_signature_help_delay=500           " avoid signature help splash
-let g:lsp_diagnostics_float_cursor = 1       " open float window show diagnostics info
+let g:lsp_signature_help_delay = 300           " avoid signature help splash
+let g:lsp_diagnostics_echo_cursor = 1
+let g:lsp_diagnostics_float_cursor = 0       " open float window show diagnostics info
+let g:lsp_diagnostics_virtual_text_enabled = 0
 let g:lsp_diagnostics_signs_insert_mode_enabled=0 " disable signature signs when insert mode
 
 let g:asyncomplete_auto_popup = 1
-set completeopt=menu,menuone,noinsert,preview                     " noinsert, noselect
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
