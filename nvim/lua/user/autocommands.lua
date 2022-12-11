@@ -35,10 +35,3 @@ vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
     vim.cmd "set formatoptions-=cro"
   end,
 })
-
--- Highlight Yanked Text; out of range exception here when virtualedit enabled
--- vim.api.nvim_create_autocmd({ "TextYankPost" }, {
---   callback = function()
---     vim.highlight.on_yank { higroup = "Visual", timeout = 200 }
---   end,
--- })

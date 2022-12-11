@@ -15,14 +15,6 @@ if fn.empty(fn.glob(install_path)) > 0 then
   vim.cmd [[packadd packer.nvim]]
 end
 
--- Autocommand that reloads neovim whenever you save the plugins.lua file
-vim.cmd [[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost plugins.lua source <afile> | PackerSync
-  augroup end
-]]
-
 -- Use a protected call so we don't error out on first use
 local status_ok, packer = pcall(require, "packer")
 if not status_ok then
@@ -63,7 +55,7 @@ return packer.startup(function(use)
   use { "lunarvim/darkplus.nvim"}
 
   -- cmp plugins
-  use { "hrsh7th/nvim-cmp", tag="v0.0.1"} -- The completion plugin
+  use { "hrsh7th/nvim-cmp"} -- The completion plugin
   use { "hrsh7th/cmp-path"}     -- path completions
   use { "hrsh7th/cmp-cmdline"}  -- cmdline completions
   use { "hrsh7th/cmp-buffer"}   -- buffer completions
@@ -77,18 +69,18 @@ return packer.startup(function(use)
 
   -- LSP
   -- use { "RRethy/vim-illuminate"}
-  use { "neovim/nvim-lspconfig", tag="*"}       -- enable LSP
-  use { "ray-x/lsp_signature.nvim", tag="*"}
+  use { "neovim/nvim-lspconfig"}       -- enable LSP
+  use { "ray-x/lsp_signature.nvim"}
   use { "williamboman/mason.nvim"}              -- install lsp/dap/linters
   use { "williamboman/mason-lspconfig.nvim"}
-  use { "jose-elias-alvarez/null-ls.nvim", commit="9d1f8dc"} -- for formatters and linters
+  use { "jose-elias-alvarez/null-ls.nvim"} -- for formatters and linters
   -- go
   -- use("ray-x/go.nvim")
   -- use("ray-x/guihua.lua")
 
   -- Telescope
-  use { "nvim-telescope/telescope.nvim", tag = "0.1.0"}
-  use {'nvim-telescope/telescope-ui-select.nvim' }
+  use { "nvim-telescope/telescope.nvim"}
+  use { 'nvim-telescope/telescope-ui-select.nvim' }
 
   -- Treesitter
   use {"nvim-treesitter/nvim-treesitter"}

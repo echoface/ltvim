@@ -9,6 +9,7 @@ set noswapfile
 set nowritebackup
 set nocompatible
 set backspace=indent,eol,start
+set clipboard^=unnamed,unnamedplus
 
 set cmdheight=1
 set updatetime=300

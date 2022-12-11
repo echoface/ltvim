@@ -4,8 +4,12 @@ if not status_ok then
 end
 
 configs.setup({
-	ensure_installed = {"c","cpp", "lua", "python", "rust", "go", "typescript", "bash", "json"}, -- one of "all" or a list of languages
-	ignore_install = { "" }, -- List of parsers to ignore installing
+	ensure_installed = {
+        "c", "cpp", "lua", "python", "go",
+        "typescript", "bash", "json", "vim",
+        "help"
+    }, -- one of "all" or a list of languages
+	ignore_install = { "css" }, -- List of parsers to ignore installing
 	highlight = {
 		enable = true, -- false will disable the whole extension
 		disable = { "css" }, -- list of language that will be disabled

@@ -24,7 +24,11 @@ telescope.setup {
     },
   },
 }
-require("telescope").load_extension("ui-select")
+
+local status_ok, uiselector = pcall(require, "telescope-ui-select")
+if status_ok then
+  telescope.load_extension("ui-select")
+end
 
 -- Telescope
 local keymap = vim.keymap.set

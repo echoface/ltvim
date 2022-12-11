@@ -5,19 +5,16 @@ end
 
 toggleterm.setup({
 	size = 20,
+	direction = "tab",
 	open_mapping = [[<c-\>]],
 	hide_numbers = false,
 	shade_terminals = true,
 	shading_factor = 2,
-	start_in_insert = true,
+	start_in_insert = false,
 	insert_mappings = true,
 	persist_size = true,
-	direction = "float",
 	close_on_exit = false,
 	shell = vim.o.shell,
-	float_opts = {
-		border = "curved",
-	},
 })
 
 function _G.set_terminal_keymaps()
@@ -30,8 +27,7 @@ function _G.set_terminal_keymaps()
 
 end
 
-vim.keymap.set("n", "<leader>tt", ":ToggleTerm<CR>")
-vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
+vim.cmd [[autocmd! TermOpen term://* lua set_terminal_keymaps()]]
 
 local Terminal = require("toggleterm.terminal").Terminal
 local lazygit = Terminal:new({ cmd = "lazygit", hidden = true })
