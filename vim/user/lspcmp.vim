@@ -1,3 +1,21 @@
+" 这里将complete 与 lsp配置合并; 核心时配置补全引擎以及其补全时的数据来源
+"
+" 编辑时所有的complete操作由asynccomplete提供; 而asyncomplete背后的数据源:
+" 1. lsp: 由asyncomplete_lsp提供
+"         而asyncomplete_lsp 对接vim-lsp这个lsp框架
+"         具体的lsp下载、配置等则由vim-lsp-settings插件完成;无需任何关注
+" 2. snips: 由vsnip 提供
+"         这里由两种形式,
+"         一种是数据直接提供给asyncomplete: codesnips => asyncomplete
+"         另一种则是将snips作为lsp: codesnips => vim-lsp => asyncomplete
+
+
+command Rename  :LspRename
+command FixIt   :LspCodeAction
+command Format  :LspDocumentFormating
+autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+
+
 nnoremap K  :LspHover<cr>
 nnoremap gr :LspReferences<cr>
 nnoremap gd :LspDefinition<cr>
@@ -5,43 +23,32 @@ nnoremap gD :LspDeclaration<cr>
 nnoremap gi :LspImplementation<cr>
 nnoremap rn :LspRename<cr>
 nnoremap ca :LspCodeAction<cr>
-nnoremap gn :LspNextDiagnostic<cr>
+nnoremap ge :LspNextDiagnostic<cr>
 nnoremap gp :LspPreviousDiagnostic<cr>
+nnoremap fmt :LspDocumentFormating<cr>
 
-" > default mappings inspect tab key, so here change another
-let g:UltiSnipsExpandTrigger='<c-s>'
-"   g:UltiSnipsExpandTrigger               <tab>
-"   g:UltiSnipsListSnippets                <c-tab>
-"   g:UltiSnipsJumpForwardTrigger          <c-j>
-"   g:UltiSnipsJumpBackwardTrigger         <c-k>
+" commit complete content and close popup
+inoremap <expr> <CR>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+inoremap <expr> <TAB>   pumvisible() ? "\<C-n>" :
+  \ vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : "\<TAB>"
+"  \ vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : "\<TAB>" "
+"  这种会自动在能在能展开的情况下莫名其妙的填充snippet; 用起来不符合直觉,
+"  这种时候希望插入tab 空格
+"  \ asyncomplete#force_refresh() " may slow down
+
+inoremap <expr><S-TAB>
+  \ pumvisible() ? "\<C-p>" :
+  \ vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' :
+  \ "\<C-h>"
 
 let g:lsp_signature_help_delay = 300           " avoid signature help splash
 let g:lsp_diagnostics_echo_cursor = 1
-let g:lsp_diagnostics_float_cursor = 0       " open float window show diagnostics info
+let g:lsp_diagnostics_float_cursor = 1         " open float window show diagnostics info
 let g:lsp_diagnostics_virtual_text_enabled = 0
 let g:lsp_diagnostics_signs_insert_mode_enabled=0 " disable signature signs when insert mode
 
+" asyncomplete options config
 let g:asyncomplete_auto_popup = 1
-autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
-
-"function! s:check_back_space() abort
-"    let col = col('.') - 1
-"    return !col || getline('.')[col - 1]  =~ '\s'
-"endfunction
-"inoremap <silent><expr> <TAB>
-"  \ pumvisible() ? "\<C-n>" :
-"  \ UltiSnips#CanJumpForwards() ? UltiSnips#JumpForwards() :
-"  \ <SID>check_back_space() ? "\<TAB>" :
-"  \ asyncomplete#force_refresh()
-"
-"inoremap <expr><S-TAB>
-"  \ pumvisible() ? "\<C-p>" :
-"  \ UltiSnips#CanJumpBackwards() ? UltiSnips#JumpBackwards() :
-"  \ "\<C-h>"
 
 call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
     \ 'name': 'buffer',
@@ -51,4 +58,10 @@ call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options
     \ 'config': {
     \    'max_buffer_size': 5000000,
     \  },
+    \ }))
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
+    \ 'name': 'file',
+    \ 'allowlist': ['*'],
+    \ 'priority': 10,
+    \ 'completor': function('asyncomplete#sources#file#completor')
     \ }))

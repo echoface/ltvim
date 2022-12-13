@@ -21,6 +21,7 @@ set number
 set shortmess+=c
 set signcolumn=number             " no diagnostic
 set whichwrap+=<,>,[,]
+set completeopt="menuone,preview"
 
 set encoding=utf-8
 set fileformat=unix

@@ -25,8 +25,8 @@ telescope.setup {
   },
 }
 
-local status_ok, uiselector = pcall(require, "telescope-ui-select")
-if status_ok then
+local has_selector, _ = pcall(require, "telescope-ui-select")
+if has_selector then
   telescope.load_extension("ui-select")
 end
 
