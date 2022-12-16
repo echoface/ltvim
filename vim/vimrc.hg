@@ -1,5 +1,6 @@
 " basic vim options config
 source ~/.vim/user/options.vim
+source ~/.vim/user/keymaps.vim
 
 """""""""""""""""""""""""""""Plug settings""""""""""""""""""""""""""
 call plug#begin('~/.vim/Plug/')

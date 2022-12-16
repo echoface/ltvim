@@ -8,11 +8,11 @@ set nobackup
 set noswapfile
 set nowritebackup
 set nocompatible
+set updatetime=1000
 set backspace=indent,eol,start
 set clipboard^=unnamed,unnamedplus
 
 set cmdheight=1
-set updatetime=300
 set scrolloff=8                   " 光标移动到buffer的顶部和底部时保持3行距离
 set laststatus=2                  " 启动显示状态行(1),总是显示状态行(2)
 set smartindent                   " make indenting smarter again
@@ -43,18 +43,7 @@ filetype plugin indent on
 
 colorscheme molokai
 
-" base key mapping
-nnoremap ;  :
-let mapleader=','
-nnoremap <leader>w  <c-w>
-nnoremap <leader>tf @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
-
-inoremap <C-e> <C-o>$
-inoremap <C-a> <C-o>0
-inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
-inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
-
-nnoremap <S-q> :Bdelete!<CR>
+autocmd TerminalOpen * setlocal nonu
 
 autocmd BufNewFile,BufRead *.lua setlocal et ts=2 sw=2 sts=2
 autocmd BufNewFile,BufRead *.go setlocal noet ts=4 sw=4 sts=4

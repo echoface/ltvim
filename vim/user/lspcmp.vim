@@ -12,7 +12,7 @@
 
 command Rename  :LspRename
 command FixIt   :LspCodeAction
-command Format  :LspDocumentFormating
+command Format  :LspDocumentFormat
 command SignsHelp :LspSignatureHelp
 command SymbolList :LspDocumentSymbol
 command Diagnostics :LspDocumentDiagnostics
@@ -29,24 +29,24 @@ nnoremap ge :LspNextDiagnostic<cr>
 nnoremap gp :LspPreviousDiagnostic<cr>
 nnoremap fmt :LspDocumentFormating<cr>
 
-inoremap <expr> <CR>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+inoremap <expr> <CR> pumvisible() ? asyncomplete#close_popup() : "\<cr>"
 
-inoremap <expr> <TAB>   pumvisible() ? "\<C-n>" :
-  \ vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' :    
+inoremap <expr> <TAB> pumvisible() ? "\<C-n>" :
+  \ vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' :
   \ "\<TAB>"
 
 "  \ asyncomplete#force_refresh() " may slow down
 
-inoremap <expr><S-TAB>
-  \ pumvisible() ? "\<C-p>" :
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" :
   \ vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' :
   \ "\<C-h>"
 
-let g:lsp_signature_help_delay = 300           " avoid signature help splash
+let g:lsp_signature_help_delay = 1000           " avoid signature help splash
 let g:lsp_diagnostics_echo_cursor = 1
 let g:lsp_diagnostics_float_cursor = 1         " open float window show diagnostics info
 let g:lsp_diagnostics_virtual_text_enabled = 0
 let g:lsp_diagnostics_signs_insert_mode_enabled = 0 " disable signature signs when insert mode
+let g:lsp_diagnostics_highlights_insert_mode_enabled = 0
 
 call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
     \ 'name': 'buffer',
