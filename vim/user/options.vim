@@ -23,6 +23,7 @@ set signcolumn=number             " no diagnostic
 set whichwrap+=<,>,[,]
 set completeopt="menuone,preview"
 
+set nowrap
 set encoding=utf-8
 set fileformat=unix
 set termencoding=utf-8
@@ -40,7 +41,7 @@ set foldlevelstart=99         " 打开文件是默认不折叠代码
 syntax enable
 filetype plugin indent on
 
-colorscheme monokai
+colorscheme molokai
 
 " base key mapping
 nnoremap ;  :

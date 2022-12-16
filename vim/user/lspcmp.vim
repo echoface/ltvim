@@ -13,8 +13,10 @@
 command Rename  :LspRename
 command FixIt   :LspCodeAction
 command Format  :LspDocumentFormating
+command SignsHelp :LspSignatureHelp
+command SymbolList :LspDocumentSymbol
+command Diagnostics :LspDocumentDiagnostics
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-
 
 nnoremap K  :LspHover<cr>
 nnoremap gr :LspReferences<cr>
@@ -27,13 +29,12 @@ nnoremap ge :LspNextDiagnostic<cr>
 nnoremap gp :LspPreviousDiagnostic<cr>
 nnoremap fmt :LspDocumentFormating<cr>
 
-" commit complete content and close popup
 inoremap <expr> <CR>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+
 inoremap <expr> <TAB>   pumvisible() ? "\<C-n>" :
-  \ vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : "\<TAB>"
-"  \ vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : "\<TAB>" "
-"  这种会自动在能在能展开的情况下莫名其妙的填充snippet; 用起来不符合直觉,
-"  这种时候希望插入tab 空格
+  \ vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' :    
+  \ "\<TAB>"
+
 "  \ asyncomplete#force_refresh() " may slow down
 
 inoremap <expr><S-TAB>
@@ -45,10 +46,7 @@ let g:lsp_signature_help_delay = 300           " avoid signature help splash
 let g:lsp_diagnostics_echo_cursor = 1
 let g:lsp_diagnostics_float_cursor = 1         " open float window show diagnostics info
 let g:lsp_diagnostics_virtual_text_enabled = 0
-let g:lsp_diagnostics_signs_insert_mode_enabled=0 " disable signature signs when insert mode
-
-" asyncomplete options config
-let g:asyncomplete_auto_popup = 1
+let g:lsp_diagnostics_signs_insert_mode_enabled = 0 " disable signature signs when insert mode
 
 call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
     \ 'name': 'buffer',
