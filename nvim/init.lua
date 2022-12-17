@@ -19,3 +19,5 @@ require "user.impatient"
 -- require "user.dap"
 require "user.cmp"
 require "user.lsp"
+
+require "user.vimtest"

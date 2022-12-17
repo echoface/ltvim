@@ -7,13 +7,9 @@ local actions = require "telescope.actions"
 
 telescope.setup {
   defaults = {
-    prompt_prefix = "> ",
-    selection_caret = "< ",
-    -- prompt_prefix = " ",
-    -- selection_caret = " ",
     path_display = { "smart" },
-    file_ignore_patterns = { ".git/", "node_modules" },
-    -- layout_config = { height = 0.95, width = 0.9, preview_width=0.6 },
+    layout_strategy = "horizontal",
+    layout_config = { prompt_position="top", preview_width=0.6 },
     mappings = {
       i = {
         ["<Up>"] = actions.cycle_history_prev,
@@ -22,6 +18,7 @@ telescope.setup {
         ["<C-k>"] = actions.move_selection_previous,
       },
     },
+    file_ignore_patterns = { ".git/", "node_modules" },
   },
 }
 
@@ -29,6 +26,8 @@ local has_selector, _ = pcall(require, "telescope-ui-select")
 if has_selector then
   telescope.load_extension("ui-select")
 end
+telescope.load_extension("file_browser")
+
 
 -- Telescope
 local keymap = vim.keymap.set

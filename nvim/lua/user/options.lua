@@ -20,9 +20,11 @@ vim.opt.timeoutlen = 1000                       -- time to wait for a mapped seq
 vim.opt.undofile = true                         -- enable persistent undo
 vim.opt.updatetime = 300                        -- faster completion (4000ms default)
 vim.opt.writebackup = false                     -- if a file is being edited by another program (or was written to file while editing with another program), it is not allowed to be edited
+vim.opt.smarttab = true                         -- tab behavior
 vim.opt.expandtab = true                        -- convert tabs to spaces
-vim.opt.shiftwidth = 4                          -- the number of spaces inserted for each indentation
 vim.opt.tabstop = 4                             -- insert 4 spaces for a tab
+vim.opt.softtabstop = 4                         -- <tab> count number for eidting
+vim.opt.shiftwidth = 4                          -- the number of spaces inserted for each indentation
 vim.opt.cursorline = true                       -- highlight the current line
 vim.opt.number = true                           -- set numbered lines
 vim.opt.laststatus = 3
@@ -35,14 +37,13 @@ vim.opt.scrolloff = 8                           -- is one of my fav
 vim.opt.sidescrolloff = 8
 vim.opt.guifont = "monospace:h17"               -- the font used in graphical neovim applications
 vim.opt.fillchars.eob=" "
-vim.opt.shortmess:append "c"
+vim.opt.shortmess:append("cF")
 vim.opt.whichwrap:append("<,>,[,]")
 vim.opt.iskeyword:append("-")
 vim.opt.startofline = false                     -- don't jump to startofline for g,G,<C-jumpcmd>
 -- vim.opt.virtualedit = "all"                     -- keep curosr in fixed column
 
-vim.cmd [[autocmd BufNewFile,BufRead go setlocal noet ts=4 sw=4 sts=4]]
-vim.cmd [[autocmd BufNewFile,BufRead c,cpp setlocal et ts=2 sw=2 sts=2]]
--- back last edit position
-vim.cmd [[autocmd BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif]]
+-- za: foldtoggle   zo: fold open  zc: fold close
+vim.opt.foldmethod="syntax"         -- 设置语法折叠
+vim.opt.foldlevelstart = 99         -- don't fold any thing when open file
 

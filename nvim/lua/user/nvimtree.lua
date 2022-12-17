@@ -17,7 +17,6 @@ nvim_tree.setup({
     },
     view = {
         side = "left",
-        height = "100%",
         mappings = {
             list = {
                 { key = { "s" }, action = "vsplit" },

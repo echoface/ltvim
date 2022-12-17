@@ -80,6 +80,7 @@ return packer.startup(function(use)
     -- Telescope
     use { "nvim-telescope/telescope.nvim" }
     use { 'nvim-telescope/telescope-ui-select.nvim' }
+    use { "nvim-telescope/telescope-file-browser.nvim" }
 
     -- Treesitter
     use { "nvim-treesitter/nvim-treesitter" }
@@ -89,6 +90,7 @@ return packer.startup(function(use)
     use { "lewis6991/gitsigns.nvim", tag = "*" }
 
     -- DAP
+    use { "vim-test/vim-test"}
     -- use { "mfussenegger/nvim-dap", commit = "014ebd53612cfd42ac8c131e6cec7c194572f21d" }
     -- use { "rcarriga/nvim-dap-ui", commit = "d76d6594374fb54abf2d94d6a320f3fd6e9bb2f7" }
     -- use { "ravenxrz/DAPInstall.nvim", commit = "8798b4c36d33723e7bba6ed6e2c202f84bb300de" }

@@ -1,5 +1,6 @@
 " basic vim options config
 source ~/.vim/user/options.vim
+source ~/.vim/user/autocmd.vim
 source ~/.vim/user/keymaps.vim
 
 """""""""""""""""""""""""""""Plug settings""""""""""""""""""""""""""
@@ -24,12 +25,15 @@ Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
 Plug 'rafamadriz/friendly-snippets'
 
+Plug 'vim-test/vim-test'
+
 call plug#end()
 """"""""""""""""""""""""""""""""" Plug END""""""""""""""""""""""""""
 
 source ~/.vim/user/lspcmp.vim
 source ~/.vim/user/leaderf.vim
 source ~/.vim/user/nerdtree.vim
+source ~/.vim/user/vimtest.vim
 
 " >>>>>>>>>>>>>>>>>>>>> async run >>>>>>>>>>>>>>>>>>>>>>>>
 autocmd User AsyncRunStart call asyncrun#quickfix_toggle(8, 1)
