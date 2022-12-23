@@ -42,8 +42,7 @@ inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" :
   \ "\<C-h>"
 
 let g:lsp_signature_help_delay = 1000           " avoid signature help splash
-let g:lsp_diagnostics_echo_cursor = 1
-let g:lsp_diagnostics_float_cursor = 1         " open float window show diagnostics info
+let g:lsp_diagnostics_float_cursor = 1          " open float window show diagnostics info
 let g:lsp_diagnostics_virtual_text_enabled = 0
 let g:lsp_diagnostics_signs_insert_mode_enabled = 0 " disable signature signs when insert mode
 let g:lsp_diagnostics_highlights_insert_mode_enabled = 0

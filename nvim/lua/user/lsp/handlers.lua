@@ -51,16 +51,13 @@ local function lsp_keymaps(bufnr)
     keymap(bufnr, "n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
     keymap(bufnr, "n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
     keymap(bufnr, "n", "gs", "<cmd>lua vim.lsp.buf.document_symbol()<CR>", opts)
+    -- diagnostic
     keymap(bufnr, "n", "ge", "<cmd>lua vim.diagnostic.goto_next({buffer=0})<cr>", opts)
     -- lsp action instruction
     keymap(bufnr, "n", "rn", "<cmd>lua vim.lsp.buf.rename()<cr>", opts)
     keymap(bufnr, "n", "ac", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
     keymap(bufnr, "n", "fmt", "<cmd>lua vim.lsp.buf.format({async = true})<cr>", opts)
-    --keymap(bufnr, "n", "lt", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
-    --keymap(bufnr, "n", "ld", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
-    --keymap(bufnr, "n", "le", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
-    --keymap(bufnr, "n", "ldj", "<cmd>lua vim.diagnostic.goto_next({buffer=0})<cr>", opts)
-    --keymap(bufnr, "n", "ldk", "<cmd>lua vim.diagnostic.goto_prev({buffer=0})<cr>", opts)
+
     vim.cmd("command! Rename lua vim.lsp.buf.rename()<cr>")
     vim.cmd('command! Format lua vim.lsp.buf.format({async = true})<cr>')
     vim.cmd('command! FixIt  lua vim.lsp.buf.code_action()<cr>')
@@ -69,6 +66,8 @@ local function lsp_keymaps(bufnr)
     vim.cmd('command! Diagnostics lua vim.diagnostic.open_float()<cr>')
     vim.cmd('command! PrevDiagnostics lua vim.diagnostic.goto_prev({buffer=0})<cr>')
     vim.cmd('command! NextDiagnostics lua vim.diagnostic.goto_next({buffer=0})<cr>')
+
+    vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
 end
 
 M.on_attach = function(client, bufnr)

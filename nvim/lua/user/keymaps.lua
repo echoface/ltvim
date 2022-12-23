@@ -62,3 +62,4 @@ keymap("x", "<leader>/", '<ESC><CMD>lua require("Comment.api").toggle_linewise_o
 
 -- terminal
 keymap('t', '<esc>', [[<C-\><C-n>]], opts)
+
