@@ -20,13 +20,12 @@ noremap <leader>fc :<C-U><C-R>=printf("Leaderf command %s", "")<CR><CR>
 noremap <leader>fs :<C-U><C-R>=printf("Leaderf function %s", "")<CR><CR>
 
 if executable("rg")
-  noremap  <leader>tq :<C-U>Leaderf! rg --recall<CR>
+  noremap  <leader>tf :<C-U>Leaderf! rg --recall<CR>
   xnoremap <leader>fv :<C-U><C-R>=printf("Leaderf! rg -F -e %s ", leaderf#Rg#visual())<CR>
   noremap  <leader>fw :<C-U><C-R>=printf("Leaderf! rg -e %s ", expand("<cword>"))<CR>
   noremap  <leader>fwb :<C-U><C-R>=printf("Leaderf! rg -F --current-buffer -e %s ", expand("<cword>"))<CR>
 else
   set wildchar=<Tab> wildmenu wildmode=full
   nnoremap <leader>fw :AsyncRun grep -rwn <cword> . <CR>
-  nnoremap <leader>tq :call asyncrun#quickfix_toggle(8)<cr>
 endif
 " <<<<<<<<<<<<<<<<<<<<< end leaderF <<<<<<<<<<<<<<<<<<<<<<<

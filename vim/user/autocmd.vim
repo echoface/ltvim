@@ -20,3 +20,6 @@ endfunction
 " back the last edit position when open a file
 autocmd BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
 " >>>>>>>>>>>>>>>>>>>>> highlight end >>>>>>>>>>>>>>>>>>>>
+"
+" Use 'q' to quit from common plugins
+autocmd FileType help,man,qf,lir noremap <buffer>q :q<cr>

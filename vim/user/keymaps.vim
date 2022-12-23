@@ -7,7 +7,9 @@ inoremap jk  <ESC>
 inoremap jj  <ESC>
 
 nnoremap <leader>w  <c-w>
-" za: foldtoggle   zo: fold open  zc: fold close 
+" za: foldtoggle   zo: fold open  zc: fold close
+
+nnoremap <leader>tq :call asyncrun#quickfix_toggle(8)<cr>
 
 inoremap <C-e> <C-o>$
 inoremap <C-a> <C-o>0
@@ -18,4 +20,5 @@ nnoremap <silent><S-q> :bdelete!<CR>
 nnoremap <silent><S-l> :bnext<CR>
 nnoremap <silent><S-h> :bprevious<CR>
 
-tnoremap <silent><Esc><Esc> <C-\><C-N>
+tnoremap <silent><Esc> <C-\><C-N>
+
