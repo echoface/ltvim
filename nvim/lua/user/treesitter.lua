@@ -9,9 +9,9 @@ vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 configs.setup({
     ensure_installed = {
         "c", "cpp", "lua", "python", "go", "proto",
-        "bash", "json", "vim", "help", "markdown", "comment"
+        "bash", "json", "vim", "markdown", "comment"
     }, -- one of "all" or a list of languages
-    ignore_install = { "css" }, -- List of parsers to ignore installing
+    ignore_install = { "css", 'help' }, -- List of parsers to ignore installing
     highlight = {
         enable = true, -- false will disable the whole extension
         disable = { "css" }, -- list of language that will be disabled
