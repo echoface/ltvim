@@ -9,15 +9,12 @@ require("lsp_signature").setup({-- can also configure a border style, see readme
 })
 
 local lsp_servers = {
+  "lua_ls",
   "vimls",
   "jsonls",
-  "gopls",
   "bashls",
-  "clangd",
   "yamlls",
-  "dockerls",
-  "pyright",
-  "sumneko_lua",
+  "pyright"
 }
 
 ------ lsp installer ------

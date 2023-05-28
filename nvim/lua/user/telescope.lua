@@ -26,7 +26,6 @@ local has_selector, _ = pcall(require, "telescope-ui-select")
 if has_selector then
   telescope.load_extension("ui-select")
 end
-telescope.load_extension("file_browser")
 
 
 -- Telescope

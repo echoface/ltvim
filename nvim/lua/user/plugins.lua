@@ -33,7 +33,7 @@ packer.init {
 -- Install your plugins here
 return packer.startup(function(use)
     -- plugins here
-    use { "wbthomason/packer.nvim", commit = "90b323b" } -- Have packer manage itself
+    use { "wbthomason/packer.nvim"} -- Have packer manage itself
 
     use { "moll/vim-bbye" }
     use { "goolord/alpha-nvim" }
@@ -80,7 +80,6 @@ return packer.startup(function(use)
     -- Telescope
     use { "nvim-telescope/telescope.nvim" }
     use { 'nvim-telescope/telescope-ui-select.nvim' }
-    use { "nvim-telescope/telescope-file-browser.nvim" }
 
     -- Treesitter
     use { "nvim-treesitter/nvim-treesitter" }
