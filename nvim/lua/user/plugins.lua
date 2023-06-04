@@ -47,7 +47,8 @@ return packer.startup(function(use)
     use { "nvim-lualine/lualine.nvim" }
 
     use {
-        "kyazdani42/nvim-tree.lua", requires = { "kyazdani42/nvim-web-devicons" },
+        "kyazdani42/nvim-tree.lua",
+        requires = { "kyazdani42/nvim-web-devicons" },
     }
 
     -- Colorschemes
@@ -73,13 +74,19 @@ return packer.startup(function(use)
     use { "williamboman/mason.nvim" } -- install lsp/dap/linters
     use { "williamboman/mason-lspconfig.nvim" }
     use { "jose-elias-alvarez/null-ls.nvim" } -- for formatters and linters
+    use { "ntpeters/vim-better-whitespace" }
     -- go
     -- use("ray-x/go.nvim")
     -- use("ray-x/guihua.lua")
 
     -- Telescope
-    use { "nvim-telescope/telescope.nvim" }
-    use { 'nvim-telescope/telescope-ui-select.nvim' }
+    use { "nvim-telescope/telescope.nvim",
+      tag = '0.1.1',
+      requires = {
+        { 'nvim-lua/plenary.nvim' },
+        { 'nvim-telescope/telescope-ui-select.nvim' }
+      }
+    }
 
     -- Treesitter
     use { "nvim-treesitter/nvim-treesitter" }

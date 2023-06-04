@@ -5,7 +5,7 @@ end
 
 local dashboard = require "alpha.themes.dashboard"
 dashboard.section.header.val = {
-  [[                SuperHgO NeoVim               ]],
+  [[SuperHgO NeoVim]],
 }
 dashboard.section.buttons.val = {
   dashboard.button("f", " " .. " Find file", ":Telescope find_files <CR>"),

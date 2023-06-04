@@ -37,7 +37,17 @@ vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
 })
 
 -- vim.cmd [[autocmd! TermOpen term://* lua set_terminal_keymaps()]]
-vim.cmd [[autocmd TermOpen * setlocal nonu]]
+vim.api.nvim_create_autocmd({ "TermOpen" }, {
+  callback = function()
+    vim.cmd "set nonu"
+    vim.cmd "DisableWhitespace"
+  end,
+})
+
+--vim.g.better_whitespace_filetypes_blacklist={
+--    'diff', 'git', 'gitcommit', 'unite', 'qf',
+--    'help', 'markdown', 'fugitive', 'alpha'
+--}
 
 vim.cmd [[autocmd BufNewFile,BufRead *.go setlocal noet ts=4 sw=4 sts=4]]
 vim.cmd [[autocmd BufNewFile,BufRead c,cpp setlocal et ts=2 sw=2 sts=2]]
