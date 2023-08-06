@@ -45,6 +45,8 @@ return packer.startup(function(use)
     use { "akinsho/bufferline.nvim" }
     use { "lewis6991/impatient.nvim" }
     use { "nvim-lualine/lualine.nvim" }
+    -- use { "ggandor/lightspeed.nvim" }
+    use { "easymotion/vim-easymotion" }
 
     use {
         "kyazdani42/nvim-tree.lua",
@@ -61,7 +63,6 @@ return packer.startup(function(use)
     use { "hrsh7th/cmp-buffer" } -- buffer completions
     use { "hrsh7th/cmp-nvim-lsp" }
     use { "hrsh7th/cmp-nvim-lua" }
-
     use {
         "hrsh7th/cmp-vsnip",
         requires = { "hrsh7th/vim-vsnip-integ", "hrsh7th/vim-vsnip", "rafamadriz/friendly-snippets" }
@@ -81,7 +82,7 @@ return packer.startup(function(use)
 
     -- Telescope
     use { "nvim-telescope/telescope.nvim",
-      tag = '0.1.1',
+      tag = '0.1.2',
       requires = {
         { 'nvim-lua/plenary.nvim' },
         { 'nvim-telescope/telescope-ui-select.nvim' }
@@ -89,7 +90,7 @@ return packer.startup(function(use)
     }
 
     -- Treesitter
-    use { "nvim-treesitter/nvim-treesitter" }
+    use { "nvim-treesitter/nvim-treesitter", tag = "v0.9.0"}
 
     -- Git
     use { "APZelos/blamer.nvim", tag = "*" }
@@ -106,4 +107,5 @@ return packer.startup(function(use)
     if PACKER_BOOTSTRAP then
         require("packer").sync()
     end
+
 end)

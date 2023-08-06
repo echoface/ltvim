@@ -9,12 +9,14 @@ require("lsp_signature").setup({-- can also configure a border style, see readme
 })
 
 local lsp_servers = {
-  "lua_ls",
-  "vimls",
-  "jsonls",
-  "bashls",
-  "yamlls",
-  "pyright"
+    "gopls",
+    "clangd",
+    "lua_ls",
+    "vimls",
+    "jsonls",
+    "bashls",
+    "yamlls",
+    "pyright"
 }
 
 ------ lsp installer ------
@@ -22,21 +24,28 @@ local mason_ok, mason = pcall(require, "mason")
 if not mason_ok then
 	return
 end
-mason.setup()
-
-local mason_config_ok, mason_config = pcall(require, "mason-lspconfig")
+local mason_config_ok, mason_lspconfig = pcall(require, "mason-lspconfig")
 if not mason_config_ok then
 	return
 end
-
-mason_config.setup({
-	ensure_installed = lsp_servers,
-	automatic_installation = false,
-})
+mason.setup()
+mason_lspconfig.setup()
+mason_lspconfig.setup_handlers {
+    -- The first entry (without a key) will be the default handler
+    -- and will be called for each installed server that doesn't have
+    -- a dedicated handler.
+    function (server_name) -- default handler (optional)
+        require("lspconfig")[server_name].setup {}
+    end,
+    -- Next, you can provide a dedicated handler for specific servers.
+    -- For example, a handler override for the `rust_analyzer`:
+    ["rust_analyzer"] = function ()
+        require("rust-tools").setup {}
+    end
+}
 
 ------  setup lsp for lspconfig ------
 local lsphandler = require("user.lsp.handlers")
-
 for _, server in pairs(lsp_servers) do
 	local opts = {
 		on_attach = lsphandler.on_attach,
@@ -50,4 +59,3 @@ for _, server in pairs(lsp_servers) do
 end
 
 lsphandler.setup()
-
