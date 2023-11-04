@@ -25,7 +25,7 @@ backupvim() {
   elif [ -f "$HOME/.vim" ]; then
     rm $HOME/.vim
   fi
-  
+
   if [ -f "$HOME/.vimrc" ]; then
     mv $HOME/.vimrc $HOME/.vimrc.bak.${dt}
     echo "backup $HOME/.vimrc to $HOME/.vimrc.bak.${dt}"
@@ -74,6 +74,9 @@ else
 fi
 
 echo "finish install and enjoy ltvim now!!!"
+echo "1. please install npm ripgrep to ensure working"
+echo "   ripgrep: sudo apt install ripgrep"
+echo "   npm: wget https://raw.githubusercontent.com/tj/n/master/bin/n -O /usr/bin/n"
 echo "...............................BYE..."
 
 # fix error cuased by lc
