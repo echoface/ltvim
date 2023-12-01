@@ -9,6 +9,9 @@ cd $(cd `dirname $0`; pwd)
 
 backupnvim () {
   dt=`date "+%Y%m%d-%H%M%S"`
+  if [ ! -d "$HOME/.config" ]; then
+    mkdir -p $HOME/.config
+  fi
   if [ -d "$HOME/.config/nvim" ]; then
     mv $HOME/.config/nvim $HOME/.config/nvim.${dt}
     echo "backup $HOME/.config/nvim to $HOME/.config/nvim.${dt}"
