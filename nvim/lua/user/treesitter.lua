@@ -3,7 +3,7 @@ if not status_ok then
     return
 end
 
-vim.opt.foldmethod = "expr"                     -- 在treesitter 安装的情况下,使用treesitter的折叠 
+vim.opt.foldmethod = "expr"                     -- 在treesitter 安装的情况下,使用treesitter的折叠
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 
 configs.setup({

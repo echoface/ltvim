@@ -79,10 +79,11 @@ return packer.startup(function(use)
     -- go
     -- use("ray-x/go.nvim")
     -- use("ray-x/guihua.lua")
+    use { "folke/neodev.nvim" } -- dev for neovim or config
 
     -- Telescope
     use { "nvim-telescope/telescope.nvim",
-      tag = '0.1.2',
+      tag = '0.1.4',
       requires = {
         { 'nvim-lua/plenary.nvim' },
         { 'nvim-telescope/telescope-ui-select.nvim' }
@@ -90,7 +91,7 @@ return packer.startup(function(use)
     }
 
     -- Treesitter
-    use { "nvim-treesitter/nvim-treesitter", tag = "v0.9.0"}
+    use { "nvim-treesitter/nvim-treesitter", tag = "v0.9.1"}
 
     -- Git
     use { "APZelos/blamer.nvim", tag = "*" }

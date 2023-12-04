@@ -12,7 +12,7 @@ require "user.lualine"          -- slow down move speed,but acceptable
 require "user.autopairs"        -- slow down move speed,but acceptable
 require "user.bufferline"
 -- require "user.illuminate"    -- slow down move speed
--- require "user.toggleterm"    -- nothing bad built in 
+-- require "user.toggleterm"    -- nothing bad built in
 require "user.project"
 require "user.impatient"
 -- require "user.dap"

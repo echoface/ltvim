@@ -42,6 +42,10 @@ vim.opt.whichwrap:append("<,>,[,]")
 vim.opt.iskeyword:append("-")
 vim.opt.startofline = false                     -- don't jump to startofline for g,G,<C-jumpcmd>
 -- vim.opt.virtualedit = "all"                     -- keep curosr in fixed column
+-- disable netrw at the very start of your init.lua
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 
 -- za: foldtoggle   zo: fold open  zc: fold close
 vim.opt.foldmethod="syntax"         -- 设置语法折叠

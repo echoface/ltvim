@@ -44,6 +44,17 @@ mason_lspconfig.setup_handlers {
     end
 }
 
+-- setup lua_ls
+lspconfig.lua_ls.setup {
+    settings = {
+        Lua = {
+            diagnostics = {
+                disable = { "missing-fields", "incomplete-signature-doc" }
+            },
+        }
+    }
+}
+
 ------  setup lsp for lspconfig ------
 local lsphandler = require("user.lsp.handlers")
 for _, server in pairs(lsp_servers) do
@@ -59,3 +70,12 @@ for _, server in pairs(lsp_servers) do
 end
 
 lsphandler.setup()
+
+
+-- neodev
+local neodev_ok, neodev = pcall(require, "neodev")
+if neodev_ok then
+    neodev.setup({})
+end
+
+
