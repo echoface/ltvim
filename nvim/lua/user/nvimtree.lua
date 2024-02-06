@@ -13,8 +13,13 @@ vim.api.nvim_set_keymap("n", "tt", ":NvimTreeFindFileToggle<CR>", { noremap = tr
 
 local HEIGHT_RATIO = 0.8 -- You can change this
 local WIDTH_RATIO = 0.5  -- You can change this too
+local use_floating_window = false
 
-local function calcwindow_width()
+local function calcwindow_width(float)
+    if not float then
+        return 30
+    end
+
     return math.floor(vim.opt.columns:get() * WIDTH_RATIO)
 end
 
@@ -48,9 +53,10 @@ nvim_tree.setup({
         enable = true,
     },
     view = {
-        width = calcwindow_width,
+        side = "right",
+        width = calcwindow_width(use_floating_window),
         float = {
-            enable = true,
+            enable = use_floating_window,
             open_win_config = function()
                 local screen_w = vim.opt.columns:get()
                 local screen_h = vim.opt.lines:get() - vim.opt.cmdheight:get()

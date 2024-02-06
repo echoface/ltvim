@@ -21,3 +21,4 @@ require "user.lsp"
 
 require "user.vimtest"
 require "user.autocommands"
+require "user.easymotion"
