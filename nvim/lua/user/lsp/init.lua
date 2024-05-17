@@ -1,81 +1,47 @@
-local status_ok, lspconfig = pcall(require, "lspconfig")
-if not status_ok then
-  return
-end
+-- It's important that you set up the plugins in the following order:
+--
+-- mason.nvim
+-- mason-lspconfig.nvim
+-- Setup servers via lspconfig
+-- Pay extra attention to this if you lazy-load plugins, or somehow "chain" the loading of plugins via your plugin manager.
 
 require("user.lsp.null-ls")
-require("lsp_signature").setup({-- can also configure a border style, see readme for more detail
-  timer_interval = 1000,
+require("lsp_signature").setup({
+    timer_interval = 1000,
 })
-
-local lsp_servers = {
-    "gopls",
-    "clangd",
-    "lua_ls",
-    "vimls",
-    "jsonls",
-    "bashls",
-    "yamlls",
-    "pyright"
-}
-
------- lsp installer ------
-local mason_ok, mason = pcall(require, "mason")
-if not mason_ok then
-	return
-end
-local mason_config_ok, mason_lspconfig = pcall(require, "mason-lspconfig")
-if not mason_config_ok then
-	return
-end
-mason.setup()
-mason_lspconfig.setup()
-mason_lspconfig.setup_handlers {
-    -- The first entry (without a key) will be the default handler
-    -- and will be called for each installed server that doesn't have
-    -- a dedicated handler.
-    function (server_name) -- default handler (optional)
-        require("lspconfig")[server_name].setup {}
-    end,
-    -- Next, you can provide a dedicated handler for specific servers.
-    -- For example, a handler override for the `rust_analyzer`:
-    ["rust_analyzer"] = function ()
-        require("rust-tools").setup {}
-    end
-}
-
--- setup lua_ls
-lspconfig.lua_ls.setup {
-    settings = {
-        Lua = {
-            diagnostics = {
-                disable = { "missing-fields", "incomplete-signature-doc" }
-            },
-        }
-    }
-}
-
-------  setup lsp for lspconfig ------
-local lsphandler = require("user.lsp.handlers")
-for _, server in pairs(lsp_servers) do
-	local opts = {
-		on_attach = lsphandler.on_attach,
-		capabilities = lsphandler.capabilities,
-	}
-	local has_custom_opts, server_custom_opts = pcall(require, "user.lsp.settings." .. server)
-	if has_custom_opts then
-		opts = vim.tbl_deep_extend("force", opts, server_custom_opts)
-	end
-	lspconfig[server].setup(opts)
-end
-
-lsphandler.setup()
-
-
--- neodev
+-- IMPORTANT: make sure to setup neodev BEFORE lspconfig
 local neodev_ok, neodev = pcall(require, "neodev")
 if neodev_ok then
     neodev.setup({})
 end
 
 
+local mason = require("mason")
+local lspconfig = require("lspconfig")
+local mason_lspconfig = require("mason-lspconfig")
+
+mason.setup()
+mason_lspconfig.setup({
+    ensure_installed = { "lua_ls", "gopls", "vimls", "thriftls", "pyright", "jsonls", "clangd" },
+})
+
+-- user defined lsp handlers
+local lsphandler = require("user.lsp.handlers")
+lsphandler.setup()
+
+-- lspconfig setup (a automatic way powered by mason_lspconfig)
+-- more detail see `:h mason-lspconfig-automatic-server-setup`
+mason_lspconfig.setup_handlers {
+    function(server_name) -- default handler (optional)
+        local opts = {
+            on_attach = lsphandler.on_attach,
+            capabilities = lsphandler.capabilities,
+        }
+        local server_custom_opts_define = "user.lsp.settings." .. server_name
+        local has_custom_opts, server_custom_opts = pcall(require, server_custom_opts_define)
+        if has_custom_opts then
+            opts = vim.tbl_deep_extend("force", opts, server_custom_opts)
+        end
+        lspconfig[server_name].setup(opts)
+    end,
+}

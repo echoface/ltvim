@@ -33,7 +33,7 @@ packer.init {
 -- Install your plugins here
 return packer.startup(function(use)
     -- plugins here
-    use { "wbthomason/packer.nvim"} -- Have packer manage itself
+    use { "wbthomason/packer.nvim" } -- Have packer manage itself
 
     use { "moll/vim-bbye" }
     use { "goolord/alpha-nvim" }
@@ -57,50 +57,57 @@ return packer.startup(function(use)
     use { "lunarvim/darkplus.nvim" }
 
     -- cmp plugins
-    use { "hrsh7th/nvim-cmp" } -- The completion plugin
-    use { "hrsh7th/cmp-path" } -- path completions
-    use { "hrsh7th/cmp-cmdline" } -- cmdline completions
-    use { "hrsh7th/cmp-buffer" } -- buffer completions
-    use { "hrsh7th/cmp-nvim-lsp" }
-    use { "hrsh7th/cmp-nvim-lua" }
     use {
+        "hrsh7th/nvim-cmp",
+        "hrsh7th/cmp-path",
+        "hrsh7th/cmp-cmdline",
+        "hrsh7th/cmp-buffer",
+        "hrsh7th/cmp-nvim-lsp",
+        "hrsh7th/cmp-nvim-lua",
         "hrsh7th/cmp-vsnip",
         requires = { "hrsh7th/vim-vsnip-integ", "hrsh7th/vim-vsnip", "rafamadriz/friendly-snippets" }
     }
 
     -- LSP
     -- use { "RRethy/vim-illuminate"}
-    use { "neovim/nvim-lspconfig" } -- enable LSP
-    use { "ray-x/lsp_signature.nvim" }
-    use { "williamboman/mason.nvim" } -- install lsp/dap/linters
-    use { "williamboman/mason-lspconfig.nvim" }
+    use {
+        "neovim/nvim-lspconfig",
+        "ray-x/lsp_signature.nvim",
+        "williamboman/mason.nvim",
+        "williamboman/mason-lspconfig.nvim"
+    }
     use { "jose-elias-alvarez/null-ls.nvim" } -- for formatters and linters
     use { "ntpeters/vim-better-whitespace" }
-    -- go
-    -- use("ray-x/go.nvim")
-    -- use("ray-x/guihua.lua")
+
     use { "folke/neodev.nvim" } -- dev for neovim or config
 
     -- Telescope
     use { "nvim-telescope/telescope.nvim",
-      tag = '0.1.4',
-      requires = {
-        { 'nvim-lua/plenary.nvim' },
-        { 'nvim-telescope/telescope-ui-select.nvim' }
-      }
+        tag = '0.1.6',
+        requires = {
+            { 'nvim-lua/plenary.nvim' },
+            { 'nvim-telescope/telescope-ui-select.nvim' }
+        }
     }
 
     -- Treesitter
-    use { "nvim-treesitter/nvim-treesitter", tag = "v0.9.1"}
+    use { "nvim-treesitter/nvim-treesitter", tag = "v0.9.1" }
 
     -- Git
     use { "APZelos/blamer.nvim", tag = "*" }
     use { "lewis6991/gitsigns.nvim", tag = "*" }
 
-    -- DAP
-    use { "vim-test/vim-test"}
-    -- use { "mfussenegger/nvim-dap", commit = "014ebd53612cfd42ac8c131e6cec7c194572f21d" }
-    -- use { "rcarriga/nvim-dap-ui", commit = "d76d6594374fb54abf2d94d6a320f3fd6e9bb2f7" }
+    -- DAP test and debugging
+    use {
+        'crispgm/nvim-go',
+        requires = {
+            "nvim-lua/plenary.nvim",
+            "rcarriga/nvim-notify"
+        },
+    }
+    use { "vim-test/vim-test" }
+    -- use { "mfussenegger/nvim-dap" }
+    -- use { "rcarriga/nvim-dap-ui" }
     -- use { "ravenxrz/DAPInstall.nvim", commit = "8798b4c36d33723e7bba6ed6e2c202f84bb300de" }
 
     -- Automatically set up your configuration after cloning packer.nvim
@@ -108,5 +115,4 @@ return packer.startup(function(use)
     if PACKER_BOOTSTRAP then
         require("packer").sync()
     end
-
 end)

@@ -25,5 +25,5 @@ if [ -f "$HOME/.tmux.conf" ]; then
   mv $HOME/.tmux.conf $HOME/tmux.conf.bak.${timestamp}
 fi
 
-cp config/tmux.conf $HOME/.tmux.conf
+cp tmux/tmux.conf $HOME/.tmux.conf
 echo "done!, reload and have a try"
