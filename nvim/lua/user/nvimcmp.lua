@@ -1,7 +1,5 @@
 local cmp_status_ok, cmp = pcall(require, "cmp")
-if not cmp_status_ok then
-    return
-end
+if not cmp_status_ok then return end
 
 -- this function is only needed for vsnip
 local feedkey = function(key, mode)

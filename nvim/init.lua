@@ -16,7 +16,7 @@ require "user.bufferline"
 require "user.project"
 require "user.impatient"
 -- require "user.dap"
-require "user.cmp"
+require "user.nvimcmp"
 require "user.lsp"
 
 require "user.vimtest"

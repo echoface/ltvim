@@ -25,6 +25,10 @@ local function lsp_keymaps(bufnr)
     vim.cmd('command! PrevDiagnostics lua vim.diagnostic.goto_prev({buffer=0})<cr>')
     vim.cmd('command! NextDiagnostics lua vim.diagnostic.goto_next({buffer=0})<cr>')
 
+    -- golang
+    keymap(bufnr, "i", ",f", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
+    vim.cmd('command! GoFillStruct lua vim.lsp.buf.code_action()<cr>')
+
     vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
 end
 

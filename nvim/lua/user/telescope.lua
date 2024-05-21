@@ -1,13 +1,21 @@
 local status_ok, telescope = pcall(require, "telescope")
-if not status_ok then
-  return
-end
+if not status_ok then return end
 
 local actions = require "telescope.actions"
 
 telescope.setup {
     defaults = {
-        -- layout_strategy = "center", -- bottom_pane|horizontal|vertical|cursor|cneter
+        theme = "center",
+        layout_strategy = "horizontal", -- bottom_pane|horizontal|vertical|cursor|cneter
+        sorting_strategy = "ascending",
+        layout_config = {
+            width = 0.95,
+            height = 0.95,
+            horizontal = {
+                preview_width = 0.65,
+                prompt_position = "top",
+            },
+        },
         mappings = {
             i = {
                 ["<Up>"] = actions.cycle_history_prev,
@@ -19,15 +27,31 @@ telescope.setup {
         file_ignore_patterns = { ".git/", "node_modules" },
     },
     pickers = {
-        lsp_document_symbols = { symbol_width=48, },
-        lsp_workspace_symbols = { symbol_width=48, },
+        lsp_document_symbols = { symbol_width = 48, show_line = false, },
+        lsp_workspace_symbols = { symbol_width = 48, show_line = false, },
+    },
+    extensions = {
+        ["ui-select"] = {
+            require("telescope.themes").get_dropdown {}
+        },
+        file_browser = {
+            -- theme = "ivy",
+            -- disables netrw and use telescope-file-browser in its place
+            hijack_netrw = true,
+            -- mappings = {
+            --     ["i"] = {
+            --         -- your custom insert mode mappings
+            --     },
+            --     ["n"] = {
+            --         -- your custom normal mode mappings
+            --     },
+            -- },
+        },
     },
 }
 
-local has_selector, _ = pcall(require, "telescope-ui-select")
-if has_selector then
-  telescope.load_extension("ui-select")
-end
+telescope.load_extension("ui-select")
+telescope.load_extension("file_browser")
 
 -- Telescope
 local keymap = vim.keymap.set
@@ -43,4 +67,5 @@ keymap("n", "<leader>fe", ":Telescope diagnostics<CR>", opts)
 keymap("n", "<leader>fu", ":Telescope lsp_references<CR>", opts)
 keymap("n", "<leader>fd", ":Telescope lsp_definitions<CR>", opts)
 keymap("n", "<leader>fi", ":Telescope lsp_implementations<CR>", opts)
-keymap("n", "<leader>fs", ":Telescope lsp_document_symbols<CR>", opts)
+keymap("n", "<leader>fds", ":Telescope lsp_document_symbols<CR>", opts)
+keymap("n", "<leader>fws", ":Telescope lsp_workspace_symbols<CR>", opts)

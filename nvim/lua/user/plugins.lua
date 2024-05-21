@@ -39,54 +39,64 @@ return packer.startup(function(use)
     use { "goolord/alpha-nvim" }
     use { "nvim-lua/plenary.nvim" } -- Useful lua functions used by lots of plugins
     use { "windwp/nvim-autopairs" } -- Autopairs, integrates with both cmp and treesitter
+    -- Colorschemes
+    use { "lunarvim/darkplus.nvim" }
     use { "numToStr/Comment.nvim" }
     use { "akinsho/toggleterm.nvim" }
     use { "ahmedkhalf/project.nvim" }
     use { "akinsho/bufferline.nvim" }
     use { "lewis6991/impatient.nvim" }
     use { "nvim-lualine/lualine.nvim" }
-    -- use { "ggandor/lightspeed.nvim" }
     use { "easymotion/vim-easymotion" }
+    use { "ntpeters/vim-better-whitespace" }
 
     use {
         "kyazdani42/nvim-tree.lua",
-        requires = { "kyazdani42/nvim-web-devicons" },
+        requires = { "kyazdani42/nvim-web-devicons" }
     }
 
-    -- Colorschemes
-    use { "lunarvim/darkplus.nvim" }
-
     -- cmp plugins
+    use { "hrsh7th/nvim-cmp" }
+    use { "hrsh7th/cmp-path" }
+    use { "hrsh7th/cmp-cmdline" }
+    use { "hrsh7th/cmp-buffer" }
+    use { "hrsh7th/cmp-nvim-lsp" }
+    use { "hrsh7th/cmp-nvim-lua" }
     use {
-        "hrsh7th/nvim-cmp",
-        "hrsh7th/cmp-path",
-        "hrsh7th/cmp-cmdline",
-        "hrsh7th/cmp-buffer",
-        "hrsh7th/cmp-nvim-lsp",
-        "hrsh7th/cmp-nvim-lua",
         "hrsh7th/cmp-vsnip",
-        requires = { "hrsh7th/vim-vsnip-integ", "hrsh7th/vim-vsnip", "rafamadriz/friendly-snippets" }
+        requires = {
+            { "hrsh7th/vim-vsnip" },
+            { "hrsh7th/vim-vsnip-integ" },
+            { "rafamadriz/friendly-snippets" },
+        }
     }
 
     -- LSP
     -- use { "RRethy/vim-illuminate"}
-    use {
-        "neovim/nvim-lspconfig",
-        "ray-x/lsp_signature.nvim",
-        "williamboman/mason.nvim",
-        "williamboman/mason-lspconfig.nvim"
-    }
-    use { "jose-elias-alvarez/null-ls.nvim" } -- for formatters and linters
-    use { "ntpeters/vim-better-whitespace" }
+    use { "neovim/nvim-lspconfig" }
+    use { "williamboman/mason.nvim" }
+    use { "williamboman/mason-lspconfig.nvim" }
 
-    use { "folke/neodev.nvim" } -- dev for neovim or config
+    use { "folke/neodev.nvim" }               -- dev for neovim or config
+    use { "ray-x/lsp_signature.nvim" }        -- display func signatures
+    use { "jose-elias-alvarez/null-ls.nvim" } -- for formatters and linters
+
+    -- language plugin
+    use {
+        'crispgm/nvim-go',
+        requires = {
+            { "rcarriga/nvim-notify" },
+            { "nvim-lua/plenary.nvim" },
+        },
+    }
 
     -- Telescope
     use { "nvim-telescope/telescope.nvim",
-        tag = '0.1.6',
+        tag = "0.1.6",
         requires = {
-            { 'nvim-lua/plenary.nvim' },
-            { 'nvim-telescope/telescope-ui-select.nvim' }
+            { "nvim-lua/plenary.nvim" },
+            { "nvim-telescope/telescope-ui-select.nvim" },
+            { "nvim-telescope/telescope-file-browser.nvim" }
         }
     }
 
@@ -98,13 +108,6 @@ return packer.startup(function(use)
     use { "lewis6991/gitsigns.nvim", tag = "*" }
 
     -- DAP test and debugging
-    use {
-        'crispgm/nvim-go',
-        requires = {
-            "nvim-lua/plenary.nvim",
-            "rcarriga/nvim-notify"
-        },
-    }
     use { "vim-test/vim-test" }
     -- use { "mfussenegger/nvim-dap" }
     -- use { "rcarriga/nvim-dap-ui" }
