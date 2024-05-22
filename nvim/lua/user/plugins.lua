@@ -81,15 +81,6 @@ return packer.startup(function(use)
     use { "ray-x/lsp_signature.nvim" }        -- display func signatures
     use { "jose-elias-alvarez/null-ls.nvim" } -- for formatters and linters
 
-    -- language plugin
-    use {
-        'crispgm/nvim-go',
-        requires = {
-            { "rcarriga/nvim-notify" },
-            { "nvim-lua/plenary.nvim" },
-        },
-    }
-
     -- Telescope
     use { "nvim-telescope/telescope.nvim",
         tag = "0.1.6",
