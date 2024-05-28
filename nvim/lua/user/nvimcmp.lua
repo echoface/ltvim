@@ -5,11 +5,18 @@ if not cmp_status_ok then return end
 local feedkey = function(key, mode)
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
 end
+local has_words_before = function()
+    local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+    return col ~= 0 and
+        vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+end
+
 
 cmp.setup({
     snippet = {
         expand = function(args)
-            vim.fn["vsnip#anonymous"](args.body)
+            require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+            -- vim.fn["vsnip#anonymous"](args.body)     -- for vsnip users
         end,
     },
     completion = {
@@ -35,8 +42,12 @@ cmp.setup({
         ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
                 cmp.select_next_item()
-            elseif vim.fn["vsnip#jumpable"](1) == 1 then
-                feedkey("<Plug>(vsnip-jump-next)", "")
+            elseif require('luasnip').expand_or_jumpable() then
+                require('luasnip').expand_or_jump()
+            elseif has_words_before() then
+                cmp.complete()
+            -- elseif vim.fn["vsnip#jumpable"](1) == 1 then
+            --     feedkey("<Plug>(vsnip-jump-next)", "")
             else
                 fallback()
             end
@@ -44,19 +55,22 @@ cmp.setup({
         ["<S-Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
                 cmp.select_prev_item()
-            elseif vim.fn["vsnip#jumpable"](-1) == 1 then
-                feedkey("<Plug>(vsnip-jump-prev)", "")
+            elseif require('luasnip').jumpable(-1) then
+                require('luasnip').jump(-1)
+            -- elseif vim.fn["vsnip#jumpable"](-1) == 1 then
+            --     feedkey("<Plug>(vsnip-jump-prev)", "")
             else
                 fallback()
             end
         end, { "i", "s" }),
     }),
     sources = {
-        { name = "nvim_lsp"},
-        { name = "nvim_lua"},
-        { name = 'vsnip'},
-        { name = "path"},
-        { name = "buffer"},
+        { name = "nvim_lsp" },
+        { name = "nvim_lua" },
+        -- { name = 'vsnip' },      -- for vsnip
+        { name = 'luasnip' },
+        { name = "path" },
+        { name = "buffer" },
     },
     window = {
         completion = cmp.config.window.bordered(),
@@ -78,6 +92,17 @@ cmp.setup.cmdline(':', {
     sources = cmp.config.sources({
         { name = 'path' }
     }, {
-        { name = 'cmdline' }
+        {
+            name = 'cmdline',
+            option = {
+                ignore_cmds = { 'Man', '!' },
+            }
+        }
     })
 })
+
+require("luasnip").config.set_config {
+    history = true,
+    updateevents = "TextChanged,TextChangedI"
+}
+require("luasnip.loaders.from_vscode").load()

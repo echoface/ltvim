@@ -40,7 +40,14 @@ return packer.startup(function(use)
     use { "nvim-lua/plenary.nvim" } -- Useful lua functions used by lots of plugins
     use { "windwp/nvim-autopairs" } -- Autopairs, integrates with both cmp and treesitter
     -- Colorschemes
+    use { "dracula/vim" }
+    use { "ray-x/aurora" }
+    use { "folke/tokyonight.nvim" }
     use { "lunarvim/darkplus.nvim" }
+    use { "maxmx03/solarized.nvim" }
+    use { "UtkarshVerma/molokai.nvim" }
+
+
     use { "numToStr/Comment.nvim" }
     use { "akinsho/toggleterm.nvim" }
     use { "ahmedkhalf/project.nvim" }
@@ -70,6 +77,8 @@ return packer.startup(function(use)
             { "rafamadriz/friendly-snippets" },
         }
     }
+    use { 'L3MON4D3/LuaSnip' }
+    use { 'saadparwaiz1/cmp_luasnip' }
 
     -- LSP
     -- use { "RRethy/vim-illuminate"}
@@ -79,7 +88,7 @@ return packer.startup(function(use)
 
     use { "folke/neodev.nvim" }               -- dev for neovim or config
     use { "ray-x/lsp_signature.nvim" }        -- display func signatures
-    use { "jose-elias-alvarez/null-ls.nvim" } -- for formatters and linters
+    -- use { "jose-elias-alvarez/null-ls.nvim" } -- for formatters and linters
 
     -- Telescope
     use { "nvim-telescope/telescope.nvim",

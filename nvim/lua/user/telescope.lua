@@ -7,7 +7,7 @@ telescope.setup {
     defaults = {
         theme = "center",
         layout_strategy = "horizontal", -- bottom_pane|horizontal|vertical|cursor|cneter
-        sorting_strategy = "ascending",
+        -- sorting_strategy = "ascending",
         layout_config = {
             width = 0.95,
             height = 0.95,
@@ -35,8 +35,6 @@ telescope.setup {
             require("telescope.themes").get_dropdown {}
         },
         file_browser = {
-            -- theme = "ivy",
-            -- disables netrw and use telescope-file-browser in its place
             hijack_netrw = true,
             -- mappings = {
             --     ["i"] = {

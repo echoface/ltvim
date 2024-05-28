@@ -5,15 +5,9 @@
 -- Setup servers via lspconfig
 -- Pay extra attention to this if you lazy-load plugins, or somehow "chain" the loading of plugins via your plugin manager.
 
-require("user.lsp.null-ls")
-require("lsp_signature").setup({
-    timer_interval = 1000,
-})
--- IMPORTANT: make sure to setup neodev BEFORE lspconfig
-local neodev_ok, neodev = pcall(require, "neodev")
-if neodev_ok then
-    neodev.setup({})
-end
+-- require("user.lsp.null-ls")
+require("neodev").setup()
+require("lsp_signature").setup()
 
 
 local mason = require("mason")
@@ -27,7 +21,6 @@ mason_lspconfig.setup({
 
 -- user defined lsp handlers
 local lsphandler = require("user.lsp.handlers")
-lsphandler.setup()
 
 -- lspconfig setup (a automatic way powered by mason_lspconfig)
 -- more detail see `:h mason-lspconfig-automatic-server-setup`
