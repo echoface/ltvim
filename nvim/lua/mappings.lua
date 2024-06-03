@@ -1,10 +1,5 @@
--- Shorten function name
-local keymap = vim.keymap.set
--- Silent keymap option
-local opts = { silent = true }
+-- 插件无关的基础键mapping --
 
---Remap space as leader key
---vim.g.mapleader = " "
 vim.g.mapleader = ","
 
 -- Modes
@@ -14,6 +9,14 @@ vim.g.mapleader = ","
 --   visual_block_mode = "x",
 --   term_mode = "t",
 --   command_mode = "c",
+
+-- Silent keymap option
+local opts = { noremap = true, silent = true }
+
+-- Shorten function name
+local keymap = vim.keymap.set
+
+keymap("n", "ge", "<cmd>lua vim.diagnostic.goto_next({buffer=0})<cr>", opts)
 
 -- Normal --
 -- Better window navigation
@@ -28,10 +31,10 @@ keymap("n", "<leader>wk", "<C-w>k", opts)
 keymap("n", "<leader>wl", "<C-w>l", opts)
 
 -- Resize with arrows
-keymap("n", "<C-Up>", ":resize -2<CR>", opts)
-keymap("n", "<C-Down>", ":resize +2<CR>", opts)
-keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
-keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
+keymap("n", "+", ":res +5<CR>", opts)
+keymap("n", "_", ":res -5<CR>", opts)
+keymap("n", "(", ":vertical resize -2<CR>", opts)
+keymap("n", ")", ":vertical resize +2<CR>", opts)
 
 -- Navigate buffers
 keymap("n", "<S-l>", ":bnext<CR>", opts)
@@ -47,6 +50,7 @@ keymap("v", "p", '"_dP', opts)
 -- Press jk fast to enter
 keymap("i", "jk", "<ESC>", opts)
 keymap("i", "jj", "<ESC>", opts)
+
 
 -- Visual --
 -- Stay in indent mode

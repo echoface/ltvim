@@ -1,5 +1,4 @@
 # A out-of-box vim toolkit bundle
-
 在Language server变得像现在这样成熟之前, 一直配置使用YoucompleteMe作为主力插件使用, 不过随着
 LanguageServer的崛起, NeoVim、vim8的发展, 开始了一些变化, YouCompleteMe的作者也在积极的做lsp
 的整合,鉴于自己的使用习惯与对环境setup的要求, 目前配置了三套兼容且方便的配置

@@ -39,14 +39,16 @@ return packer.startup(function(use)
     use { "goolord/alpha-nvim" }
     use { "nvim-lua/plenary.nvim" } -- Useful lua functions used by lots of plugins
     use { "windwp/nvim-autopairs" } -- Autopairs, integrates with both cmp and treesitter
+    use { "rcarriga/nvim-notify" }
     -- Colorschemes
-    use { "dracula/vim" }
-    use { "ray-x/aurora" }
-    use { "folke/tokyonight.nvim" }
-    use { "lunarvim/darkplus.nvim" }
-    use { "maxmx03/solarized.nvim" }
-    use { "UtkarshVerma/molokai.nvim" }
-
+    -- use { "dracula/vim" }
+    -- use { "navarasu/onedark.nvim"}
+    -- use { "folke/tokyonight.nvim" }
+    -- use { "lunarvim/darkplus.nvim" }
+    -- use { "UtkarshVerma/molokai.nvim" }
+    -- use { "sainnhe/sonokai"}
+    -- use { "ofirgall/ofirkai.nvim" }
+    use { "tanvirtin/monokai.nvim" }
 
     use { "numToStr/Comment.nvim" }
     use { "akinsho/toggleterm.nvim" }
@@ -77,8 +79,8 @@ return packer.startup(function(use)
             { "rafamadriz/friendly-snippets" },
         }
     }
-    use { 'L3MON4D3/LuaSnip' }
-    use { 'saadparwaiz1/cmp_luasnip' }
+    -- use { 'L3MON4D3/LuaSnip' }
+    -- use { 'saadparwaiz1/cmp_luasnip' }
 
     -- LSP
     -- use { "RRethy/vim-illuminate"}
@@ -86,8 +88,8 @@ return packer.startup(function(use)
     use { "williamboman/mason.nvim" }
     use { "williamboman/mason-lspconfig.nvim" }
 
-    use { "folke/neodev.nvim" }               -- dev for neovim or config
-    use { "ray-x/lsp_signature.nvim" }        -- display func signatures
+    use { "folke/neodev.nvim" }        -- dev for neovim or config
+    use { "ray-x/lsp_signature.nvim" } -- display func signatures
     -- use { "jose-elias-alvarez/null-ls.nvim" } -- for formatters and linters
 
     -- Telescope

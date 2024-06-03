@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ $# -lt 1 ]; then
-  echo "usage:./install [ycm|coc|hg|base|nvim]"
+  echo "usage:./install [ycm|coc|hg|base|nvim|nlazy]"
   exit 1
 fi
 
