@@ -1,9 +1,8 @@
 return {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
-    dependencies = { "nvim-tree/nvim-web-devicons", "catppuccin/nvim" },
+    dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
-        -- require("lualine").setup({options = {theme = "catppuccin"}})
         local hide_in_width = function()
             return vim.fn.winwidth(0) > 80
         end

@@ -1,4 +1,15 @@
 local function setup_alpha()
+    -- Remove statusline and tabline when in Alpha
+    vim.api.nvim_create_autocmd({ "User" }, {
+        pattern = { "AlphaReady" },
+        callback = function()
+            vim.cmd [[
+                set laststatus=0 | autocmd BufUnload <buffer> set laststatus=3
+                set showtabline=0 | autocmd BufUnload <buffer> set showtabline=2
+            ]]
+        end,
+    })
+
     local dashboard = require "alpha.themes.dashboard"
     dashboard.section.header.val = {
         [[SuperHgO NeoVim]],
@@ -25,6 +36,5 @@ end
 
 return {
     "goolord/alpha-nvim",
-    lazy = false,
     config = setup_alpha
 }

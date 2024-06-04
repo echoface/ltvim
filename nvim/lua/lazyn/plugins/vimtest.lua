@@ -10,6 +10,7 @@ end
 
 return {
     "vim-test/vim-test",
+    event = "InsertEnter",
     cmd = {"TestNearest", "TestFile"},
     config = vimtest_setup,
 }

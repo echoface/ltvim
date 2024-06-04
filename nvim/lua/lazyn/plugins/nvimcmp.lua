@@ -22,8 +22,7 @@ end
 -- smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
 
 local function nvimcmp_setup()
-    -- vim.opt.completeopt = { "menu", "menuone", "noselect" }
-    vim.notify("nvimcmp-setup gonghuan")
+    vim.opt.completeopt = { "menu", "menuone", "noselect" }
     local cmp = require("cmp")
     cmp.setup({
         snippet = {
@@ -106,7 +105,10 @@ end
 
 return {
     "hrsh7th/nvim-cmp",
+    -- event = "VeryLazy",
     event = "InsertEnter",
+    -- event = "BufEnter",
+    -- event = 'BufReadPre',
     dependencies = {
         { "onsails/lspkind-nvim" }, -- lspkind (VS pictograms)
         { "hrsh7th/cmp-path" },

@@ -20,14 +20,14 @@ require("lazy").setup({
         { "ntpeters/vim-better-whitespace", ft = {"c","cpp"}},
         {
             "rcarriga/nvim-notify",
-            priority = 1000,
+            priority = 999,
             config = function()
                 vim.notify = require("notify")
             end
         },
         {
             "tanvirtin/monokai.nvim",
-            priority = 1000,
+            priority = 999,
             config = function()
                 vim.cmd.colorscheme('monokai')
             end
@@ -43,29 +43,7 @@ require("lazy").setup({
             end
         },
     },
-    defaults = {
-        lazy = false,
-        -- It's recommended to leave version=false for now, since a lot the plugin that support versioning,
-        -- have outdated releases, which may break your Neovim install.
-        version = false, -- always use the latest git commit
-        -- version = "*", -- try installing the latest stable version for plugins that support semver
-    },
+    ui = {border = "rounded"},
     checker = { enabled = false },          -- automatically check for plugin updates
-    change_detection = { enabled = false }, -- disable check for config file changes
-    install = { colorscheme = { "monokai" } },
-    performance = {
-        rtp = {
-            -- disable some rtp plugins
-            disabled_plugins = {
-                "gzip",
-                -- "matchit",
-                -- "matchparen",
-                -- "netrwPlugin",
-                "tarPlugin",
-                "tohtml",
-                "tutor",
-                "zipPlugin",
-            },
-        },
-    },
+    change_detection = { enabled = true }, -- disable check for config file changes
 })

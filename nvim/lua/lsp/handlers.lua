@@ -51,7 +51,6 @@ M.on_attach = function(client, bufnr)
     local user_option_path = "lsp.settings." .. client.name
     local hit, user_option = pcall(require, user_option_path)
     if hit and user_option.customized_keymapping then
-        -- vim.api.nvim_notify("use customized_keymapping for "..client.name, 5, {})
         user_option.customized_keymapping(client, bufnr)
     end
 
