@@ -48,10 +48,10 @@ M.on_attach = function(client, bufnr)
     keymap(bufnr, "n", "ca", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
     keymap(bufnr, "n", "fmt", "<cmd>lua vim.lsp.buf.format({async = true})<cr>", opts)
 
-    local user_option_path = "user.lsp.settings." .. client.name
+    local user_option_path = "lsp.settings." .. client.name
     local hit, user_option = pcall(require, user_option_path)
     if hit and user_option.customized_keymapping then
-        vim.api.nvim_notify("use customized_keymapping for "..client.name, 5, {})
+        -- vim.api.nvim_notify("use customized_keymapping for "..client.name, 5, {})
         user_option.customized_keymapping(client, bufnr)
     end
 

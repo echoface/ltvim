@@ -27,7 +27,7 @@ mason_lspconfig.setup_handlers {
             capabilities = lsphandler.capabilities,
         }
 
-        local user_option_path = "user.lsp.settings." .. server_name
+        local user_option_path = "lsp.settings." .. server_name
         local hit, lsp_extra = pcall(require, user_option_path)
         if hit and lsp_extra.setup_opts then
             opts = vim.tbl_deep_extend("force", opts, lsp_extra.setup_opts)

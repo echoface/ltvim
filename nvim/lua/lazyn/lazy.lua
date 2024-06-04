@@ -20,6 +20,7 @@ require("lazy").setup({
         { "ntpeters/vim-better-whitespace", ft = {"c","cpp"}},
         {
             "rcarriga/nvim-notify",
+            priority = 1000,
             config = function()
                 vim.notify = require("notify")
             end

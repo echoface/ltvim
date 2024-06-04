@@ -22,8 +22,8 @@ end
 -- smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
 
 local function nvimcmp_setup()
-	vim.opt.completeopt = { "menu", "menuone", "noselect" }
-
+    -- vim.opt.completeopt = { "menu", "menuone", "noselect" }
+    vim.notify("nvimcmp-setup gonghuan")
     local cmp = require("cmp")
     cmp.setup({
         snippet = {
@@ -85,7 +85,7 @@ local function nvimcmp_setup()
     })
 
     -- `/` cmdline setup.
-    cmp.setup.cmdline('/', {
+    cmp.setup.cmdline({ '/', '?' }, {
         mapping = cmp.mapping.preset.cmdline(),
         sources = {
             { name = 'buffer' }
@@ -98,23 +98,10 @@ local function nvimcmp_setup()
         sources = cmp.config.sources({
             { name = 'path' }
         }, {
-            {
-                name = 'cmdline',
-                option = {
-                    ignore_cmds = { 'Man', '!' },
-                }
-            }
-        })
+            { name = 'cmdline' }
+        }),
+        matching = { disallow_symbol_nonprefix_matching = false }
     })
-
-    -- if vim.o.ft == 'clap_input' and vim.o.ft == 'guihua' and vim.o.ft == 'guihua_rust' then
-    --     cmp.setup.buffer { completion = {enable = false} }
-    -- end
-    -- require("luasnip").config.set_config {
-    --     history = true,
-    --     updateevents = "TextChanged,TextChangedI"
-    -- }
-    -- require("luasnip.loaders.from_vscode").load()
 end
 
 return {
@@ -145,6 +132,6 @@ return {
             --    end
             --}, {"saadparwaiz1/cmp_luasnip", enabled = true}
         },
-        config = nvimcmp_setup,
-    }
+    },
+    config = nvimcmp_setup,
 }
