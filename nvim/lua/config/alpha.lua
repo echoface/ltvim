@@ -27,15 +27,11 @@ dashboard.section.buttons.val = {
   dashboard.button("c", " " .. " Config", ":e ~/.config/nvim/init.lua <CR>"),
   dashboard.button("q", " " .. " Quit", ":qa<CR>"),
 }
-local function footer()
-  return "echoface.cn"
-end
 
-dashboard.section.footer.val = footer()
-
+dashboard.opts.opts.noautocmd = true
+dashboard.section.footer.val = "echoface.cn"
 dashboard.section.footer.opts.hl = "Type"
 dashboard.section.header.opts.hl = "Include"
 dashboard.section.buttons.opts.hl = "Keyword"
 
-dashboard.opts.opts.noautocmd = true
 alpha.setup(dashboard.opts)

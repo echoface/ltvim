@@ -5,7 +5,7 @@
 -- Setup servers via lspconfig
 -- Pay extra attention to this if you lazy-load plugins, or somehow "chain" the loading of plugins via your plugin manager.
 
-require("lsp.null-ls")
+require("config.lsp.null-ls")
 require("neodev").setup()
 require("lsp_signature").setup()
 
@@ -17,7 +17,7 @@ mason_lspconfig.setup()
 
 local lspconfig = require("lspconfig")
 -- user defined lsp handlers
-local lsphandler = require("lsp.handlers")
+local lsphandler = require("config.lsp.handlers")
 -- lspconfig setup (a automatic way powered by mason_lspconfig)
 -- more detail see `:h mason-lspconfig-automatic-server-setup`
 mason_lspconfig.setup_handlers {
@@ -27,7 +27,7 @@ mason_lspconfig.setup_handlers {
             capabilities = lsphandler.capabilities,
         }
 
-        local user_option_path = "lsp.settings." .. server_name
+        local user_option_path = "config.lsp.settings." .. server_name
         local hit, lsp_extra = pcall(require, user_option_path)
         if hit and lsp_extra.setup_opts then
             opts = vim.tbl_deep_extend("force", opts, lsp_extra.setup_opts)

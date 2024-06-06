@@ -9,6 +9,6 @@ return {
         { "williamboman/mason-lspconfig.nvim" },
     },
     config = function()
-        require("lsp")
+        require("config.lsp")
     end -- run lsp/init.lu
 }

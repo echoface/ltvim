@@ -27,7 +27,7 @@ M.capabilities = vim.lsp.protocol.make_client_capabilities()
 if nvim_lsp_ok then
     M.capabilities = cmp_nvim_lsp.default_capabilities(M.capabilities)
 end
-M.capabilities.textDocument.completion.completionItem.snippetSupport = true
+-- M.capabilities.textDocument.completion.completionItem.snippetSupport = true 
 M.capabilities.textDocument.completion.completionItem.resolveSupport = {
     properties = { "documentation", "detail", "additionalTextEdits" },
 }
@@ -48,7 +48,7 @@ M.on_attach = function(client, bufnr)
     keymap(bufnr, "n", "ca", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
     keymap(bufnr, "n", "fmt", "<cmd>lua vim.lsp.buf.format({async = true})<cr>", opts)
 
-    local user_option_path = "lsp.settings." .. client.name
+    local user_option_path = "config.lsp.settings." .. client.name
     local hit, user_option = pcall(require, user_option_path)
     if hit and user_option.customized_keymapping then
         user_option.customized_keymapping(client, bufnr)
