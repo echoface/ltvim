@@ -15,9 +15,9 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 
 vim.cmd("command! Rename lua vim.lsp.buf.rename()<cr>")
 vim.cmd('command! Format lua vim.lsp.buf.format({async = true})<cr>')
-vim.cmd('command! CodeAction lua vim.lsp.buf.code_action()<cr>')
-vim.cmd('command! SignsHelp lua vim.lsp.buf.signature_help()<cr>')
-vim.cmd('command! ListSymbols lua vim.lsp.buf.document_symbol()<cr>')
+vim.cmd('command! LspCodeAction lua vim.lsp.buf.code_action()<cr>')
+vim.cmd('command! LspSignsHelp lua vim.lsp.buf.signature_help()<cr>')
+vim.cmd('command! LspDocSymbols lua vim.lsp.buf.document_symbol()<cr>')
 
 
 local M = {}

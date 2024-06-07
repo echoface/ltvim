@@ -1,74 +1,78 @@
 --    README       ---
 --  插件无关的设置 ---
 
--- filetype related
 -- Use 'q' to quit from common plugins
 vim.api.nvim_create_autocmd({ "FileType" }, {
-  pattern = { "qf", "help", "man", "lspinfo", "spectre_panel", "lir" },
-  callback = function()
-    vim.cmd [[
+    pattern = {
+        "qf", "help", "man", "lspinfo", "notify", "lir",
+        "spectre_panel", "TelescopePrompt", "NvimTree"
+    },
+    callback = function()
+        vim.cmd [[
       nnoremap <silent> <buffer> q :close<CR>
       set nobuflisted
     ]]
-  end,
+    end,
 })
+
+-- close quickfix menu after selecting choice
+vim.api.nvim_create_autocmd({ "FileType" }, {
+    pattern = { "qf", "quickfix" },
+    command = [[nnoremap <buffer> <CR> <CR>:cclose<CR>]]
+})
+
 -- Set wrap and spell in markdown and gitcommit
 vim.api.nvim_create_autocmd({ "FileType" }, {
-  pattern = { "gitcommit", "markdown" },
-  callback = function()
-    vim.opt_local.wrap = true
-    vim.opt_local.spell = true
-  end,
+    pattern = { "gitcommit", "markdown" },
+    callback = function()
+        vim.opt_local.wrap = true
+        vim.opt_local.spell = true
+    end,
 })
 vim.api.nvim_create_autocmd("FileType", {
-    pattern = {"gitcommit"},
+    pattern = { "gitcommit" },
     callback = function()
-        vim.api.nvim_set_option_value("textwidth", 72, {scope = "local"})
+        vim.api.nvim_set_option_value("textwidth", 72, { scope = "local" })
     end
 })
 
 vim.api.nvim_create_autocmd("FileType", {
-    pattern = {"markdown"},
+    pattern = { "markdown" },
     callback = function()
-        vim.api.nvim_set_option_value("textwidth", 0, {scope = "local"})
-        vim.api.nvim_set_option_value("wrapmargin", 0, {scope = "local"})
-        vim.api.nvim_set_option_value("linebreak", true, {scope = "local"})
+        vim.api.nvim_set_option_value("textwidth", 0, { scope = "local" })
+        vim.api.nvim_set_option_value("wrapmargin", 0, { scope = "local" })
+        vim.api.nvim_set_option_value("linebreak", true, { scope = "local" })
     end
 })
 
 
 -- Fixes Autocomment
 vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
-  callback = function()
-    vim.cmd "set formatoptions-=cro"
-  end,
+    callback = function()
+        vim.cmd "set formatoptions-=cro"
+    end,
 })
 
 function _G.set_terminal_keymaps()
-  local opts = {buffer = 0}
-  vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
-  vim.keymap.set('t', 'jk', [[<C-\><C-n>]], opts)
-  vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
-  vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
-  vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
-  vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
-  vim.keymap.set('t', '<C-w>', [[<C-\><C-n><C-w>]], opts)
+    local opts = { buffer = 0 }
+    vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
+    vim.keymap.set('t', 'jk', [[<C-\><C-n>]], opts)
+    vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
+    vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
+    vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
+    vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
+    vim.keymap.set('t', '<C-w>', [[<C-\><C-n><C-w>]], opts)
 end
 
-vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
+-- vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
 -- if you only want these mappings for toggle term use term://*toggleterm#* instead
 vim.api.nvim_create_autocmd({ "TermOpen" }, {
-  pattern = [[term://*]],
-  callback = function()
-    vim.cmd "set nonu"
-    set_terminal_keymaps()
-  end,
+    pattern = [[term://*]],
+    callback = function()
+        vim.cmd "set nonu"
+        set_terminal_keymaps()
+    end,
 })
-
---vim.g.better_whitespace_filetypes_blacklist={
---    'diff', 'git', 'gitcommit', 'unite', 'qf',
---    'help', 'markdown', 'fugitive', 'alpha'
---}
 
 vim.cmd [[autocmd BufNewFile,BufRead *.go setlocal noet ts=4 sw=4 sts=4]]
 vim.cmd [[autocmd BufNewFile,BufRead c,cpp setlocal et ts=2 sw=2 sts=2]]
@@ -100,6 +104,9 @@ vim.diagnostic.config({
         source = true, -- 'if_many'
     },
 })
+
+-- command setup
+
 vim.cmd('command! Diagnostics lua vim.diagnostic.open_float()<cr>')
 vim.cmd('command! DiagnosticsPre lua vim.diagnostic.goto_prev({buffer=0})<cr>')
 vim.cmd('command! DiagnosticsNext lua vim.diagnostic.goto_next({buffer=0})<cr>')
@@ -107,3 +114,18 @@ vim.cmd('command! DiagnosticsNext lua vim.diagnostic.goto_next({buffer=0})<cr>')
 vim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focus=false})]]
 -- vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
 
+vim.api.nvim_create_user_command('ToggleQuickFix', function(args)
+    local qf_exists = false
+    for _, win in pairs(vim.fn.getwininfo()) do
+        if win["quickfix"] == 1 then
+            qf_exists = true
+        end
+    end
+    if qf_exists == true then
+        vim.cmd "cclose"
+        return
+    end
+    if not vim.tbl_isempty(vim.fn.getqflist()) then
+        vim.cmd "copen"
+    end
+end, { desc = "Toggle quickfix window", nargs = '*' })

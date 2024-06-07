@@ -95,7 +95,15 @@ packer.startup(function(use)
         end
     }
     use { "easymotion/vim-easymotion" }
-    use { "ntpeters/vim-better-whitespace" }
+    use {
+        "ntpeters/vim-better-whitespace",
+        config = function()
+            vim.g.better_whitespace_filetypes_blacklist = {
+                'diff', 'git', 'gitcommit', 'unite', 'qf',
+                'help', 'markdown', 'fugitive', 'alpha'
+            }
+        end
+    }
 
     -- Git
     use { "APZelos/blamer.nvim", tag = "*" }
@@ -202,4 +210,3 @@ packer.startup(function(use)
         require("packer").sync()
     end
 end)
-

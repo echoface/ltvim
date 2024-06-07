@@ -12,12 +12,6 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
     spec = {
         { import = "lazyplugins" },
-
-        -- other simple enough plugin
-        { "moll/vim-bbye",                  event = "VeryLazy" },
-        { "APZelos/blamer.nvim",            event = "VeryLazy" },
-        { "easymotion/vim-easymotion",      event = "VeryLazy" },
-        { "ntpeters/vim-better-whitespace", event = "VeryLazy" },
         {
             "rcarriga/nvim-notify",
             config = function()
@@ -28,8 +22,23 @@ require("lazy").setup({
             "morhetz/gruvbox",
             --"tanvirtin/monokai.nvim",
             priority = 1000,
+            config = function() vim.cmd.colorscheme('gruvbox') end
+        },
+        -- other simple enough plugin
+        { "moll/vim-bbye",             event = "VeryLazy" },
+        { "APZelos/blamer.nvim",       event = "VeryLazy" },
+        {   "easymotion/vim-easymotion",
+            event = "VeryLazy",
+            config = function () require("config.easymotion") end
+        },
+        {
+            "ntpeters/vim-better-whitespace",
+            event = "VeryLazy",
             config = function()
-                vim.cmd.colorscheme('gruvbox')
+                vim.g.better_whitespace_filetypes_blacklist = {
+                    'diff', 'git', 'gitcommit', 'unite', 'qf',
+                    'help', 'markdown', 'fugitive', 'alpha'
+                }
             end
         },
     },

@@ -1,13 +1,5 @@
 local telescope = require("telescope")
 local actions = require("telescope.actions")
-
-require("project_nvim").setup({
-    -- detection_methods = { "lsp", "pattern" }, -- NOTE: lsp detection will get annoying with multiple langs in one project
-    detection_methods = { "pattern" },
-    -- patterns used to detect root dir, when **"pattern"** is in detection_methods
-    patterns = { ".git", "Makefile", "package.json" },
-})
-
 telescope.setup({
     defaults = {
         -- theme = "center",
@@ -55,12 +47,16 @@ telescope.setup({
 })
 
 telescope.load_extension("fzf")
-telescope.load_extension('projects')
 telescope.load_extension("ui-select")
 telescope.load_extension("file_browser")
 
+local ok, _ = pcall(require, "project_nvim")
+if ok then
+    telescope.load_extension('projects')
+end
+
+
 -- key maps
--- Telescope
 local keymap = vim.keymap.set
 local opts = { noremap = true, silent = true }
 keymap("n", "<c-p>", ":Telescope <CR>", opts)
@@ -74,6 +70,4 @@ keymap("n", "<leader>fe", ":Telescope diagnostics<CR>", opts)
 keymap("n", "<leader>fu", ":Telescope lsp_references<CR>", opts)
 keymap("n", "<leader>fd", ":Telescope lsp_definitions<CR>", opts)
 keymap("n", "<leader>fi", ":Telescope lsp_implementations<CR>", opts)
-keymap("n", "<leader>fds", ":Telescope lsp_document_symbols<CR>", opts)
-keymap("n", "<leader>fws", ":Telescope lsp_workspace_symbols<CR>", opts)
-
+keymap("n", "<leader>fs", ":Telescope lsp_document_symbols<CR>", opts)
