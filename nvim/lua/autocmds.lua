@@ -5,11 +5,12 @@
 vim.api.nvim_create_autocmd({ "FileType" }, {
     pattern = {
         "qf", "help", "man", "lspinfo", "notify", "lir",
-        "spectre_panel", "TelescopePrompt", "NvimTree"
+        "spectre_panel", "NvimTree"
     },
     callback = function()
         vim.cmd [[
       nnoremap <silent> <buffer> q :close<CR>
+      nnoremap <silent> <buffer> <ESC> :close<CR>
       set nobuflisted
     ]]
     end,

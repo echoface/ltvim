@@ -34,9 +34,11 @@ nvimtree.setup({
     respect_buf_cwd = true,
     sync_root_with_cwd = true,
     reload_on_bufenter = false,
-
+    update_focused_file = {
+        enable = true,
+        update_root = true
+    },
     on_attach = on_attach,
-
     git = {
         enable = false,
     },

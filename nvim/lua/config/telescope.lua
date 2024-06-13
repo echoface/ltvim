@@ -14,13 +14,14 @@ telescope.setup({
         --     },
         -- },
         mappings = {
+            n = {
+                ["q"] = actions.close,
+            },
             i = {
                 ["<Up>"] = actions.cycle_history_prev,
                 ["<Down>"] = actions.cycle_history_next,
                 ["<C-j>"] = actions.move_selection_next,
                 ["<C-k>"] = actions.move_selection_previous,
-                ["<C-q>"] = actions.send_selected_to_qflist +
-                    actions.open_qflist -- send selected to quickfixlist
             }
         },
         file_ignore_patterns = { ".git/", "node_modules" },
