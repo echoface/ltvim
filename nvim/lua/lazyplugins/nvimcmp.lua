@@ -8,6 +8,7 @@ return {
         { "hrsh7th/cmp-cmdline" },
         { "hrsh7th/cmp-nvim-lsp" },
         { "hrsh7th/cmp-nvim-lua" },
+        -- { "hrsh7th/cmp-nvim-lsp-signature-help" },
         --{
         --    "hrsh7th/cmp-vsnip",
         --    dependencies = {
@@ -23,7 +24,7 @@ return {
                 version = "v2.*",
                 build = "make install_jsregexp",
                 dependencies = { -- Snippets
-                    {"honza/vim-snippets"},
+                    { "honza/vim-snippets" },
                     -- { "rafamadriz/friendly-snippets" },
                 },
                 config = function()
@@ -33,7 +34,7 @@ return {
             }
         }
     },
-    config = function ()
-       require("config.nvimcmp")
+    config = function()
+        require("config.nvimcmp")
     end,
 }

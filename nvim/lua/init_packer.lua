@@ -92,7 +92,11 @@ packer.startup(function(use)
     use { "nvim-lualine/lualine.nvim",
         config = function()
             require "config.lualine"
-        end
+        end,
+        requires = {
+            'linrongbin16/lsp-progress.nvim',
+            config = function() require('lsp-progress').setup() end
+        }
     }
     use { "easymotion/vim-easymotion" }
     use {

@@ -25,11 +25,12 @@ require("lazy").setup({
             config = function() vim.cmd.colorscheme('gruvbox') end
         },
         -- other simple enough plugin
-        { "moll/vim-bbye",             event = "VeryLazy" },
-        { "APZelos/blamer.nvim",       event = "VeryLazy" },
-        {   "easymotion/vim-easymotion",
+        { "moll/vim-bbye",       event = "VeryLazy" },
+        { "APZelos/blamer.nvim", event = "VeryLazy" },
+        {
+            "easymotion/vim-easymotion",
             event = "VeryLazy",
-            config = function () require("config.easymotion") end
+            config = function() require("config.easymotion") end
         },
         {
             "ntpeters/vim-better-whitespace",
@@ -40,7 +41,7 @@ require("lazy").setup({
                     'help', 'markdown', 'fugitive', 'alpha'
                 }
             end
-        },
+        }
     },
     ui = { border = "rounded" },
     checker = { enabled = false }, -- automatically check for plugin updates

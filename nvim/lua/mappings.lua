@@ -3,12 +3,12 @@
 vim.g.mapleader = ","
 
 -- Modes
+--   term_mode = "t",
 --   normal_mode = "n",
 --   insert_mode = "i",
 --   visual_mode = "v",
---   visual_block_mode = "x",
---   term_mode = "t",
 --   command_mode = "c",
+--   visual_block_mode = "x",
 
 -- Silent keymap option
 local opts = { noremap = true, silent = true }

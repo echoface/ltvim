@@ -54,6 +54,9 @@ telescope.load_extension("file_browser")
 local ok, _ = pcall(require, "project_nvim")
 if ok then
     telescope.load_extension('projects')
+    vim.api.nvim_create_user_command("Projects", function ()
+        vim.cmd("Telescope projects")
+    end, {})
 end
 
 
@@ -72,3 +75,4 @@ keymap("n", "<leader>fu", ":Telescope lsp_references<CR>", opts)
 keymap("n", "<leader>fd", ":Telescope lsp_definitions<CR>", opts)
 keymap("n", "<leader>fi", ":Telescope lsp_implementations<CR>", opts)
 keymap("n", "<leader>fs", ":Telescope lsp_document_symbols<CR>", opts)
+

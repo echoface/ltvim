@@ -8,9 +8,9 @@
 require("config.lsp.null-ls")
 require("neodev").setup()
 require("lsp_signature").setup({
-    close_timeout = 1000,  -- close floating window after ms when laster parameter is entered
-    floating_window = true, -- show hint in a floating window, false for virtual text only mode
     hint_enable = false, -- virtual hint
+    floating_window = true, -- show hint in a floating window, false for virtual text only mode
+    floating_window_above_cur_line = true,
 })
 --vim.api.nvim_create_autocmd("LspAttach", {
 --    callback = function(args)

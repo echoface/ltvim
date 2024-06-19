@@ -36,7 +36,6 @@ M.on_attach = function(client, bufnr)
     -- setup keymapping
     local opts = { noremap = true, silent = true }
     local keymap = vim.api.nvim_buf_set_keymap
-    keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
     keymap(bufnr, "n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
     keymap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
     keymap(bufnr, "n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
@@ -44,9 +43,8 @@ M.on_attach = function(client, bufnr)
     keymap(bufnr, "n", "gs", "<cmd>lua vim.lsp.buf.document_symbol()<CR>", opts)
     keymap(bufnr, "n", "sh", "<cmd>lua vim.lsp.buf.signature_help({async = true})<cr>", opts)
     -- lsp action instruction
-    keymap(bufnr, "n", "rn", "<cmd>lua vim.lsp.buf.rename()<cr>", opts)
-    keymap(bufnr, "n", "ca", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
-    keymap(bufnr, "n", "fmt", "<cmd>lua vim.lsp.buf.format({async = true})<cr>", opts)
+    keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
+    keymap(bufnr, "n", "F", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
 
     local user_option_path = "config.lsp.settings." .. client.name
     local hit, user_option = pcall(require, user_option_path)
