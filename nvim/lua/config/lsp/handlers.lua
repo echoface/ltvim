@@ -18,6 +18,8 @@ vim.cmd('command! Format lua vim.lsp.buf.format({async = true})<cr>')
 vim.cmd('command! LspCodeAction lua vim.lsp.buf.code_action()<cr>')
 vim.cmd('command! LspSignsHelp lua vim.lsp.buf.signature_help()<cr>')
 vim.cmd('command! LspDocSymbols lua vim.lsp.buf.document_symbol()<cr>')
+vim.cmd('command! LspOutGoingCalls lua vim.lsp.buf.outgoing_calls()<cr>')
+vim.cmd('command! LspInComingCalls lua vim.lsp.buf.incoming_calls()<cr>')
 
 
 local M = {}
@@ -45,11 +47,12 @@ M.on_attach = function(client, bufnr)
     -- lsp action instruction
     keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
     keymap(bufnr, "n", "F", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
+    keymap(bufnr, "i", ",?", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
 
     local user_option_path = "config.lsp.settings." .. client.name
-    local hit, user_option = pcall(require, user_option_path)
-    if hit and user_option.customized_keymapping then
-        user_option.customized_keymapping(client, bufnr)
+    local ok, user_option = pcall(require, user_option_path)
+    if ok and user_option.on_attach then
+        user_option.on_attach(client, bufnr)
     end
 
     local status_ok, illuminate = pcall(require, "illuminate")

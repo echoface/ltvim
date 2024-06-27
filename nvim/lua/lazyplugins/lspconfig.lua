@@ -1,6 +1,6 @@
 return {
     "neovim/nvim-lspconfig",
-    -- event = "VeryLazy",
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
         { "folke/neodev.nvim" },        -- dev for neovim or config
         { "nvimtools/none-ls.nvim" },
@@ -10,5 +10,5 @@ return {
     },
     config = function()
         require("config.lsp")
-    end -- run lsp/init.lu
+    end -- run lsp/init.lua
 }

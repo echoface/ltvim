@@ -25,5 +25,6 @@ if [ -f "$HOME/.tmux.conf" ]; then
   mv $HOME/.tmux.conf $HOME/tmux.conf.bak.${timestamp}
 fi
 
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 cp tmux/tmux.conf $HOME/.tmux.conf
 echo "done!, reload and have a try"

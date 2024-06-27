@@ -5,8 +5,8 @@ autocmd BufNewFile,BufRead c,cpp,objc setlocal et ts=2 sw=2 sts=2
 " <<<<<<<<<<<<<<<<<<<<< base end <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 " >>>>>>>>>>>>>>>>>>>>> highlight >>>>>>>>>>>>>>>>>>>>>>>>>
-highlight WhitespaceEOL ctermbg=red guibg=red
-match WhitespaceEOL /\s\+$/
+"highlight WhitespaceEOL ctermbg=red guibg=red
+"match WhitespaceEOL /\s\+$/
 
 "function RemoveTrailingSpace()
 "  if &ft != "diff"

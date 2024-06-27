@@ -6,4 +6,3 @@ let g:NERDTreeQuitOnOpen = 0
 let NERDTreeIgnore=['\.pyc','\~$','\.swp', '\.o', 'blade-bin', 'build64*']
 
 noremap tt  :NERDTreeToggle<CR>
-noremap ts  :NERDTreeToggle<CR>
