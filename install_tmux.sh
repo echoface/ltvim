@@ -25,8 +25,10 @@ if [ -f "$HOME/.tmux.conf" ]; then
   mv $HOME/.tmux.conf $HOME/tmux.conf.bak.${timestamp}
 fi
 
-if [ ! -d "~/.tmux/plugins/tpm" ]; then
+if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
+    echo "tpm not found, installing ..."
     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 fi
+
 cp tmux/tmux.conf $HOME/.tmux.conf
 echo "done!, reload and have a try"
