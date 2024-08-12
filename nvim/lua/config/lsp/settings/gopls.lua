@@ -107,16 +107,15 @@ end
 --- "refactor.inline"           # RefactorInline
 --- "refactor.rewrite"          # RefactorRewrite
 --- "source"                    # Source
---- "source.organizeImports"    # SourceOrganizeImports
 --- "source.fixAll"             # SourceFixAll
-
-local function run_specific_code_action(action_kind)
+--- "source.organizeImports"    # SourceOrganizeImports
+local function run_specific_code_action(action_kind, filterFn)
     local opts = {
         apply = true,
         context = {
             only = { action_kind }
         },
-        diagnostics = vim.diagnostic.get(),
+        filter = filterFn,
     }
 
     if vim.api.nvim_get_mode().mode ~= 'v' then
@@ -129,7 +128,7 @@ end
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
     pattern = "*.go",
     callback = function()
-        code_action("", "source.organizeImports")
+        run_specific_code_action("source.organizeImports", nil)
         vim.lsp.buf.format({ async = false })
     end
 })
@@ -150,15 +149,18 @@ M.on_attach = function(_, bufnr)
     local keymap = vim.api.nvim_buf_set_keymap
 
     vim.api.nvim_buf_create_user_command(bufnr, "GoImports", function()
-        code_action("", "source.organizeImports")
+        -- code_action("", "source.organizeImports")
+        run_specific_code_action("source.organizeImports", nil)
     end, {})
 
     vim.api.nvim_buf_create_user_command(bufnr, "GoFillStruct", function()
-        code_action("apply_fix", "refactor.rewrite")
+        -- code_action("apply_fix", "refactor.rewrite")
+        run_specific_code_action("refactor.rewrite", nil)
     end, {})
 
     vim.api.nvim_buf_create_user_command(bufnr, "GoExtractMethod", function()
-        code_action("", "refactor.extract")
+        -- code_action("", "refactor.extract")
+        run_specific_code_action("refactor.extract", nil)
     end, {})
 
     keymap(bufnr, "i", ",f", "<cmd>:GoFillStruct<cr>", opts)
