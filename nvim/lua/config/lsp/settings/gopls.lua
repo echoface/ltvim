@@ -1,11 +1,9 @@
 local function apply_action(client, bufnr, action)
-    -- vim.notify('gopls apply_action ' .. vim.inspect(action), vim.log.levels.INFO)
     if action.edit then
         vim.lsp.util.apply_workspace_edit(action.edit, client.offset_encoding)
     end
 
     if not action.command then
-        vim.notify('action without command, nothing can do', vim.log.levels.INFO)
         return
     end
 
@@ -21,7 +19,6 @@ local function apply_action(client, bufnr, action)
         workDoneToken = command.workDoneToken,
     }
     client.request('workspace/executeCommand', params, function(err, r)
-        -- vim.notify('gopls executeCommand' .. vim.inspect(params) .. vim.inspect(err) .. vim.inspect(r), vim.log.levels.INFO)
     end, bufnr)
 end
 
@@ -49,7 +46,6 @@ end
 local function code_action(command, only)
     local clients = vim.lsp.get_clients({ name = 'gopls', bufnr = vim.api.nvim_get_current_buf(), })
     if #clients == 0 then
-        vim.notify('gopls client not attached, nothing can do', vim.log.levels.INFO)
         return
     end
     local client = clients[1]
@@ -109,20 +105,17 @@ end
 --- "source"                    # Source
 --- "source.fixAll"             # SourceFixAll
 --- "source.organizeImports"    # SourceOrganizeImports
-local function run_specific_code_action(action_kind, filterFn)
+local function run_specific_code_action(action_kind, filter_func)
     local opts = {
         apply = true,
         context = {
             only = { action_kind }
         },
-        filter = filterFn,
     }
-
-    if vim.api.nvim_get_mode().mode ~= 'v' then
-        vim.lsp.buf.code_action(opts)
-    else
-        vim.lsp.buf.range_code_action(opts)
+    if filter_func then
+        opts.filter = filter_func
     end
+    vim.lsp.buf.code_action(opts)
 end
 
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
