@@ -31,8 +31,7 @@ vim.opt.laststatus = 3
 vim.opt.showcmd = false
 vim.opt.ruler = false
 vim.opt.numberwidth = 4                         -- set number column width to 2 {default 4}
--- vim.opt.signcolumn = "yes"                      -- always show the sign column, otherwise it would shift the text each time
-vim.opt.signcolumn = "number"                      -- always show the sign column, otherwise it would shift the text each time
+vim.opt.signcolumn = "yes"                      -- always show the sign column, otherwise it would shift the text each time
 vim.opt.wrap = false                            -- display lines as one long line
 vim.opt.scrolloff = 8                           -- is one of my fav
 vim.opt.sidescrolloff = 8
@@ -46,5 +45,4 @@ vim.g.loaded_netrwPlugin = 1
 -- za: foldtoggle   zo: fold open  zc: fold close
 vim.opt.foldmethod="syntax"         -- 设置语法折叠
 vim.opt.foldlevelstart = 99         -- don't fold any thing when open file
-
 

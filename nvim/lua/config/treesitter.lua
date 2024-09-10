@@ -15,6 +15,19 @@ vim.api.nvim_create_autocmd("FileType", {
     end
 })
 
+-- https://stackoverflow.com/questions/77220511/neovim-fold-code-with-foldmethod-syntax-or-foldmethod-expr-depending-on-tre
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  callback = function()
+    local ok, parsers = pcall(require, "nvim-treesitter.parsers")
+    if ok and parsers.has_parser() then
+      vim.opt.foldmethod = "expr"
+      vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+    -- else
+    --   vim.opt.foldmethod = "syntax"
+    end
+  end,
+})
+
 treesitter.setup({
     ignore_install = {},
     ensure_installed = {
