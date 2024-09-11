@@ -41,7 +41,6 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
         nnoremap <buffer> j <Down>
         nnoremap <leader>tq <cmd>:ToggleQuickFix<CR>
     ]],
-	-- nnoremap <buffer> <CR> <CR>:cclose<CR>
     -- close quickfix menu after selecting choice
     -- command = [[nnoremap <buffer> <CR> <CR>:cclose<CR>]]
 })

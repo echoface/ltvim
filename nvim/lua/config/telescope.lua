@@ -5,14 +5,14 @@ telescope.setup({
         -- theme = "center",
         -- layout_strategy = "horizontal", -- bottom_pane|horizontal|vertical|cursor|cneter
         -- sorting_strategy = "ascending",
-        -- layout_config = {
-        --     width = 0.95,
-        --     height = 0.95,
-        --     horizontal = {
-        --         preview_width = 0.65,
-        --         prompt_position = "top",
-        --     },
-        -- },
+        layout_config = {
+            width = 0.95,
+            height = 0.95,
+            horizontal = {
+                preview_width = 0.65,
+                -- prompt_position = "top",
+            },
+        },
         mappings = {
             n = {
                 ["q"] = actions.close,
@@ -66,11 +66,12 @@ local opts = { noremap = true, silent = true }
 keymap("n", "<c-p>", ":Telescope <CR>", opts)
 keymap("n", "<leader>fc", ":Telescope commands<CR>", opts)
 keymap("n", "<leader>fb", ":Telescope buffers<CR>", opts)
-keymap("n", "<leader>fp", ":Telescope projects<CR>", opts)
-keymap("n", "<leader>fr", ":Telescope oldfiles<CR>", opts)
-keymap("n", "<leader>fg", ":Telescope live_grep<CR>", opts)
-keymap("n", "<leader>ff", ":Telescope find_files<CR>", opts)
 keymap("n", "<leader>fe", ":Telescope diagnostics<CR>", opts)
+keymap("n", "<leader>ff", ":Telescope find_files<CR>", opts)
+keymap("n", "<leader>fg", ":Telescope live_grep<CR>", opts)
+keymap("n", "<leader>fp", ":Telescope projects<CR>", opts)
+keymap("n", "<leader>fq", ":Telescope quickfix<CR>", opts)
+keymap("n", "<leader>fr", ":Telescope oldfiles<CR>", opts)
 keymap("n", "<leader>fu", ":Telescope lsp_references<CR>", opts)
 keymap("n", "<leader>fd", ":Telescope lsp_definitions<CR>", opts)
 keymap("n", "<leader>fi", ":Telescope lsp_implementations<CR>", opts)
