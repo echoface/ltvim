@@ -61,11 +61,8 @@ M.on_attach = function(client, bufnr)
     local opts = { noremap = true, silent = true }
     local keymap = vim.api.nvim_buf_set_keymap
 
-    organize_imports_sync(bufnr, true)
-
     vim.api.nvim_create_autocmd("BufWritePre", {
       callback = function()
-         organize_imports_sync(bufnr, false)
          vim.lsp.buf.format({async = false})
       end,
     })
