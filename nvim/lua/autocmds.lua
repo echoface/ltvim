@@ -16,10 +16,34 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
     end,
 })
 
--- close quickfix menu after selecting choice
+vim.api.nvim_create_user_command('ToggleQuickFix', function(args)
+    local qf_exists = false
+    for _, win in pairs(vim.fn.getwininfo()) do
+        if win["quickfix"] == 1 then
+            qf_exists = true
+        end
+    end
+    if qf_exists == true then
+        vim.cmd "cclose"
+        return
+    end
+    if not vim.tbl_isempty(vim.fn.getqflist()) then
+        vim.cmd "copen"
+    end
+end, { desc = "Toggle quickfix window", nargs = '*' })
+
 vim.api.nvim_create_autocmd({ "FileType" }, {
     pattern = { "qf", "quickfix" },
-    command = [[nnoremap <buffer> <CR> <CR>:cclose<CR>]]
+    command = [[
+        nnoremap <buffer> <CR> <CR><C-W>p       " open and keep focus on qf
+        nnoremap <silent> <buffer> o <CR><C-w>p " open and keep focus on qf
+        nnoremap <buffer> k <Up>
+        nnoremap <buffer> j <Down>
+        nnoremap <leader>tq <cmd>:ToggleQuickFix<CR>
+    ]],
+	-- nnoremap <buffer> <CR> <CR>:cclose<CR>
+    -- close quickfix menu after selecting choice
+    -- command = [[nnoremap <buffer> <CR> <CR>:cclose<CR>]]
 })
 
 -- Set wrap and spell in markdown and gitcommit
@@ -106,26 +130,11 @@ vim.diagnostic.config({
 })
 
 -- command setup
-
-vim.cmd('command! Diagnostics lua vim.diagnostic.open_float()<cr>')
-vim.cmd('command! DiagnosticsPre lua vim.diagnostic.goto_prev({buffer=0})<cr>')
-vim.cmd('command! DiagnosticsNext lua vim.diagnostic.goto_next({buffer=0})<cr>')
 -- display diagnostics when cursor hold only in normal mode
-vim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focus=false})]]
--- vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
+vim.cmd [[
+    command! Diagnostics lua vim.diagnostic.open_float()<cr>
+    command! DiagnosticsPre lua vim.diagnostic.goto_prev({buffer=0})<cr>
+    command! DiagnosticsNext lua vim.diagnostic.goto_next({buffer=0})<cr>
+    autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focus=false})
+]]
 
-vim.api.nvim_create_user_command('ToggleQuickFix', function(args)
-    local qf_exists = false
-    for _, win in pairs(vim.fn.getwininfo()) do
-        if win["quickfix"] == 1 then
-            qf_exists = true
-        end
-    end
-    if qf_exists == true then
-        vim.cmd "cclose"
-        return
-    end
-    if not vim.tbl_isempty(vim.fn.getqflist()) then
-        vim.cmd "copen"
-    end
-end, { desc = "Toggle quickfix window", nargs = '*' })

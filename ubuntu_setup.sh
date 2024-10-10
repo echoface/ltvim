@@ -1,21 +1,43 @@
 #!/bin/bash
 
-# install enssntials
+set -e
 
-sudo apt install build-essential git
+#if ! [ -x "$(command -v orb)" ]; then
+if [ -x "$(command -v orb)" ]; then
+	read -r -p "seems you are in orbstack env, setup user passwd now?[Y|n]" input
+	case $input in
+		[yY][eE][sS]|[yY])
+			sudo passwd $USER 
+			;;
+		[nN][oO]|[nN])
+			echo "skip set password for user:$USER"
+			;;
+		*)
+			echo "invlid input, exit..."
+			exit 1
+			;;
+	esac
+fi
+
+# install enssntials
+sudo apt install build-essential git bash-completion unzip
 
 #linuxbrew
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-# ensure brew work
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+if ! [ -x "$(command -v brew)" ]; then
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    # ensure brew work
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    # brew things
+    brew update-reset
+    brew config
+fi
 
-# brew things
 brew install nvim utf8proc n
 
-# update env
-cat <<EOF >>$HOME/.bashrc
+# update env, use 'EOF' avoiding variable expanding
+cat <<'EOF' >>$HOME/.bashrc
 
-# >>> this add by gonghuan.dev's ubuntu sys setup automatics
+# >>> this add by gonghuan.dev's ubuntu sys setup automatics >>>>>>>>>>
 
 alias vim=nvim
 
@@ -30,8 +52,8 @@ export no_proxy=.byteintl.net,.byted.org,.bytedance.net
 #<<<<<<<<<<<<<<<<<<<<<<<<<< end <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 EOF
 
-
 source $HOME/.bashrc
 
 # post install setup
-n intsll lts
+echo "installing node js latest lts version by n..."
+n install lts
