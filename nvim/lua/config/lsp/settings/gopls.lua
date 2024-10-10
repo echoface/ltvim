@@ -28,8 +28,8 @@ M = {}
 M.setup_opts = {
     settings = {
         gopls = {
-            gofumpt = true,
-            usePlaceholders = true,
+            gofumpt = false,
+            usePlaceholders = false,
             hoverKind = "NoDocumentation",
             directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
         },
