@@ -33,7 +33,21 @@ return {
                         require("luasnip.loaders.from_snipmate").lazy_load()
                     end
                 }
-            }
+            },
+            {
+                "https://code.byted.org/chenjiaqi.cposture/codeverse.vim.git",
+                init = function()
+                    -- 关闭 codeverse 内置 tab 映射
+                    vim.g.codeverse_no_map_tab = true
+                    -- 关闭 codeverse 内置补全映射
+                    vim.g.codeverse_disable_bindings = true
+                    -- 关闭 codeverse 内置自动补全
+                    vim.g.codeverse_disable_autocompletion = true
+                end,
+                config = function()
+                    require("codeverse").setup({})
+                end
+            },
         },
         config = function()
             require("config.nvimcmp")
