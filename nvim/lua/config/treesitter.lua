@@ -7,14 +7,6 @@ vim.opt.foldmethod = "expr" -- 在treesitter 安装的情况下,使用treesitter
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 
 
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "markdown" },
-    callback = function()         -- function(ev)
-        -- treesitter-context is buggy with Markdown files
-        require("treesitter-context").disable()
-    end
-})
-
 -- https://stackoverflow.com/questions/77220511/neovim-fold-code-with-foldmethod-syntax-or-foldmethod-expr-depending-on-tre
 vim.api.nvim_create_autocmd({ "FileType" }, {
   callback = function()
