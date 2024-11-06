@@ -29,7 +29,7 @@ M.capabilities = vim.lsp.protocol.make_client_capabilities()
 if nvim_lsp_ok then
     M.capabilities = cmp_nvim_lsp.default_capabilities(M.capabilities)
 end
--- M.capabilities.textDocument.completion.completionItem.snippetSupport = true 
+-- M.capabilities.textDocument.completion.completionItem.snippetSupport = true
 M.capabilities.textDocument.completion.completionItem.resolveSupport = {
     properties = { "documentation", "detail", "additionalTextEdits" },
 }

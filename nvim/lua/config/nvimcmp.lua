@@ -1,26 +1,41 @@
--- this function is only needed for vsnip
-local cmp = require("cmp")
+vim.opt.completeopt = { "menuone", "noinsert", "noselect" }
+
+
 local luasnip = require("luasnip")
+
+vim.keymap.set({ "i", "s" }, "<C-J>", function() luasnip.jump(1) end, { silent = true })
+vim.keymap.set({ "i", "s" }, "<C-K>", function() luasnip.jump(-1) end, { silent = true })
+-- we don't need expand manually, use nvim-cmp prompt instead
+-- vim.keymap.set({ "i" }, "<C-K>", function() luasnip.expand() end, { silent = true })
+-- we don't need expand manually, use nvim-cmp prompt instead
+-- vim.keymap.set({ "i", "s" }, "<C-E>", function()
+--     if luasnip.choice_active() then
+--         luasnip.change_choice(1)
+--     end
+-- end, { silent = true })
 
 -- local feedkey = function(key, mode)
 --     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
 -- end
--- local has_words_before = function()
+-- local function has_words_before()
+--     if vim.bo.buftype == 'prompt' then
+--         return false
+--     end
 --     local line, col = unpack(vim.api.nvim_win_get_cursor(0))
---     return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+--     -- stylua: ignore
+--     return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
 -- end
 
 local formating_fomat = function(entry, item)
     item.menu = string.format("[%s]", entry.source.name)
     return item
 end
+
 local snippet_expand = function(args)
-    -- vim.fn["vsnip#anonymous"](args.body) -- for vsnip users
     luasnip.lsp_expand(args.body) -- For `luasnip` users.
 end
 
-vim.opt.completeopt = { "menuone", "noinsert", "noselect" }
-
+local cmp = require("cmp")
 cmp.setup({
     preselect = cmp.PreselectMode.None,
     formatting = {
@@ -30,7 +45,7 @@ cmp.setup({
         expand = snippet_expand,
     },
     completion = {
-        -- keyword_length = 2,
+        keyword_length = 3,
         -- autocomplete = true, -- set to fase stop autocomplete, need trigger manually
     },
     mapping = cmp.mapping.preset.insert({
@@ -61,11 +76,9 @@ cmp.setup({
         ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
                 cmp.select_next_item()
-            elseif luasnip.locally_jumpable(1) then
-                luasnip.jump(1)
-                --elseif vim.fn["vsnip#jumpable"](1) == 1 then
-                --    feedkey("<Plug>(vsnip-expand-or-jump)", "")
-                --    -- feedkey("<Plug>(vsnip-jump-next)", "")
+                -- luasnap: wee use c-j/c-k to jump to next/previous item
+                -- elseif luasnip.locally_jumpable(1) then
+                --     luasnip.jump(1)
                 --elseif has_words_before() then
                 --    cmp.complete()
             else
@@ -77,19 +90,15 @@ cmp.setup({
                 cmp.select_prev_item()
                 --elseif vim.fn["vsnip#jumpable"](-1) == 1 then
                 --    feedkey("<Plug>(vsnip-jump-prev)", "")
-            elseif luasnip.locally_jumpable(-1) then
-                luasnip.jump(-1)
             else
                 fallback()
             end
         end, { "i", "s" }),
     }),
     sources = {
+        { name = "luasnip" },
         { name = "nvim_lsp" },
-        -- { name = "nvim_lsp_signature_help" },
         { name = "nvim_lua" },
-        { name = 'luasnip' },
-        -- { name = 'vsnip' },
         { name = "buffer" },
         { name = "path" },
     },
