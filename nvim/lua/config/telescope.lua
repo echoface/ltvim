@@ -34,22 +34,11 @@ telescope.setup({
         ["ui-select"] = {
             require("telescope.themes").get_dropdown {}
         },
-        file_browser = {
-            use_fd = true,          -- use `fd` instead of plenary, make sure to install `fd`
-            path = "%:p:h",         -- open from within the folder of your current buffer
-            grouped = true,         -- group initial sorting by directories and then files
-            hidden = true,          -- show hidden files
-            hijack_netrw = true,    -- use telescope file browser when opening directory paths
-            prompt_path = true,     -- show the current relative path from cwd as the prompt prefix
-            display_stat = false,   -- don't show file stat
-            hide_parent_dir = true, -- hide `../` in the file browser
-        }
     }
 })
 
 telescope.load_extension("fzf")
 telescope.load_extension("ui-select")
-telescope.load_extension("file_browser")
 
 local ok, _ = pcall(require, "project_nvim")
 if ok then

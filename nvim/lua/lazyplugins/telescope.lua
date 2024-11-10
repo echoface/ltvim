@@ -5,7 +5,6 @@ return {
         { "nvim-lua/plenary.nvim" },
         { "ahmedkhalf/project.nvim" },
         { "nvim-telescope/telescope-ui-select.nvim" },
-        { "nvim-telescope/telescope-file-browser.nvim", enabled = true },
         {
             "nvim-telescope/telescope-fzf-native.nvim",
             build = "make",

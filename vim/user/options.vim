@@ -34,9 +34,9 @@ set tabstop=2
 set shiftwidth=2
 set softtabstop=2
 
-set foldenable                " 开始折叠
-set foldmethod=syntax         " 设置语法折叠
-set foldlevelstart=99         " 打开文件是默认不折叠代码
+set foldenable                  " 开始折叠
+set foldmethod=indent           " 设置语法折叠
+set foldlevelstart=99           " 打开文件是默认不折叠代码
 
 syntax enable
 filetype plugin indent on

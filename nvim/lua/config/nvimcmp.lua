@@ -1,6 +1,5 @@
 vim.opt.completeopt = { "menuone", "noinsert", "noselect" }
 
-
 local luasnip = require("luasnip")
 
 vim.keymap.set({ "i", "s" }, "<C-J>", function() luasnip.jump(1) end, { silent = true })

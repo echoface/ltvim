@@ -1,4 +1,6 @@
 .ltvim8
-vim/Plug
 .DS_Store
-nvim/lua/.luarc.json
+.luarc.json
+
+*.diff
+vim/Plug

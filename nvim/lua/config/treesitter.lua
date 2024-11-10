@@ -3,44 +3,44 @@ if not status_ok then
     return
 end
 
-vim.opt.foldmethod = "expr" -- 在treesitter 安装的情况下,使用treesitter的折叠
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-
-
--- https://stackoverflow.com/questions/77220511/neovim-fold-code-with-foldmethod-syntax-or-foldmethod-expr-depending-on-tre
+-- big json file buggy when use treesitter.foldexpr
 vim.api.nvim_create_autocmd({ "FileType" }, {
-  callback = function()
-    local ok, parsers = pcall(require, "nvim-treesitter.parsers")
-    if ok and parsers.has_parser() then
-      vim.opt.foldmethod = "expr"
-      vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-    -- else
-    --   vim.opt.foldmethod = "syntax"
-    end
-  end,
+    -- pattern = {"c", "c++", "go", "python", "lua", "json"},
+    callback = function()
+        vim.defer_fn(function()
+            local file_path = vim.api.nvim_buf_get_name(0) -- Get the path of the current buffer
+            local file_size = vim.fn.getfsize(file_path)   -- Get the size of the file in bytes
+            local parser_ok, parser = pcall(require, "nvim-treesitter.parsers")
+            if parser_ok and parser.has_parser() and file_size < 1024 * 1024 then
+                vim.opt.foldmethod = "expr"
+                vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+            else
+                vim.opt.foldmethod = "indent"
+            end
+        end, 100)
+    end,
 })
 
+local function ts_disable(_, bufnr)
+    return vim.api.nvim_buf_line_count(bufnr) > 5000
+end
+
 treesitter.setup({
-    ignore_install = {},
-    ensure_installed = {
-        "c", "cpp", "lua", "python", "go", "proto",
-        "bash", "json", "vim", "markdown", "comment",
-        "lua", "markdown", "proto", "python", "yaml",
-        "gomod", "gosum", "gowork", "javascript", "json",
-    },
+    ignore_install = { "css" },
+    -- ensure_installed = {
+    --     "c", "cpp", "lua", "python", "go", "proto",
+    -- },
     modules = {},
     auto_install = true,
     sync_install = false,
     highlight = {
         enable = true,
-        disable = { "css" }         -- preferring chrisbra/csv.vim
+        disable = function(lang, bufnr)
+            return lang == "css" or ts_disable(lang, bufnr)
+        end,
     },
-    autopairs = {
-        enable = true,
-    },
-    textobjects = { select = { enable = true, lookahead = true } },
     indent = {
         enable = true,
-        disable = { "python", "css", "go" }         -- go's indent has mistake for 'switch' case
+        disable = { "python", "css", "go" } -- go's indent has mistake for 'switch' case
     },
 })

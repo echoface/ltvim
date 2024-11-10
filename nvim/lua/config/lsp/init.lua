@@ -5,8 +5,10 @@
 -- Setup servers via lspconfig
 -- Pay extra attention to this if you lazy-load plugins, or somehow "chain" the loading of plugins via your plugin manager.
 
+require("lazydev").setup() -- it's will register lazydev source automatically
+
 require("config.lsp.null-ls")
-require("neodev").setup()
+
 require("lsp_signature").setup({
     hint_enable = false, -- virtual hint
     floating_window = true, -- show hint in a floating window, false for virtual text only mode
@@ -27,11 +29,13 @@ require("lsp_signature").setup({
 --    end,
 --})
 
-local mason = require("mason")
+require("mason").setup()
+
 local mason_lspconfig = require("mason-lspconfig")
 
-mason.setup()
-mason_lspconfig.setup()
+mason_lspconfig.setup({
+    ensure_installed = {"clangd", "gopls", "lua_ls" }
+})
 
 local lspconfig = require("lspconfig")
 -- user defined lsp handlers

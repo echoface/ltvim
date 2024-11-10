@@ -1,18 +1,21 @@
 local null_ls_status_ok, null_ls = pcall(require, "null-ls")
 if not null_ls_status_ok then return end
 
--- https://github.com/jose-elias-alvarez/null-ls.nvim/tree/main/lua/null-ls/builtins/formatting
-local formatting = null_ls.builtins.formatting
--- https://github.com/jose-elias-alvarez/null-ls.nvim/tree/main/lua/null-ls/builtins/diagnostics
--- local diagnostics = null_ls.builtins.diagnostics
-
--- https://github.com/prettier-solidity/prettier-plugin-solidity
 null_ls.setup {
     debug = false,
     sources = {
-        formatting.prettier.with {
-            extra_filetypes = { "toml" },
+        -- formating
+        null_ls.builtins.formatting.prettier.with {
+            filetypes = {"markdown"},
             extra_args = { "--no-semi", "--single-quote", "--jsx-single-quote" },
-        }
+        },
+        null_ls.builtins.formatting.gofumpt,
+        null_ls.builtins.formatting.goimports,
+        -- completion
+        -- null_ls.builtins.completion.spell,
+        -- code action
+        null_ls.builtins.code_actions.impl,
+        null_ls.builtins.code_actions.refactoring,
+        null_ls.builtins.code_actions.gomodifytags, --go
     },
 }
