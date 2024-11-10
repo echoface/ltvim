@@ -6,7 +6,7 @@ null_ls.setup {
     sources = {
         -- formating
         null_ls.builtins.formatting.prettier.with {
-            filetypes = {"markdown"},
+            filetypes = { "markdown" },
             extra_args = { "--no-semi", "--single-quote", "--jsx-single-quote" },
         },
         null_ls.builtins.formatting.gofumpt,
@@ -19,3 +19,8 @@ null_ls.setup {
         null_ls.builtins.code_actions.gomodifytags, --go
     },
 }
+
+require("mason-null-ls").setup({
+    ensure_installed = nil,
+    automatic_installation = true,
+})

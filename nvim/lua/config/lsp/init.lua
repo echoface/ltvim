@@ -5,43 +5,18 @@
 -- Setup servers via lspconfig
 -- Pay extra attention to this if you lazy-load plugins, or somehow "chain" the loading of plugins via your plugin manager.
 
-require("lazydev").setup() -- it's will register lazydev source automatically
-
-require("config.lsp.null-ls")
-
-require("lsp_signature").setup({
-    hint_enable = false, -- virtual hint
-    floating_window = true, -- show hint in a floating window, false for virtual text only mode
-    floating_window_above_cur_line = true,
-})
---vim.api.nvim_create_autocmd("LspAttach", {
---    callback = function(args)
---        local bufnr = args.buf
---        local client = vim.lsp.get_client_by_id(args.data.client_id)
---        if vim.tbl_contains({ 'null-ls' }, client.name) then -- blacklist lsp
---            return
---        end
---        require("lsp_signature").on_attach({
---            close_timeout = 1000,    -- close floating window after ms when laster parameter is entered
---            floating_window = true, -- show hint in a floating window, false for virtual text only mode
---            hint_enable = false, -- virtual hint
---        }, bufnr)
---    end,
---})
-
 require("mason").setup()
 
 local mason_lspconfig = require("mason-lspconfig")
 
 mason_lspconfig.setup({
-    ensure_installed = {"clangd", "gopls", "lua_ls" }
+    ensure_installed = { "clangd", "gopls", "lua_ls" }
 })
 
-local lspconfig = require("lspconfig")
--- user defined lsp handlers
-local lsphandler = require("config.lsp.handlers")
 -- lspconfig setup (a automatic way powered by mason_lspconfig)
 -- more detail see `:h mason-lspconfig-automatic-server-setup`
+local lspconfig = require("lspconfig")
+local lsphandler = require("config.lsp.handlers")
 mason_lspconfig.setup_handlers {
     function(server_name) -- default handler (optional)
         local opts = {
@@ -58,3 +33,13 @@ mason_lspconfig.setup_handlers {
         lspconfig[server_name].setup(opts)
     end,
 }
+
+require("lazydev").setup() -- it's will register lazydev source automatically
+
+require("config.lsp.null-ls")
+
+require("lsp_signature").setup({
+    hint_enable = false,    -- virtual hint
+    floating_window = true, -- show hint in a floating window, false for virtual text only mode
+    floating_window_above_cur_line = true,
+})
