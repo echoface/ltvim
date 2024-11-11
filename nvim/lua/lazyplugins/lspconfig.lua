@@ -10,17 +10,11 @@ return {
         { "williamboman/mason-lspconfig.nvim" },
         {
             "folke/lazydev.nvim",
-            ft = "lua", -- only load on lua files
+            ft = "lua",
             opts = {
                 library = {
-                    -- 需要包含的lua依赖库路径
-                    -- "~/projects/my-awesome-lib",
                     { path = "luvit-meta/library", words = { "vim%.uv" } },
                 },
-                -- disable when a .luarc.json file is found
-                enabled = function(root_dir)
-                    return not vim.uv.fs_stat(root_dir .. "/.luarc.json")
-                end,
             },
             dependencies = {
                 { "Bilal2453/luvit-meta", lazy = true },

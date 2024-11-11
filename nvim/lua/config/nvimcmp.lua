@@ -95,11 +95,12 @@ cmp.setup({
         end, { "i", "s" }),
     }),
     sources = {
-        { name = "luasnip" },
-        { name = "nvim_lsp" },
-        { name = "nvim_lua" },
-        { name = "buffer" },
-        { name = "path" },
+        { name = "lazydev",  group_index = 1 },
+        { name = "luasnip",  group_index = 1 },
+        { name = "nvim_lsp", group_index = 1 },
+        { name = "nvim_lua", group_index = 1 },
+        { name = "path",     group_index = 2 },
+        { name = "buffer",   group_index = 2 },
     },
     window = {
         completion = cmp.config.window.bordered(),
