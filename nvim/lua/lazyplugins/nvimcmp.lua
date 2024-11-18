@@ -23,7 +23,6 @@ return {
                     end
                 }
             },
-            { "https://code.byted.org/chenjiaqi.cposture/codeverse.vim.git" },
         },
         config = function()
             require("config.nvimcmp")

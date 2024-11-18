@@ -10,7 +10,7 @@ require("mason").setup()
 local mason_lspconfig = require("mason-lspconfig")
 
 mason_lspconfig.setup({
-    ensure_installed = { "clangd", "gopls", "lua_ls" }
+    ensure_installed = {}
 })
 
 -- lspconfig setup (a automatic way powered by mason_lspconfig)
