@@ -22,10 +22,10 @@ return {
         config = function() require("config.easymotion") end
     },
     {
-        "numToStr/Comment.nvim",
+        "terrortylor/nvim-comment",
         event = "VeryLazy",
-        dependencies = { "nvim-treesitter/nvim-treesitter" },
-        config = function() require("Comment").setup() end
+        name = "nvim_comment",
+        opts = { comment_empty = false },
     },
     {
         "windwp/nvim-autopairs",
@@ -38,7 +38,7 @@ return {
     {
         "ntpeters/vim-better-whitespace",
         event = "VeryLazy",
-        config = function()
+        init = function()
             vim.g.better_whitespace_filetypes_blacklist = {
                 'diff', 'git', 'gitcommit', 'unite', 'qf',
                 'help', 'markdown', 'fugitive', 'alpha'
