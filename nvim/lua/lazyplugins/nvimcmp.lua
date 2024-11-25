@@ -54,4 +54,15 @@ return {
             require("config.nvimcmp")
         end,
     },
+    {
+        "https://code.byted.org/chenjiaqi.cposture/codeverse.vim.git",
+        init = function()
+            vim.g.codeverse_no_map_tab = true
+            vim.g.codeverse_disable_bindings = true
+            vim.g.codeverse_disable_autocompletion = true
+        end,
+        config = function()
+            require("codeverse").setup() -- it will register cmp source
+        end,
+    },
 }
