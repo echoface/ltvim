@@ -44,6 +44,7 @@ M = {
             run_specific_code_action("refactor.rewrite")
         end, {})
 
+        -- client.server_capabilities.documentFormattingProvider = false
         format_util.enbale_format_on_write(client, bufnr)
     end
 }

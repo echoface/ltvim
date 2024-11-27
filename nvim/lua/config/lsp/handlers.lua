@@ -1,11 +1,13 @@
 -- global lsp init
 
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-    border = "rounded",
-})
-vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-    border = "rounded",
-})
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+    vim.lsp.handlers.hover, {
+        border = "rounded",
+    })
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
+    vim.lsp.handlers.signature_help, {
+        border = "rounded",
+    })
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     vim.lsp.diagnostic.on_publish_diagnostics, {
         -- disable diagnostics insert mode; delay update diagnostics
@@ -23,9 +25,9 @@ vim.cmd('command! LspInComingCalls lua vim.lsp.buf.incoming_calls()<cr>')
 
 
 local M = {}
+M.capabilities = vim.lsp.protocol.make_client_capabilities()
 
 local nvim_lsp_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-M.capabilities = vim.lsp.protocol.make_client_capabilities()
 if nvim_lsp_ok then
     M.capabilities = cmp_nvim_lsp.default_capabilities(M.capabilities)
 end
@@ -49,6 +51,7 @@ M.on_attach = function(client, bufnr)
     keymap(bufnr, "n", "F", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
     keymap(bufnr, "i", ",?", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
 
+    -- lsp nvimcmplsp
     local user_option_path = "config.lsp.settings." .. client.name
     local ok, user_option = pcall(require, user_option_path)
     if ok and user_option.on_attach then
