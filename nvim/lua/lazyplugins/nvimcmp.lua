@@ -23,6 +23,32 @@ return {
                     end
                 }
             },
+            {
+                "zbirenbaum/copilot-cmp",
+                config = function()
+                    require("copilot_cmp").setup()
+                end,
+                dependencies = {
+                    'zbirenbaum/copilot.lua',
+                    cmd = 'Copilot',
+                    event = 'InsertEnter',
+                    config = function()
+                        require("copilot").setup {
+                            panel = { enabled = false },
+                            suggestion = { enabled = false },
+                            server_opts_overrides = {
+                                -- trace = "verbose",
+                                settings = {
+                                    advanced = {
+                                        listCount = 5,          -- #completions for panel
+                                        inlineSuggestCount = 3, -- #completions for getCompletions
+                                    }
+                                },
+                            }
+                        }
+                    end,
+                },
+            },
         },
         config = function()
             require("config.nvimcmp")
