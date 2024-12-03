@@ -25,8 +25,6 @@ local function on_attach(bufnr)
     vim.keymap.set('n', 's', api.node.open.vertical, opts('Open: Vertical Split'))
 end
 
-local enable_float = true
-
 local HEIGHT_RATIO = 0.8 -- You can change this
 local WIDTH_RATIO = 0.64 -- You can change this too
 
@@ -45,7 +43,7 @@ local function center_float_view()
         adaptive_size = true,
         -- ref: https://github.com/MarioCarrion/videos/tree/main/2023
         float = {
-            enable = enable_float,
+            enable = true,
             open_win_config = {
                 border = "rounded",
                 relative = "editor",
@@ -59,11 +57,11 @@ local function center_float_view()
     }
 end
 
-local function right_float_view()
+local function right_view(float)
     local screen_w = vim.opt.columns:get()
     local screen_h = vim.opt.lines:get() - vim.opt.cmdheight:get()
 
-    local window_w = 32
+    local window_w = 42
     local window_h = screen_h * 0.95
     local window_w_int = math.floor(window_w)
     local window_h_int = math.floor(window_h)
@@ -77,7 +75,7 @@ local function right_float_view()
         -- ref: https://github.com/MarioCarrion/videos/tree/main/2023
         side = "right",
         float = {
-            enable = enable_float,
+            enable = float,
             open_win_config = {
                 border = "rounded",
                 relative = "editor",
@@ -111,7 +109,7 @@ nvimtree.setup({
     diagnostics = {
         enable = true,
     },
-    view = right_float_view(),
+    view = right_view(false),
     actions = {
         open_file = {
             quit_on_open = false,
