@@ -41,7 +41,7 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
         nnoremap <buffer> j <Down>
         nnoremap <leader>tq <cmd>:ToggleQuickFix<CR>
     ]],
-	-- nnoremap <buffer> <CR> <CR>:cclose<CR>
+    -- nnoremap <buffer> <CR> <CR>:cclose<CR>
     -- close quickfix menu after selecting choice
     -- command = [[nnoremap <buffer> <CR> <CR>:cclose<CR>]]
 })
@@ -88,22 +88,31 @@ function _G.set_terminal_keymaps()
     vim.keymap.set('t', '<C-w>', [[<C-\><C-n><C-w>]], opts)
 end
 
--- vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
--- if you only want these mappings for toggle term use term://*toggleterm#* instead
-vim.api.nvim_create_autocmd({ "TermOpen" }, {
-    pattern = [[term://*]],
+-- Terminal
+vim.api.nvim_create_autocmd({ "TermOpen", "TermEnter" }, {
+    -- pattern = { "term://*" },
     callback = function()
-        vim.cmd "set nonu"
+        vim.opt_local.signcolumn     = "no"
+        vim.opt_local.number         = false
+        vim.opt_local.relativenumber = false
+
         set_terminal_keymaps()
+        --- vim.cmd([[ startinsert ]])
     end,
 })
 
-vim.cmd [[autocmd BufNewFile,BufRead *.go setlocal noet ts=4 sw=4 sts=4]]
-vim.cmd [[autocmd BufNewFile,BufRead c,cpp setlocal et ts=2 sw=2 sts=2]]
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead", "BufEnter" }, {
+    pattern = { "*.go" },
+    callback = function()
+        vim.opt_local.tabstop = 4
+        vim.opt_local.shiftwidth = 4
+        vim.opt_local.softtabstop = 4
+        vim.opt_local.expandtab = false
+    end,
+})
 
 -- back last edit position
 vim.cmd [[autocmd BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif]]
-
 
 -- diagnostics basic(none lsp related) config
 local diagnostic_signs = {
@@ -137,4 +146,3 @@ vim.cmd [[
     command! DiagnosticsNext lua vim.diagnostic.goto_next({buffer=0})<cr>
     autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focus=false})
 ]]
-
