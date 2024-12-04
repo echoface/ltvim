@@ -100,16 +100,13 @@ nvimtree.setup({
         update_root = true
     },
     on_attach = on_attach,
+    view = right_view(true),
     git = {
         enable = false,
     },
     filters = {
         custom = { "^.git$" },
     },
-    diagnostics = {
-        enable = true,
-    },
-    view = right_view(false),
     actions = {
         open_file = {
             quit_on_open = false,
