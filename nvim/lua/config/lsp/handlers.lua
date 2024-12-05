@@ -15,9 +15,26 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     }
 )
 
+local filter_kinds = {
+    "source.doc",
+    "source.assembly",
+    -- 可以在这里继续添加更多要过滤的kind值，比如 "source.other_type" 等
+}
+vim.api.nvim_create_user_command('LspCodeAction', function()
+    vim.lsp.buf.code_action({
+        filter = function(action)
+            -- vim.notify(vim.inspect(action))
+            for _, kind_to_filter in ipairs(filter_kinds) do
+                if action.kind == kind_to_filter then
+                    return false
+                end
+            end
+            return true
+        end
+    })
+end, {})
 vim.cmd("command! Rename lua vim.lsp.buf.rename()<cr>")
 vim.cmd('command! Format lua vim.lsp.buf.format({async = true})<cr>')
-vim.cmd('command! LspCodeAction lua vim.lsp.buf.code_action()<cr>')
 vim.cmd('command! LspSignsHelp lua vim.lsp.buf.signature_help()<cr>')
 vim.cmd('command! LspDocSymbols lua vim.lsp.buf.document_symbol()<cr>')
 vim.cmd('command! LspOutGoingCalls lua vim.lsp.buf.outgoing_calls()<cr>')
@@ -47,9 +64,8 @@ M.on_attach = function(client, bufnr)
     keymap(bufnr, "n", "gs", "<cmd>lua vim.lsp.buf.document_symbol()<CR>", opts)
     keymap(bufnr, "n", "sh", "<cmd>lua vim.lsp.buf.signature_help({async = true})<cr>", opts)
     -- lsp action instruction
+    keymap(bufnr, "n", "F", "<cmd>LspCodeAction <cr>", opts)
     keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
-    keymap(bufnr, "n", "F", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
-    keymap(bufnr, "i", ",?", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
 
     -- lsp nvimcmplsp
     local user_option_path = "config.lsp.settings." .. client.name

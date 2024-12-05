@@ -36,10 +36,34 @@ mason_lspconfig.setup_handlers {
 
 require("lazydev").setup() -- it's will register lazydev source automatically
 
-require("config.lsp.null-ls")
-
 require("lsp_signature").setup({
     hint_enable = false,    -- virtual hint
     floating_window = true, -- show hint in a floating window, false for virtual text only mode
     floating_window_above_cur_line = true,
 })
+
+local null_ls_status_ok, null_ls = pcall(require, "null-ls")
+if null_ls_status_ok then
+    null_ls.setup {
+        debug = false,
+        sources = {
+            -- formating
+            null_ls.builtins.formatting.prettier.with {
+                filetypes = { "markdown" },
+                extra_args = { "--no-semi", "--single-quote", "--jsx-single-quote" },
+            },
+            null_ls.builtins.formatting.goimports,
+            -- code action
+            null_ls.builtins.code_actions.impl,
+            null_ls.builtins.code_actions.refactoring,
+            null_ls.builtins.code_actions.gomodifytags, --go
+        },
+    }
+    local ok, mason_null = pcall(require, "mason-null-ls")
+    if ok then
+        mason_null.setup({
+            ensure_installed = {},
+            automatic_installation = false,
+        })
+    end
+end

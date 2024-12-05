@@ -27,9 +27,7 @@ M.enbale_format_on_write = function(client, bufnr)
             group = augroup,
             buffer = bufnr,
             callback = function()
-                if b.format_on_write ~= false then
-                    format_use_null_ls_first(bufnr)
-                end
+                format_use_null_ls_first(bufnr)
             end,
         })
     end
