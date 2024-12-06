@@ -116,7 +116,7 @@ vim.cmd [[autocmd BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|e
 
 -- diagnostics basic(none lsp related) config
 local diagnostic_signs = {
-    { name = "DiagnosticSignHint", text = "" },
+    { name = "DiagnosticSignHint", text = "" },
     { name = "DiagnosticSignInfo", text = "" },
     { name = "DiagnosticSignWarn", text = "" },
     { name = "DiagnosticSignError", text = "" },
