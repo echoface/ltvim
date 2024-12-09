@@ -97,12 +97,11 @@ cmp.setup({
         end, { "i", "s" }),
     }),
     sources = {
-        { name = "lazydev",   group_index = 1 },
-        { name = "luasnip",   group_index = 1 },
-        { name = "nvim_lsp",  group_index = 1 },
-        { name = "nvim_lua",  group_index = 1 },
-        { name = "copilot",   group_index = 1 },
+        { name = "luasnip",   group_index = 1 }, -- snippets provider
+        { name = "nvim_lsp",  group_index = 1 }, -- cmp from lsp server configure by nvim-lspconfig
         { name = "codeverse", group_index = 1 },
+        { name = "lazydev",   group_index = 1 },
+        { name = "nvim_lua",  group_index = 1 }, -- You can get the vim.lsp.util.* API with this source.
         { name = "path",      group_index = 2 },
         { name = "buffer",    group_index = 2 },
     },

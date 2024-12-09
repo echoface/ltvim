@@ -76,6 +76,7 @@ local function right_view(float)
         side = "right",
         float = {
             enable = float,
+            quit_on_focus_loss = true,
             open_win_config = {
                 border = "rounded",
                 relative = "editor",
