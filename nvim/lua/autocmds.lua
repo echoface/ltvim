@@ -115,6 +115,7 @@ vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead", "BufEnter" }, {
 vim.cmd [[autocmd BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif]]
 
 -- diagnostics basic(none lsp related) config
+-- { Error = "✘", Warn = "", Hint = "i", Info = "i" }
 local diagnostic_signs = {
     { name = "DiagnosticSignHint", text = "" },
     { name = "DiagnosticSignInfo", text = "" },
