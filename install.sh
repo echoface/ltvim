@@ -77,8 +77,9 @@ else
 fi
 
 echo "finish install and enjoy ltvim now!!!"
-echo "1. please install npm ripgrep to ensure working"
-echo "   ripgrep: sudo apt install ripgrep"
+echo "please install npm ripgrep to ensure working"
+echo "   ripgrep: sudo apt install ripgrep/brew install ripgrep"
+echo "   apt install fd-find/brew install fd"
 echo "   npm: wget https://raw.githubusercontent.com/tj/n/master/bin/n -O /usr/bin/n"
 echo "...............................BYE..."
 
