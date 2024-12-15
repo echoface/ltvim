@@ -4,15 +4,16 @@
 -- Use 'q' to quit from common plugins
 vim.api.nvim_create_autocmd({ "FileType" }, {
     pattern = {
-        "qf", "help", "man", "lspinfo", "notify", "lir",
-        "spectre_panel", "NvimTree"
+        "qf", "help", "man",
+        "lspinfo", "notify", "lir",
+        "spectre_panel", "NvimTree",
     },
     callback = function()
         vim.cmd [[
-      nnoremap <silent> <buffer> q :close<CR>
-      nnoremap <silent> <buffer> <ESC> :close<CR>
-      set nobuflisted
-    ]]
+            nnoremap <silent> <buffer> q :close<CR>
+            nnoremap <silent> <buffer> <ESC> :close<CR>
+            set nobuflisted
+        ]]
     end,
 })
 
@@ -34,16 +35,20 @@ end, { desc = "Toggle quickfix window", nargs = '*' })
 
 vim.api.nvim_create_autocmd({ "FileType" }, {
     pattern = { "qf", "quickfix" },
-    command = [[
-        nnoremap <buffer> <CR> <CR><C-W>p       " open and keep focus on qf
-        nnoremap <silent> <buffer> o <CR><C-w>p " open and keep focus on qf
-        nnoremap <buffer> k <Up>
-        nnoremap <buffer> j <Down>
-        nnoremap <leader>tq <cmd>:ToggleQuickFix<CR>
-    ]],
-    -- nnoremap <buffer> <CR> <CR>:cclose<CR>
-    -- close quickfix menu after selecting choice
-    -- command = [[nnoremap <buffer> <CR> <CR>:cclose<CR>]]
+    callback = function()
+        local keymap = vim.keymap.set
+        local opts = { noremap = true, silent = true }
+        keymap("n", "tq", ":ToggleQuickFix<CR>", opts)
+
+        vim.cmd [[
+            nnoremap <buffer> k <Up>
+            nnoremap <buffer> j <Down>
+            nnoremap <buffer> o <CR>:cclose<CR>      " close quickfix menu after selecting choice
+            nnoremap <buffer> <CR> <CR>:cclose<CR>   " close quickfix menu after selecting choice
+            "nnoremap <buffer> o <CR><C-w>p          " open and keep focus on qf
+            "nnoremap <buffer> <CR> <CR><C-W>p       " open and keep focus on qf
+        ]]
+    end
 })
 
 -- Set wrap and spell in markdown and gitcommit
