@@ -96,6 +96,7 @@ vim.api.nvim_create_autocmd({ "TermOpen", "TermEnter" }, {
         --- vim.cmd([[ startinsert ]])
     end,
 })
+vim.keymap.set("n", "tt", [[<Cmd>:ToggleTerm]], { noremap = true, silent = true })
 
 vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead", "BufEnter" }, {
     pattern = { "*.go" },

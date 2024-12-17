@@ -5,7 +5,7 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.opt.termguicolors = true
 
-vim.api.nvim_set_keymap("n", "tt", ":NvimTreeFindFileToggle<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "tf", ":NvimTreeFindFileToggle<CR>", { noremap = true, silent = true })
 
 local function on_attach(bufnr)
     local api = require('nvim-tree.api')
