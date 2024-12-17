@@ -2,12 +2,12 @@ return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
-        { "hrsh7th/cmp-nvim-lsp" }, -- we use cmp-nvm-lsp, so ref to it's capabilities
+        { "hrsh7th/cmp-nvim-lsp" },
         { "nvimtools/none-ls.nvim" },
-        { "jay-babu/mason-null-ls.nvim" },
-        { "ray-x/lsp_signature.nvim" }, -- display func signatures
-        { "williamboman/mason.nvim" },
-        { "williamboman/mason-lspconfig.nvim" },
+        { "ray-x/lsp_signature.nvim" },
+        { "williamboman/mason.nvim",           version = "*" },
+        { "jay-babu/mason-null-ls.nvim",       version = "*" },
+        { "williamboman/mason-lspconfig.nvim", version = "*" },
         {
             "folke/lazydev.nvim",
             ft = "lua",
