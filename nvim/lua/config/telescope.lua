@@ -43,11 +43,11 @@ telescope.setup({
         -- path_display = function(opts, path)
         --   return require("telescope.utils").path_display.truncate(path, 40)
         -- end,
-        path_display = {
-            truncate = 3,
-            -- shorten = { len = 1, exclude = { -2, -1 } }, -- only display the first character of each directory in
-            -- filename_first = { reverse_directories = false }
-        }
+        -- path_display = {
+        --     truncate = 3,
+        --     -- shorten = { len = 1, exclude = { -2, -1 } }, -- only display the first character of each directory in
+        --     -- filename_first = { reverse_directories = false }
+        -- }
     },
     pickers = {
         lsp_references = lsp_common_picker_opts,
@@ -65,7 +65,7 @@ telescope.setup({
             fuzzy = true,                   -- false will only do exact matching
             override_file_sorter = true,    -- override the file sorter
             override_generic_sorter = true, -- override the generic sorter
-            case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
+            case_mode = "respect_case",     -- or "ignore_case" or "respect_case"
         }
     }
 })

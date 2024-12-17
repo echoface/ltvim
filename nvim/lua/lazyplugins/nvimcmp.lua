@@ -3,11 +3,11 @@ return {
         "hrsh7th/nvim-cmp",
         event = { "InsertEnter", "CmdLineEnter" },
         dependencies = {
-            { "hrsh7th/cmp-path" },
-            { "hrsh7th/cmp-buffer" },
-            { "hrsh7th/cmp-cmdline" },
-            { "hrsh7th/cmp-nvim-lsp" },
-            { "hrsh7th/cmp-nvim-lua" },
+            { "hrsh7th/cmp-path",     version = "*" },
+            { "hrsh7th/cmp-buffer",   version = "*" },
+            { "hrsh7th/cmp-cmdline",  version = "*" },
+            { "hrsh7th/cmp-nvim-lsp", version = "*" },
+            { "hrsh7th/cmp-nvim-lua", version = "*" },
             {
                 "saadparwaiz1/cmp_luasnip",
                 dependencies = {
