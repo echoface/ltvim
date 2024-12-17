@@ -4,3 +4,4 @@
 
 *.diff
 vim/Plug
+nvim/lazy-lock.json
