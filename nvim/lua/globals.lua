@@ -36,6 +36,11 @@ vim.opt.wrap = false        -- display lines as one long line
 vim.opt.scrolloff = 8       -- is one of my fav
 vim.opt.sidescrolloff = 8
 vim.opt.startofline = false -- don't jump to startofline for g,G,<C-jumpcmd>
+-- c:不会自动在注释行过长时换行
+-- r: 在注释行中按回车键时，不会自动在新行插入注释标记
+-- t:在普通模式下使用 o 或 O 命令新增行时，不会自动延续注释
+vim.cmd("set formatoptions-=cro")
+
 -- vim.opt.virtualedit = "all"                     -- keep curosr in fixed column
 -- disable netrw at the very start of your init.lua
 vim.g.loaded_netrw = 1
@@ -44,4 +49,4 @@ vim.g.loaded_netrwPlugin = 1
 
 -- za: foldtoggle   zo: fold open  zc: fold close
 vim.opt.foldmethod = "indent" -- 设置语法折叠
-vim.opt.foldlevelstart = 10    -- don't fold any thing when open file
+vim.opt.foldlevelstart = 10   -- don't fold any thing when open file

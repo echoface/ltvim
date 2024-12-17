@@ -10,9 +10,9 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
     },
     callback = function()
         vim.cmd [[
+            setlocal nobuflisted
             nnoremap <silent> <buffer> q :close<CR>
             nnoremap <silent> <buffer> <ESC> :close<CR>
-            set nobuflisted
         ]]
     end,
 })
@@ -75,33 +75,24 @@ vim.api.nvim_create_autocmd("FileType", {
     end
 })
 
--- Fixes Autocomment
-vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
-    callback = function()
-        vim.cmd "set formatoptions-=cro"
-    end,
-})
-
-function _G.set_terminal_keymaps()
-    local opts = { buffer = 0 }
-    vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
-    vim.keymap.set('t', 'jk', [[<C-\><C-n>]], opts)
-    vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
-    vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
-    vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
-    vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
-    vim.keymap.set('t', '<C-w>', [[<C-\><C-n><C-w>]], opts)
-end
 
 -- Terminal
 vim.api.nvim_create_autocmd({ "TermOpen", "TermEnter" }, {
-    -- pattern = { "term://*" },
     callback = function()
+        local opts = { buffer = 0 }
+        vim.keymap.set('t', 'jj', [[<C-\><C-n>]], opts)
+        vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
+        vim.keymap.set('t', '<C-w>', [[<C-\><C-n><C-w>]], opts)
+
+        vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
+        vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
+        vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
+        vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
+
         vim.opt_local.signcolumn     = "no"
         vim.opt_local.number         = false
         vim.opt_local.relativenumber = false
 
-        set_terminal_keymaps()
         --- vim.cmd([[ startinsert ]])
     end,
 })
@@ -117,7 +108,19 @@ vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead", "BufEnter" }, {
 })
 
 -- back last edit position
-vim.cmd [[autocmd BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif]]
+-- vim.cmd [[autocmd BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif]]
+vim.api.nvim_create_autocmd("BufReadPost", {
+    pattern = "*",
+    callback = function()
+        local total_lines = vim.api.nvim_buf_line_count(0)
+        -- 获取上次编辑位置的行和列
+        local last_line, last_col = unpack(vim.api.nvim_buf_get_mark(0, '"'))
+        if last_line > 0 and last_line <= total_lines then
+            vim.api.nvim_win_set_cursor(0, { last_line, last_col })
+        end
+    end,
+})
+
 
 -- diagnostics basic(none lsp related) config
 -- { Error = "✘", Warn = "", Hint = "i", Info = "i" }
@@ -133,9 +136,11 @@ for _, sign in ipairs(diagnostic_signs) do
 end
 
 vim.diagnostic.config({
-    virtual_text = false,                   -- disable virtual text
-    update_in_insert = false,               -- update diagnostic edit
-    signs = { active = diagnostic_signs, }, -- show signs
+    virtual_text = false,     -- disable virtual text
+    update_in_insert = false, -- update diagnostic edit
+    signs = {
+        active = diagnostic_signs,
+    }, -- show signs
     float = {
         focusable = true,
         style = "minimal",

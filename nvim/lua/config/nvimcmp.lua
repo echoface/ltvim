@@ -45,7 +45,7 @@ cmp.setup({
         expand = snippet_expand,
     },
     completion = {
-        keyword_length = 3,
+        keyword_length = 2,
         -- autocomplete = true, -- set to fase stop autocomplete, need trigger manually
     },
     mapping = cmp.mapping.preset.insert({

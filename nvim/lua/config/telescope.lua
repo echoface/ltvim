@@ -1,15 +1,30 @@
 local telescope = require("telescope")
 local actions = require("telescope.actions")
+
+local lsp_symbol_picker_opts = {
+    symbol_width = 0.5,
+    symbol_type_width = 10,
+    show_line = false,          -- line_text
+    fname_width = 30,           -- path width
+    path_display = { "hidden" } -- hidden
+}
+local lsp_common_picker_opts = {
+    fname_width = 30,
+    show_line = false,
+    trim_text = true,
+    path_display = { "tail" }
+}
+
 telescope.setup({
     defaults = {
         theme = "center",
         layout_strategy = "flex", -- bottom_pane|horizontal|vertical|cursor|cneter|flex
         sorting_strategy = "ascending",
         layout_config = {
-            width = 0.95,
-            height = 0.90,
+            width = 0.96,
+            height = 0.96,
             horizontal = {
-                preview_width = 0.5,
+                preview_width = 0.6,
                 prompt_position = "top",
             },
         },
@@ -25,18 +40,22 @@ telescope.setup({
             }
         },
         file_ignore_patterns = { ".git/", "node_modules" },
+        -- path_display = function(opts, path)
+        --   return require("telescope.utils").path_display.truncate(path, 40)
+        -- end,
         path_display = {
             truncate = 3,
-            shorten = { len = 2 }, -- only display the first character of each directory in
+            -- shorten = { len = 1, exclude = { -2, -1 } }, -- only display the first character of each directory in
+            -- filename_first = { reverse_directories = false }
         }
     },
     pickers = {
-        lsp_references = { fname_width = 30, show_line = false, trim_text = true },
-        lsp_definitions = { fname_width = 30, show_line = false, trim_text = true },
-        lsp_incoming_calls = { fname_width = 30, show_line = false, trim_text = true },
-        lsp_outgoing_calls = { fname_width = 30, show_line = false, trim_text = true },
-        lsp_document_symbols = { fname_width = 30, symbol_width = 48, show_line = true, },
-        lsp_workspace_symbols = { fname_width = 30, symbol_width = 48, show_line = true, },
+        lsp_references = lsp_common_picker_opts,
+        lsp_definitions = lsp_common_picker_opts,
+        lsp_incoming_calls = lsp_common_picker_opts,
+        lsp_outgoing_calls = lsp_common_picker_opts,
+        lsp_document_symbols = lsp_symbol_picker_opts,
+        lsp_workspace_symbols = lsp_symbol_picker_opts,
     },
     extensions = {
         ["ui-select"] = {
@@ -76,6 +95,8 @@ if ok then
     vim.api.nvim_create_user_command("Projects", function()
         telescope.extensions.projects.projects {}
     end, {})
+    -- extension cmd
+    keymap("n", "<leader>fp", telescope.extensions.projects.projects, opts)
 end
--- extension cmd
-keymap("n", "<leader>fp", telescope.extensions.projects.projects, opts)
+
+-- end config telescope
