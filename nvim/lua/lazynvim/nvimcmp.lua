@@ -1,3 +1,6 @@
+
+local enable_copilot = false
+
 return {
     {
         "hrsh7th/nvim-cmp",
@@ -25,7 +28,7 @@ return {
             },
             {
                 "zbirenbaum/copilot-cmp",
-                enabled = false,
+                enabled = enable_copilot,
                 config = function()
                     require("copilot_cmp").setup()
                 end,
@@ -41,7 +44,7 @@ return {
                                 -- trace = "verbose",
                                 settings = {
                                     advanced = {
-                                        listCount = 5,          -- #completions for panel
+                                        listCount = 5, -- #completions for panel
                                         inlineSuggestCount = 3, -- #completions for getCompletions
                                     }
                                 },
@@ -49,10 +52,10 @@ return {
                         }
                     end,
                 },
-            },
+            }
         },
         config = function()
-            require("config.nvimcmp")
+            require("config.nvimcmp").setup()
         end,
     },
 }

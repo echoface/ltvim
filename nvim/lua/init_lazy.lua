@@ -9,7 +9,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
     spec = {
-        { import = "lazyplugins" },
+        { import = "lazynvim" },
         {
             "morhetz/gruvbox", --"tanvirtin/monokai.nvim",
             priority = 1000,
