@@ -1,3 +1,6 @@
+local enable_copilot = false
+local enable_codeverse = true
+
 return {
     {
         "hrsh7th/nvim-cmp",
@@ -25,7 +28,7 @@ return {
             },
             {
                 "zbirenbaum/copilot-cmp",
-                enabled = false,
+                enabled = enable_copilot,
                 config = function()
                     require("copilot_cmp").setup()
                 end,
@@ -50,20 +53,21 @@ return {
                     end,
                 },
             },
+            {
+                "https://code.byted.org/chenjiaqi.cposture/codeverse.vim.git",
+                enabled = enable_codeverse,
+                init = function()
+                    vim.g.codeverse_no_map_tab = true
+                    vim.g.codeverse_disable_bindings = true
+                    vim.g.codeverse_disable_autocompletion = true
+                end,
+                config = function()
+                    require("codeverse").setup() -- it will register cmp source
+                end,
+            },
         },
         config = function()
-            require("config.nvimcmp")
-        end,
-    },
-    {
-        "https://code.byted.org/chenjiaqi.cposture/codeverse.vim.git",
-        init = function()
-            vim.g.codeverse_no_map_tab = true
-            vim.g.codeverse_disable_bindings = true
-            vim.g.codeverse_disable_autocompletion = true
-        end,
-        config = function()
-            require("codeverse").setup() -- it will register cmp source
+            require("config.nvimcmp").setup()
         end,
     },
 }
