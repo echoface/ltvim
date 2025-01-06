@@ -101,7 +101,7 @@ nvimtree.setup({
         update_root = true
     },
     on_attach = on_attach,
-    view = right_view(false),
+    view = right_view(true),
     git = {
         enable = false,
     },
@@ -110,7 +110,7 @@ nvimtree.setup({
     },
     actions = {
         open_file = {
-            quit_on_open = false,
+            quit_on_open = true,
         },
     },
 })
