@@ -33,8 +33,16 @@ vim.api.nvim_create_user_command('LspCodeAction', function()
         end
     })
 end, {})
+
+local format_util = require("config.util.formating")
+vim.api.nvim_create_user_command('LspFormat', function()
+    local bufnr = vim.api.nvim_get_current_buf()
+    format_util.format_use_null_ls_first(bufnr, true)
+end, {})
+
+-- vim.cmd('command! Format lua vim.lsp.buf.format({async = true})<cr>')
+
 vim.cmd("command! Rename lua vim.lsp.buf.rename()<cr>")
-vim.cmd('command! Format lua vim.lsp.buf.format({async = true})<cr>')
 vim.cmd('command! LspSignsHelp lua vim.lsp.buf.signature_help()<cr>')
 vim.cmd('command! LspDocSymbols lua vim.lsp.buf.document_symbol()<cr>')
 vim.cmd('command! LspOutGoingCalls lua vim.lsp.buf.outgoing_calls()<cr>')

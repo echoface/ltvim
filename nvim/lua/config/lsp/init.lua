@@ -42,6 +42,11 @@ require("lsp_signature").setup({
     floating_window_above_cur_line = true,
 })
 
+local formater = require("config.util.formating")
+formater.setup({
+    idlfmt_ftypes = { "*.go", "*.py", "*.c", "*.cpp", "*.lua", "*.yaml" },
+})
+
 local null_ls_status_ok, null_ls = pcall(require, "null-ls")
 if null_ls_status_ok then
     null_ls.setup {
@@ -52,7 +57,14 @@ if null_ls_status_ok then
                 filetypes = { "markdown" },
                 extra_args = { "--no-semi", "--single-quote", "--jsx-single-quote" },
             },
-            null_ls.builtins.formatting.goimports,
+            -- completion
+            -- null_ls.builtins.completion.spell,
+            -- null_ls.builtins.completion.luasnip,
+            -- null_ls.builtins.completion.nvim_snippets,
+            --
+            -- formating
+            -- null_ls.builtins.formatting.goimports,
+            --
             -- code action
             null_ls.builtins.code_actions.impl,
             null_ls.builtins.code_actions.refactoring,

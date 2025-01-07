@@ -40,6 +40,7 @@ end
 M = {
     setup_opts = {
         settings = {
+            -- full setting can be found: gopls api-json
             gopls = {
                 gofumpt = true, -- more strict format
                 usePlaceholders = false,
@@ -47,13 +48,13 @@ M = {
                 hoverKind = "NoDocumentation",
                 directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
                 codelenses = {
+                    tidy = false,
+                    vendor = false,
                     gc_details = false,
-                    generate = true,
-                    regenerate_cgo = true,
+                    generate = false,
+                    regenerate_cgo = false,
                     run_govulncheck = false,
-                    tidy = true,
                     upgrade_dependency = true,
-                    vendor = true
                 },
                 diagnosticsTrigger = "Save" -- Save,Edit
             },
@@ -63,12 +64,12 @@ M = {
         create_cmd_goimports(bufnr)
         create_cmd_fill_struct(bufnr)
 
-        format_util.enbale_format_on_write(client, bufnr)
-        -- client.server_capabilities.documentFormattingProvider = false
-
         local opts = { noremap = true, silent = true }
         local keymap = vim.api.nvim_buf_set_keymap
         keymap(bufnr, "i", ",f", "<cmd>:GoFillStruct<cr>", opts)
+
+        format_util.enable_format_on_write(client, bufnr)
+        -- client.server_capabilities.documentFormattingProvider = false
     end
 }
 
