@@ -15,7 +15,10 @@ M.format_use_null_ls_first = function(buf, async)
         async = async,
         timeout_ms = 1000,
         filter = function(client)
-            return has_null_ls and client.name == 'null-ls' or true
+            if not has_null_ls then
+                return true
+            end
+            return client.name == 'null-ls'
         end,
     })
 end
