@@ -40,14 +40,9 @@ telescope.setup({
             }
         },
         file_ignore_patterns = { ".git/", "node_modules" },
-        -- path_display = function(opts, path)
-        --   return require("telescope.utils").path_display.truncate(path, 40)
-        -- end,
-        -- path_display = {
-        --     truncate = 3,
-        --     -- shorten = { len = 1, exclude = { -2, -1 } }, -- only display the first character of each directory in
-        --     -- filename_first = { reverse_directories = false }
-        -- }
+        path_display = {
+            filename_first = { reverse_directories = true }
+        }
     },
     pickers = {
         lsp_references = lsp_common_picker_opts,

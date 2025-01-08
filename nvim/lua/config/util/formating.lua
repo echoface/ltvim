@@ -13,6 +13,7 @@ M.format_use_null_ls_first = function(buf, async)
     vim.lsp.buf.format({
         bufnr = buf,
         async = async,
+        timeout_ms = 1000,
         filter = function(client)
             return has_null_ls and client.name == 'null-ls' or true
         end,
@@ -26,6 +27,9 @@ M.enable_format_on_write = function(client, bufnr)
             group = augroup,
             buffer = bufnr,
             callback = function()
+                if not vim.bo[bufnr].modified then
+                    return
+                end
                 M.format_use_null_ls_first(bufnr, false)
             end,
         })
