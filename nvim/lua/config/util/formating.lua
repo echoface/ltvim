@@ -53,7 +53,7 @@ local enable_autofmt_when_idle = function(fts)
             if not vim.bo[ev.buf].modified then
                 return
             end
-            M.format_use_null_ls_first(ev.buf, true)
+            M.format_use_null_ls_first(ev.buf, false)
         end,
     })
 end
