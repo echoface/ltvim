@@ -5,6 +5,7 @@ return {
     {
         "hrsh7th/nvim-cmp",
         event = { "InsertEnter", "CmdLineEnter" },
+        version = "*",
         dependencies = {
             { "hrsh7th/cmp-path",     version = "*" },
             { "hrsh7th/cmp-buffer",   version = "*" },

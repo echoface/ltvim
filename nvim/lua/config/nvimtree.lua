@@ -28,7 +28,7 @@ end
 local HEIGHT_RATIO = 0.8 -- You can change this
 local WIDTH_RATIO = 0.64 -- You can change this too
 
-local function center_float_view()
+local function center_float()
     local screen_w = vim.opt.columns:get()
     local screen_h = vim.opt.lines:get() - vim.opt.cmdheight:get()
     local window_w = screen_w * WIDTH_RATIO
@@ -101,7 +101,8 @@ nvimtree.setup({
         update_root = true
     },
     on_attach = on_attach,
-    view = right_view(true),
+    view = center_float(),
+    -- view = right_view(true),
     git = {
         enable = false,
     },
