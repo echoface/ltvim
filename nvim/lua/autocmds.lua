@@ -136,13 +136,13 @@ for _, sign in ipairs(diagnostic_signs) do
 end
 
 vim.diagnostic.config({
-    virtual_text = false,     -- disable virtual text
-    update_in_insert = false, -- update diagnostic edit
+    virtual_text = false,    -- disable virtual text
+    update_in_insert = true, -- update diagnostic edit
     signs = {
         active = diagnostic_signs,
     }, -- show signs
     float = {
-        focusable = true,
+        focusable = false,
         style = "minimal",
         border = "rounded",
         source = true, -- 'if_many'
