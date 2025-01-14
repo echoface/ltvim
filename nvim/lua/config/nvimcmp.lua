@@ -122,6 +122,9 @@ M.setup = function()
             completion = cmp.config.window.bordered(),
             documentation = cmp.config.window.bordered(),
         },
+        performance = {
+            max_view_entries = 6
+        },
     })
 
     -- `/` cmdline setup.
