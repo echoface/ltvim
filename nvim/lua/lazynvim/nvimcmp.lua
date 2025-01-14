@@ -1,5 +1,5 @@
 local enable_copilot = false
-local enable_codeverse = true
+local enable_marscode = true
 
 return {
     {
@@ -56,14 +56,14 @@ return {
             },
             {
                 "https://code.byted.org/chenjiaqi.cposture/codeverse.vim.git",
-                enabled = enable_codeverse,
+                enabled = enable_marscode,
                 init = function()
-                    vim.g.codeverse_no_map_tab = true
-                    vim.g.codeverse_disable_bindings = true
-                    vim.g.codeverse_disable_autocompletion = true
+                    vim.g.marscode_no_map_tab = true
+                    vim.g.marscode_disable_bindings = true
+                    vim.g.marscode_disable_autocompletion = true
                 end,
                 config = function()
-                    require("codeverse").setup() -- it will register cmp source
+                    require("marscode").setup() -- it will register cmp source
                 end,
             },
         },

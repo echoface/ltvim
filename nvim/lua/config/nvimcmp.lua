@@ -26,18 +26,18 @@ end
 
 local gen_cmp_sources = function()
     local sources = {
-        { name = "luasnip",  group_index = 1 }, -- snippets provider
-        { name = "nvim_lsp", group_index = 1 }, -- cmp from lsp server configure by nvim-lspconfig
+        { name = "nvim_lsp", group_index = 0 }, -- cmp from lsp server configure by nvim-lspconfig
+        { name = "luasnip",  group_index = 0 }, -- snippets provider
         { name = "lazydev",  group_index = 1 },
         { name = "nvim_lua", group_index = 1 }, -- You can get the vim.lsp.util.* API with this source.
         { name = "path",     group_index = 2 },
         { name = "buffer",   group_index = 2 },
     }
     if package.loaded["copilot"] ~= nil then
-        table.insert(sources, { name = "copilot", group_index = 1 })
+        table.insert(sources, { name = "copilot", group_index = 0 })
     end
-    if package.loaded["codeverse"] ~= nil then
-        table.insert(sources, { name = "codeverse", group_index = 1 })
+    if package.loaded["marscode"] ~= nil then
+        table.insert(sources, { name = "marscode", group_index = 0 })
     end
     return sources
 end
