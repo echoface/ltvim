@@ -1,4 +1,5 @@
 vim.opt.backup = false                                     -- creates a backup file
+vim.opt.hidden = true
 vim.opt.clipboard = "unnamedplus"                          -- allows neovim to access the system clipboard
 vim.opt.cmdheight = 1                                      -- more space in the neovim command line for displaying messages
 vim.opt.completeopt = { "menuone", "preview", "noselect" } -- mostly just for cmp
@@ -50,3 +51,6 @@ vim.g.loaded_netrwPlugin = 1
 -- za: foldtoggle   zo: fold open  zc: fold close
 vim.opt.foldmethod = "indent" -- 设置语法折叠
 vim.opt.foldlevelstart = 10   -- don't fold any thing when open file
+
+-- vim.lsp.set_log_level 'debug'
+-- require('vim.lsp.log').set_format_func(vim.inspect)

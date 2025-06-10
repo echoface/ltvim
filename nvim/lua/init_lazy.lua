@@ -10,11 +10,6 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
     spec = {
         { import = "lazynvim" },
-        {
-            "morhetz/gruvbox", --"tanvirtin/monokai.nvim",
-            priority = 1000,
-            config = function() vim.cmd.colorscheme('gruvbox') end
-        },
     },
     ui = { border = "rounded" },
     checker = { enabled = false }, -- automatically check for plugin updates

@@ -1,4 +1,3 @@
-
 vim.cmd [[
 
 let g:test#strategy = "toggleterm" " "neovim_sticky"

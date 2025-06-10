@@ -1,20 +1,4 @@
 -- global lsp init
-
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-    vim.lsp.handlers.hover, {
-        border = "rounded",
-    })
-vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
-    vim.lsp.handlers.signature_help, {
-        border = "rounded",
-    })
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics, {
-        -- disable diagnostics insert mode; delay update diagnostics
-        update_in_insert = false,
-    }
-)
-
 local filter_kinds = {
     "source.doc",
     "source.assembly",
@@ -48,19 +32,7 @@ vim.cmd('command! LspDocSymbols lua vim.lsp.buf.document_symbol()<cr>')
 vim.cmd('command! LspOutGoingCalls lua vim.lsp.buf.outgoing_calls()<cr>')
 vim.cmd('command! LspInComingCalls lua vim.lsp.buf.incoming_calls()<cr>')
 
-
 local M = {}
-M.capabilities = vim.lsp.protocol.make_client_capabilities()
-
-local nvim_lsp_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-if nvim_lsp_ok then
-    M.capabilities = cmp_nvim_lsp.default_capabilities(M.capabilities)
-end
--- M.capabilities.textDocument.completion.completionItem.snippetSupport = true
-M.capabilities.textDocument.completion.completionItem.resolveSupport = {
-    properties = { "documentation", "detail", "additionalTextEdits" },
-}
-
 M.on_attach = function(client, bufnr)
     -- setup keymapping
     local opts = { noremap = true, silent = true }
@@ -75,9 +47,10 @@ M.on_attach = function(client, bufnr)
     keymap(bufnr, "n", "F", "<cmd>LspCodeAction <cr>", opts)
     keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
 
-    -- lsp nvimcmplsp
-    local user_option_path = "config.lsp.settings." .. client.name
-    local ok, user_option = pcall(require, user_option_path)
+    vim.notify("lsp" .. client.name .. " on_attach", vim.log.levels.INFO)
+
+    local ud_option = "config.lsp.settings." .. client.name
+    local ok, user_option = pcall(require, ud_option)
     if ok and user_option.on_attach then
         user_option.on_attach(client, bufnr)
     end

@@ -3,11 +3,15 @@ return {
     { "moll/vim-bbye",       event = "VeryLazy" },
     { "APZelos/blamer.nvim", event = "VeryLazy" },
     {
-        "rcarriga/nvim-notify",
-        event = "VimEnter",
+        "morhetz/gruvbox", --"tanvirtin/monokai.nvim",
+        priority = 1000,
+        config = function() vim.cmd.colorscheme('gruvbox') end
+    },
+    {
+        'rcarriga/nvim-notify',
         config = function()
             vim.notify = require("notify")
-        end
+        end,
     },
     {
         "lewis6991/gitsigns.nvim",
@@ -30,10 +34,7 @@ return {
     {
         "windwp/nvim-autopairs",
         event = "InsertEnter",
-        dependencies = { "nvim-treesitter/nvim-treesitter" },
-        config = function()
-            require("config.autopairs")
-        end
+        config = true,
     },
     {
         "ntpeters/vim-better-whitespace",
