@@ -36,8 +36,8 @@ local gen_cmp_sources = function()
     if package.loaded["copilot"] ~= nil then
         table.insert(sources, { name = "copilot", group_index = 0 })
     end
-    if package.loaded["marscode"] ~= nil then
-        table.insert(sources, { name = "marscode", group_index = 0 })
+    if package.loaded["trae"] ~= nil then
+        table.insert(sources, { name = "trae", group_index = 0 })
     end
     return sources
 end

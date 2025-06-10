@@ -107,7 +107,17 @@ nvimtree.setup({
         enable = false,
     },
     filters = {
-        custom = { "^.git$" },
+        enable = true,
+        git_ignored = true,
+        dotfiles = false,
+        git_clean = true,
+        no_buffer = false,
+        no_bookmark = false,
+        custom = {
+            "^.git$", "*.log",
+            "^__?+__", "%.pyc$", "%.pyo$", "^__pycache__$", "^__init__.py$",
+        },
+        exclude = {},
     },
     actions = {
         open_file = {

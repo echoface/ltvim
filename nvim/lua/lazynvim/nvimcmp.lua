@@ -58,12 +58,12 @@ return {
                 "https://code.byted.org/chenjiaqi.cposture/codeverse.vim.git",
                 enabled = enable_marscode,
                 init = function()
-                    vim.g.marscode_no_map_tab = true
-                    vim.g.marscode_disable_bindings = true
-                    vim.g.marscode_disable_autocompletion = true
+                    vim.g.trae_no_map_tab = true
+                    vim.g.trae_disable_bindings = true
+                    vim.g.trae_disable_autocompletion = true
                 end,
                 config = function()
-                    require("marscode").setup() -- it will register cmp source
+                    require("trae").setup() -- it will register cmp source
                 end,
             },
         },

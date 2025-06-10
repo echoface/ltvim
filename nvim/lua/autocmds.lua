@@ -121,25 +121,16 @@ vim.api.nvim_create_autocmd("BufReadPost", {
     end,
 })
 
-
--- diagnostics basic(none lsp related) config
--- { Error = "✘", Warn = "", Hint = "i", Info = "i" }
-local diagnostic_signs = {
-    { name = "DiagnosticSignHint", text = "" },
-    { name = "DiagnosticSignInfo", text = "" },
-    { name = "DiagnosticSignWarn", text = "" },
-    { name = "DiagnosticSignError", text = "" },
-}
-
-for _, sign in ipairs(diagnostic_signs) do
-    vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = "" })
-end
-
 vim.diagnostic.config({
-    virtual_text = false,    -- disable virtual text
-    update_in_insert = true, -- update diagnostic edit
+    virtual_text = false,     -- disable virtual text
+    update_in_insert = false, -- update diagnostic edit
     signs = {
-        active = diagnostic_signs,
+        text = {
+            [vim.diagnostic.severity.ERROR] = "",
+            [vim.diagnostic.severity.WARN] = "",
+            [vim.diagnostic.severity.INFO] = "󰋼",
+            [vim.diagnostic.severity.HINT] = "󰌵",
+        },
     }, -- show signs
     float = {
         focusable = false,

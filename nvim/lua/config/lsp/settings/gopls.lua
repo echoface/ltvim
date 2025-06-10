@@ -1,21 +1,4 @@
--- CodeActionKind
---- ""                          # Empty
---- "quickfix"                  # QuickFix
---- "refactor"                  # Refactor
---- "refactor.extract"          # RefactorExtract
---- "refactor.inline"           # RefactorInline
---- "refactor.rewrite"          # RefactorRewrite
---- "source"                    # Source
---- "source.fixAll"             # SourceFixAll
---- "source.organizeImports"    # SourceOrganizeImports
-local function run_specific_code_action(action_kind)
-    local opts = {
-        apply = true,
-        context = { only = { action_kind } },
-    }
-    vim.lsp.buf.code_action(opts)
-end
-
+---@diagnostic disable: missing-fields
 
 local format_util = require("config.util.formating")
 
@@ -37,29 +20,8 @@ local create_cmd_goimports = function(bufnr)
     end, {})
 end
 
+-- full setting can be found by execute: `gopls api-json`
 M = {
-    setup_opts = {
-        settings = {
-            -- full setting can be found: gopls api-json
-            gopls = {
-                gofumpt = true, -- more strict format
-                usePlaceholders = false,
-                completeFunctionCalls = true,
-                hoverKind = "NoDocumentation",
-                directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
-                codelenses = {
-                    tidy = false,
-                    vendor = false,
-                    gc_details = false,
-                    generate = false,
-                    regenerate_cgo = false,
-                    run_govulncheck = false,
-                    upgrade_dependency = true,
-                },
-                diagnosticsTrigger = "Save" -- Save,Edit
-            },
-        },
-    },
     on_attach = function(client, bufnr)
         create_cmd_goimports(bufnr)
         create_cmd_fill_struct(bufnr)
@@ -69,7 +31,6 @@ M = {
         keymap(bufnr, "i", ",f", "<cmd>:GoFillStruct<cr>", opts)
 
         format_util.enable_format_on_write(client, bufnr)
-        -- client.server_capabilities.documentFormattingProvider = false
     end
 }
 
