@@ -33,11 +33,11 @@ local gen_cmp_sources = function()
         { name = "path",     group_index = 2 },
         { name = "buffer",   group_index = 2 },
     }
-    if package.loaded["copilot"] ~= nil then
-        table.insert(sources, { name = "copilot", group_index = 0 })
-    end
     if package.loaded["trae"] ~= nil then
         table.insert(sources, { name = "trae", group_index = 0 })
+    end
+    if package.loaded["copilot"] ~= nil then
+        table.insert(sources, { name = "copilot", group_index = 0 })
     end
     return sources
 end
@@ -122,9 +122,6 @@ M.setup = function()
             completion = cmp.config.window.bordered(),
             documentation = cmp.config.window.bordered(),
         },
-        performance = {
-            max_view_entries = 6
-        },
     })
 
     -- `/` cmdline setup.
@@ -143,6 +140,7 @@ M.setup = function()
         }, {
             { name = 'cmdline' }
         }),
+        ---@diagnostic disable-next-line: missing-fields
         matching = { disallow_symbol_nonprefix_matching = false }
     })
 

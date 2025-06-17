@@ -3,7 +3,6 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     version = "*",
     dependencies = {
-        { "hrsh7th/cmp-nvim-lsp" },
         { "nvimtools/none-ls.nvim" },
         { "neovim/nvim-lspconfig",             version = "*" },
         { "ray-x/lsp_signature.nvim",          version = "*" },

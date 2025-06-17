@@ -1,5 +1,5 @@
+local enable_trae = true
 local enable_copilot = false
-local enable_marscode = true
 
 return {
     {
@@ -56,7 +56,7 @@ return {
             },
             {
                 "https://code.byted.org/chenjiaqi.cposture/codeverse.vim.git",
-                enabled = enable_marscode,
+                enabled = enable_trae,
                 init = function()
                     vim.g.trae_no_map_tab = true
                     vim.g.trae_disable_bindings = true
