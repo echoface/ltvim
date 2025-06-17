@@ -1,4 +1,4 @@
-
+local enable_trae = false
 local enable_copilot = false
 
 return {
@@ -45,7 +45,7 @@ return {
                                 -- trace = "verbose",
                                 settings = {
                                     advanced = {
-                                        listCount = 5, -- #completions for panel
+                                        listCount = 5,          -- #completions for panel
                                         inlineSuggestCount = 3, -- #completions for getCompletions
                                     }
                                 },
@@ -53,7 +53,19 @@ return {
                         }
                     end,
                 },
-            }
+            },
+            {
+                "https://code.byted.org/chenjiaqi.cposture/codeverse.vim.git",
+                enabled = enable_trae,
+                init = function()
+                    vim.g.trae_no_map_tab = true
+                    vim.g.trae_disable_bindings = true
+                    vim.g.trae_disable_autocompletion = true
+                end,
+                config = function()
+                    require("trae").setup() -- it will register cmp source
+                end,
+            },
         },
         config = function()
             require("config.nvimcmp").setup()
