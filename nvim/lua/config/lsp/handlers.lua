@@ -47,7 +47,7 @@ M.on_attach = function(client, bufnr)
     keymap(bufnr, "n", "F", "<cmd>LspCodeAction <cr>", opts)
     keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
 
-    vim.notify("lsp" .. client.name .. " on_attach", vim.log.levels.INFO)
+    vim.notify("lsp [" .. client.name .. "] on_attach", vim.log.levels.INFO)
 
     local ud_option = "config.lsp.settings." .. client.name
     local ok, user_option = pcall(require, ud_option)
