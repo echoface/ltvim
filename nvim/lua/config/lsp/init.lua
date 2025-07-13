@@ -1,3 +1,5 @@
+-- vim.lsp.set_log_level("debug")
+
 require("lspconfig")
 require("mason").setup()
 require("mason-lspconfig").setup({
@@ -13,7 +15,7 @@ local lsphandler = require("config.lsp.handlers")
 local lsp_signature = require("lsp_signature")
 
 vim.api.nvim_create_autocmd('LspAttach', {
-    group = vim.api.nvim_create_augroup('my.lsp', {}),
+    group = vim.api.nvim_create_augroup('ltvim.lsp', {}),
     callback = function(args)
         local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
         -- Usually not needed if server supports "textDocument/willSaveWaitUntil".
@@ -28,13 +30,15 @@ vim.api.nvim_create_autocmd('LspAttach', {
             })
         end
 
+        -- version = "*", 0.11 兼容问题, https://github.com/ray-x/lsp_signature.nvim/pull/355
         lsp_signature.on_attach({
             bind = true,
             debug = false,
-            hint_enable = false,    -- virtual hint
-            floating_window = true, -- show hint in a floating window, false for virtual text only mode
-            floating_window_above_cur_line = true,
-        }, args.buf)
+            hint_enable = false, -- virtual hint
+            handler_opts = {
+                border = "rounded"
+            }
+        }, 0)
 
         lsphandler.on_attach(client, args.buf)
     end,
@@ -73,11 +77,4 @@ if nullls_ok then
             null_ls.builtins.code_actions.gomodifytags, --go
         },
     }
-    local ok, mason_null = pcall(require, "mason-null-ls")
-    if ok then
-        mason_null.setup({
-            ensure_installed = {},
-            automatic_installation = false,
-        })
-    end
 end
