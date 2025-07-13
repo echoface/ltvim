@@ -5,10 +5,34 @@ return {
     dependencies = {
         { "nvimtools/none-ls.nvim" },
         { "neovim/nvim-lspconfig",             version = "*" },
-        { "ray-x/lsp_signature.nvim",          version = "*" },
         { "williamboman/mason.nvim",           version = "*" },
-        { "jay-babu/mason-null-ls.nvim",       version = "*" },
         { "williamboman/mason-lspconfig.nvim", version = "*" },
+        {
+            "jay-babu/mason-null-ls.nvim",
+            version = "*",
+            dependencies = {
+                "williamboman/mason.nvim",
+                "nvimtools/none-ls.nvim",
+            },
+            opts = {
+                ensure_installed = {},
+                automatic_installation = false,
+            },
+        },
+        {
+            "ray-x/lsp_signature.nvim",
+            -- version = "*", 0.11 兼容问题
+            -- https://github.com/ray-x/lsp_signature.nvim/pull/355
+            event = "InsertEnter",
+            opts = {
+                bind = true,
+                debug = false,
+                hint_enable = false, -- virtual hint
+                handler_opts = {
+                    border = "rounded"
+                }
+            }
+        },
         {
             "folke/lazydev.nvim",
             ft = "lua",

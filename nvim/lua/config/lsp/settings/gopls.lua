@@ -31,6 +31,14 @@ M = {
         keymap(bufnr, "i", ",f", "<cmd>:GoFillStruct<cr>", opts)
 
         format_util.enable_format_on_write(client, bufnr)
+
+        -- override config
+        -- Server-specific settings. See `:help lsp-quickstart`
+        -- vim.lsp.config('gopls', {
+        --     settings = {
+        --         ['gopls'] = {},
+        --     },
+        -- })
     end
 }
 
