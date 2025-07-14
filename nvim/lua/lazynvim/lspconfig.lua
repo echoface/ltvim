@@ -3,10 +3,15 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     version = "*",
     dependencies = {
-        { "nvimtools/none-ls.nvim" },
         { "neovim/nvim-lspconfig",             version = "*" },
         { "williamboman/mason.nvim",           version = "*" },
         { "williamboman/mason-lspconfig.nvim", version = "*" },
+        {
+            "nvimtools/none-ls.nvim",
+            config = function()
+                require("config.nonels")
+            end
+        },
         {
             "jay-babu/mason-null-ls.nvim",
             version = "*",
@@ -49,6 +54,6 @@ return {
         },
     },
     config = function()
-        require("config.lsp")
+        require("config.setuplsp")
     end
 }
