@@ -36,7 +36,7 @@ vim.cmd("command! Rename lua vim.lsp.buf.rename()<cr>")
 -- vim.cmd('command! Format lua vim.lsp.buf.format({async = true})<cr>')
 vim.api.nvim_create_user_command('LspFormat', function()
     local bufnr = vim.api.nvim_get_current_buf()
-    formatutil.format_use_null_ls_first(bufnr, true)
+    formatutil.format_with_priority(bufnr, true)
 end, {})
 vim.cmd('command! LspSignsHelp lua vim.lsp.buf.signature_help()<cr>')
 vim.cmd('command! LspDocSymbols lua vim.lsp.buf.document_symbol()<cr>')
@@ -102,6 +102,14 @@ vim.api.nvim_create_autocmd('LspAttach', {
                 border = "rounded"
             }
         }, 0)
+
+        -- -- if client.name ~= "null-ls" then
+        -- if client.name ~= "gopls" then
+        --     vim.notify("diable lsp formating" .. client.name, vim.log.levels.INFO)
+        --     client.capabilities.documentFormattingProvider = false
+        --     client.server_capabilities.documentFormattingProvider = false
+        --     client.server_capabilities.document_range_formatting = false
+        -- end
 
         shared_on_attach(client, args.buf)
     end,

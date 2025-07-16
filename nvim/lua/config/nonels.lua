@@ -1,5 +1,6 @@
 local nullls_ok, null_ls = pcall(require, "null-ls")
 if not nullls_ok then
+    return
 end
 
 null_ls.setup {
@@ -11,7 +12,7 @@ null_ls.setup {
             extra_args = { "--no-semi", "--single-quote", "--jsx-single-quote" },
         },
         -- formating
-        null_ls.builtins.formatting.gofumpt,
+        -- null_ls.builtins.formatting.gofumpt,
         -- null_ls.builtins.formatting.goimports,
         --
         -- completion

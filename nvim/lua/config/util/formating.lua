@@ -4,22 +4,49 @@ local M = {}
 
 local augroup = vim.api.nvim_create_augroup('Autoformat', {})
 
-M.format_use_null_ls_first = function(buf, async)
-    local null_ls_sources = require('null-ls.sources')
-    local ft = vim.bo[buf].filetype
+--- 格式化函数：优先指定 client，否则使用第一个支持 formatter 的 client
+-- @param bufnr (integer) buffer id, 默认 0
+-- @param async (boolean) 是否异步
+-- @param timeout (number) 超时事件
+-- @param prefer_client (string|nil) 优先使用的 client 名称，如 "null-ls"
+M.format_with_priority = function(bufnr, async, timeout, prefer_client)
+    bufnr = bufnr or 0
+    timeout = timeout or 1000
+    local clients = vim.lsp.get_clients({ bufnr = bufnr })
+    local target = nil
 
-    local has_null_ls = #null_ls_sources.get_available(ft, 'NULL_LS_FORMATTING') > 0
-
-    vim.lsp.buf.format({
-        bufnr = buf,
-        async = async,
-        timeout_ms = 1000,
-        filter = function(client)
-            if not has_null_ls then
-                return true
+    -- 1. 如果指定 prefer_client，则优先找它
+    if prefer_client then
+        for _, client in ipairs(clients) do
+            if client.name == prefer_client and client.supports_method("textDocument/formatting", bufnr) then
+                target = client
+                break
             end
-            return client.name == 'null-ls'
-        end,
+        end
+    end
+
+    -- 2. fallback：选第一个支持 textDocument/formatting 的 client
+    if not target then
+        for _, client in ipairs(clients) do
+            if client.supports_method("textDocument/formatting", bufnr) then
+                target = client
+                break
+            end
+        end
+    end
+
+    -- 3. 如果没找到，提示错误
+    if not target then
+        vim.notify("No LSP client supports formatting", vim.log.levels.WARN)
+        return
+    end
+
+    -- 4. 调用格式化，仅用选中的 client
+    vim.lsp.buf.format({
+        bufnr = bufnr,
+        async = async,
+        filter = function(client) return client.id == target.id end,
+        timeout_ms = timeout,
     })
 end
 
@@ -29,11 +56,14 @@ M.enable_format_on_write = function(client, bufnr)
         vim.api.nvim_create_autocmd('BufWritePre', {
             group = augroup,
             buffer = bufnr,
-            callback = function()
+            callback = function(ev)
+                if vim.bo[ev.buf].readonly then
+                    return
+                end
                 if not vim.bo[bufnr].modified then
                     return
                 end
-                M.format_use_null_ls_first(bufnr, false)
+                M.format_with_priority(bufnr, false)
             end,
         })
     end
@@ -53,7 +83,7 @@ local enable_autofmt_when_idle = function(fts)
             if not vim.bo[ev.buf].modified then
                 return
             end
-            M.format_use_null_ls_first(ev.buf, false)
+            M.format_with_priority(bufnr, false)
         end,
     })
 end
