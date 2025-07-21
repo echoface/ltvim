@@ -21,6 +21,7 @@ local create_cmd_goimports = function(bufnr)
 end
 
 return {
+    root_markers = { 'go.mod', 'go.work', ".git"},
     -- Example: Override capabilities (ensure your LSP client supports this)
     -- capabilities = {
     --   workspace = {
