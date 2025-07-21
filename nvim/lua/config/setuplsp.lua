@@ -36,7 +36,7 @@ vim.cmd("command! Rename lua vim.lsp.buf.rename()<cr>")
 -- vim.cmd('command! Format lua vim.lsp.buf.format({async = true})<cr>')
 vim.api.nvim_create_user_command('LspFormat', function()
     local bufnr = vim.api.nvim_get_current_buf()
-    formatutil.format_with_priority(bufnr, true)
+    formatutil.format_with_priority(bufnr, true, 3000, "null-ls")
 end, {})
 vim.cmd('command! LspSignsHelp lua vim.lsp.buf.signature_help()<cr>')
 vim.cmd('command! LspDocSymbols lua vim.lsp.buf.document_symbol()<cr>')
@@ -82,15 +82,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(args)
         local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
         -- Usually not needed if server supports "textDocument/willSaveWaitUntil".
-        if not client:supports_method('textDocument/willSaveWaitUntil')
-            and client:supports_method('textDocument/formatting') then
-            vim.api.nvim_create_autocmd('BufWritePre', {
-                group = vim.api.nvim_create_augroup('ltvim.lsp', { clear = false }),
-                buffer = args.buf,
-                callback = function()
-                    vim.lsp.buf.format({ bufnr = args.buf, id = client.id, timeout_ms = 1000 })
-                end,
-            })
+        if not client:supports_method('textDocument/willSaveWaitUntil') then
+            formatutil.format_with_priority(args.buf, true, 3000, "null-ls")
         end
 
         -- version = "*", 0.11 兼容问题, https://github.com/ray-x/lsp_signature.nvim/pull/355
@@ -102,14 +95,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
                 border = "rounded"
             }
         }, 0)
-
-        -- -- if client.name ~= "null-ls" then
-        -- if client.name ~= "gopls" then
-        --     vim.notify("diable lsp formating" .. client.name, vim.log.levels.INFO)
-        --     client.capabilities.documentFormattingProvider = false
-        --     client.server_capabilities.documentFormattingProvider = false
-        --     client.server_capabilities.document_range_formatting = false
-        -- end
 
         shared_on_attach(client, args.buf)
     end,
