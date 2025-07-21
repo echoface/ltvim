@@ -18,7 +18,7 @@ M.format_with_priority = function(bufnr, async, timeout, prefer_client)
     -- 1. 如果指定 prefer_client，则优先找它
     if prefer_client then
         for _, client in ipairs(clients) do
-            if client.name == prefer_client and client.supports_method("textDocument/formatting", bufnr) then
+            if client.name == prefer_client and client:supports_method("textDocument/formatting", bufnr) then
                 target = client
                 break
             end
@@ -28,7 +28,7 @@ M.format_with_priority = function(bufnr, async, timeout, prefer_client)
     -- 2. fallback：选第一个支持 textDocument/formatting 的 client
     if not target then
         for _, client in ipairs(clients) do
-            if client.supports_method("textDocument/formatting", bufnr) then
+            if client:supports_method("textDocument/formatting", bufnr) then
                 target = client
                 break
             end
@@ -41,6 +41,7 @@ M.format_with_priority = function(bufnr, async, timeout, prefer_client)
         return
     end
 
+    vim.notify("format use " .. target.name, vim.log.levels.INFO)
     -- 4. 调用格式化，仅用选中的 client
     vim.lsp.buf.format({
         bufnr = bufnr,
@@ -63,7 +64,7 @@ M.enable_format_on_write = function(client, bufnr)
                 if not vim.bo[bufnr].modified then
                     return
                 end
-                M.format_with_priority(bufnr, false)
+                M.format_with_priority(bufnr, false, 3000, "null-ls")
             end,
         })
     end
@@ -83,7 +84,7 @@ local enable_autofmt_when_idle = function(fts)
             if not vim.bo[ev.buf].modified then
                 return
             end
-            M.format_with_priority(bufnr, false)
+            M.format_with_priority(bufnr, true, 2000)
         end,
     })
 end
