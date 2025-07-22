@@ -21,16 +21,15 @@ local create_cmd_goimports = function(bufnr)
 end
 
 return {
-    root_markers = { 'go.mod', 'go.work', ".git"},
-    -- Example: Override capabilities (ensure your LSP client supports this)
+    -- cmd = { "gopls", "-rpc.trace", "-logfile", "/tmp/gopls.log" },
+    root_markers = { 'go.mod', 'go.work', '.git' },
     -- capabilities = {
     --   workspace = {
     --     didChangeWatchedFiles = { dynamicRegistration = false },
     --   },
     -- },
     settings = {
-        gopls =
-        {
+        gopls = {
             gofumpt = true,
             codelenses = {
                 test = false,
@@ -44,20 +43,20 @@ return {
             },
             hints = {
                 constantValues = true,
+                parameterNames = false,
                 assignVariableTypes = true,
                 compositeLiteralFields = true,
-                functionTypeParameters = true,
-                compositeLiteralTypes = true,
-                parameterNames = true,
+                functionTypeParameters = false,
+                compositeLiteralTypes = false,
                 rangeVariableTypes = true,
             },
             analyses = {
                 useany = false,
-                nilness = true,
-                unusedparams = true,
-                unusedwrite = true,
+                nilness = false,
+                unusedparams = false,
+                unusedwrite = false,
             },
-            staticcheck = true,
+            staticcheck = false,
             semanticTokens = false,
             diagnosticsDelay = "5s",
             diagnosticsTrigger = "Save", -- Edit/Save
@@ -66,10 +65,7 @@ return {
             directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
         }
     },
-    -- Example: Add a custom on_attach specifically for gopls
     on_attach = function(client, bufnr)
-        vim.notify("Attaching gopls with custom settings!", vim.log.levels.INFO)
-        -- Add gopls-specific keymaps or logic here
         create_cmd_goimports(bufnr)
         create_cmd_fill_struct(bufnr)
 

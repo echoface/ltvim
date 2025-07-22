@@ -70,50 +70,7 @@ M.enable_format_on_write = function(client, bufnr)
     end
 end
 
-local idle_fmt_augroup = vim.api.nvim_create_augroup("LSPIdleFormat", { clear = true })
-
-local enable_autofmt_when_idle = function(fts)
-    vim.api.nvim_clear_autocmds({ group = idle_fmt_augroup, })
-    vim.api.nvim_create_autocmd("CursorHold", {
-        pattern = fts,
-        group = idle_fmt_augroup,
-        callback = function(ev)
-            if vim.bo[ev.buf].readonly then
-                return
-            end
-            if not vim.bo[ev.buf].modified then
-                return
-            end
-            M.format_with_priority(bufnr, true, 2000)
-        end,
-    })
-end
-
-local create_cmd_toggle_autofmt_when_idle = function()
-    vim.api.nvim_create_user_command("ToggleIdleFmt", function()
-        local autocmds = vim.api.nvim_get_autocmds({
-            group = idle_fmt_augroup,
-        })
-        if #autocmds > 0 then
-            vim.api.nvim_clear_autocmds({ group = idle_fmt_augroup, })
-        else
-            enable_autofmt_when_idle()
-        end
-    end, {})
-end
-
-local default_opts = {
-    idlfmt_ftypes = { "*.go", "*.py", "*.c", "*.cpp", "*.lua", "*.yaml" },
-}
-
 M.setup = function(opts)
-    default_opts = vim.tbl_extend('force', default_opts, opts)
-
-    create_cmd_toggle_autofmt_when_idle()
-
-    if default_opts.idlfmt_ftypes ~= nil then
-        enable_autofmt_when_idle(default_opts.idlfmt_ftypes)
-    end
 end
 
 return M
