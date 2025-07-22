@@ -6,6 +6,10 @@ vim.lsp.config("*", {
         debounce_text_changes = 300, -- Debounce settings can improve performance
     },
 })
+vim.lsp.config("gopls", {
+    cmd = { "gopls", "-rpc.trace", "-logfile", "/tmp/gopls.log" },
+    root_markers = { 'go.mod', 'go.work', '.git' },
+})
 
 -- global lsp init
 local filter_kinds = {
@@ -29,7 +33,7 @@ end, {})
 
 local formatutil = require("config.util.formating")
 formatutil.setup({
-    idlfmt_ftypes = { "*.go", "*.py", "*.c", "*.cpp", "*.lua", "*.yaml" },
+    idlfmt_ftypes = {},
 })
 
 vim.cmd("command! Rename lua vim.lsp.buf.rename()<cr>")
@@ -75,26 +79,22 @@ require("mason-lspconfig").setup({
     },
 })
 
-local lsp_signature = require("lsp_signature")
+-- local lsp_signature = require("lsp_signature")
 
 vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('ltvim.lsp', {}),
     callback = function(args)
         local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
-        -- Usually not needed if server supports "textDocument/willSaveWaitUntil".
-        if not client:supports_method('textDocument/willSaveWaitUntil') then
-            formatutil.format_with_priority(args.buf, true, 3000, "null-ls")
-        end
 
         -- version = "*", 0.11 兼容问题, https://github.com/ray-x/lsp_signature.nvim/pull/355
-        lsp_signature.on_attach({
-            bind = true,
-            debug = false,
-            hint_enable = false, -- virtual hint
-            handler_opts = {
-                border = "rounded"
-            }
-        }, 0)
+        -- lsp_signature.on_attach({
+        --     bind = true,
+        --     debug = false,
+        --     hint_enable = false, -- virtual hint
+        --     handler_opts = {
+        --         border = "rounded"
+        --     }
+        -- }, 0)
 
         shared_on_attach(client, args.buf)
     end,

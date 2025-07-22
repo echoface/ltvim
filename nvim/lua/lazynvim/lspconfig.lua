@@ -10,18 +10,18 @@ return {
             "nvimtools/none-ls.nvim",
             config = function()
                 require("config.nonels")
-            end
-        },
-        {
-            "jay-babu/mason-null-ls.nvim",
-            version = "*",
+            end,
             dependencies = {
-                "williamboman/mason.nvim",
-                "nvimtools/none-ls.nvim",
-            },
-            opts = {
-                ensure_installed = {},
-                automatic_installation = false,
+                "jay-babu/mason-null-ls.nvim",
+                version = "*",
+                dependencies = {
+                    "williamboman/mason.nvim",
+                    "nvimtools/none-ls.nvim",
+                },
+                opts = {
+                    ensure_installed = {},
+                    automatic_installation = false,
+                },
             },
         },
         {
