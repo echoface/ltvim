@@ -1,5 +1,10 @@
 ---@diagnostic disable: missing-fields
 
+local vfn = vim.fn
+
+local formatting = 'textDocument/formatting'
+local range_format = 'textDocument/rangeFormatting'
+
 local format_util = require("config.util.formating")
 
 local create_cmd_fill_struct = function(bufnr)
@@ -20,50 +25,97 @@ local create_cmd_goimports = function(bufnr)
     end, {})
 end
 
+local get_current_gomod = function()
+    local file = io.open('go.mod', 'r')
+    if file == nil then
+        return nil
+    end
+
+    local first_line = file:read()
+    local mod_name = first_line:gsub('module ', '')
+    file:close()
+    return mod_name
+end
+
+-- this go file copy from go.nvim
 return {
-    -- cmd = { "gopls", "-rpc.trace", "-logfile", "/tmp/gopls.log" },
-    root_markers = { 'go.mod', 'go.work', '.git' },
-    -- capabilities = {
-    --   workspace = {
-    --     didChangeWatchedFiles = { dynamicRegistration = false },
-    --   },
-    -- },
+    capabilities = {
+        textDocument = {
+            completion = {
+                completionItem = {
+                    commitCharactersSupport = true,
+                    deprecatedSupport = true,
+                    documentationFormat = { 'markdown', 'plaintext' },
+                    preselectSupport = true,
+                    insertReplaceSupport = true,
+                    labelDetailsSupport = true,
+                    snippetSupport = vim.snippet and true or false,
+                    resolveSupport = {
+                        properties = {
+                            'edit',
+                            'documentation',
+                            'details',
+                            'additionalTextEdits',
+                        },
+                    },
+                },
+                completionList = {
+                    itemDefaults = {
+                        'editRange',
+                        'insertTextFormat',
+                        'insertTextMode',
+                        'data',
+                    },
+                },
+                contextSupport = false,
+                dynamicRegistration = true,
+            },
+        },
+    },
+    filetypes = { 'go', 'gomod', 'gosum', 'gotmpl', 'gohtmltmpl', 'gotexttmpl' },
+    message_level = vim.lsp.protocol.MessageType.Error,
+    cmd = {
+        'gopls', -- share the gopls instance if there is one already
+        '-remote.debug=:0',
+    },
+    root_markers = { 'go.work', 'go.mod', '.git', 'go.sum' },
+    flags = { allow_incremental_sync = true, debounce_text_changes = 500 },
     settings = {
         gopls = {
-            gofumpt = true,
+            -- more settings: https://github.com/golang/tools/blob/master/gopls/doc/settings.md
+            -- https://github.com/golang/tools/blob/master/gopls/doc/analyzers.md
+            -- not supported
+            analyses = {
+                -- check analyzers for default values
+                -- leeave most of them to default
+                -- shadow = true,
+                -- unusedvariable = true,
+                useany = true,
+            },
             codelenses = {
+                generate = true,    -- show the `go generate` lens.
+                gc_details = false, -- Show a code lens toggling the display of gc's choices.
                 test = false,
                 tidy = false,
                 vendor = false,
-                generate = true,
-                gc_details = false,
-                regenerate_cgo = false,
-                run_govulncheck = false,
-                upgrade_dependency = false,
+                regenerate_cgo = true,
+                upgrade_dependency = true,
             },
-            hints = {
-                constantValues = true,
-                parameterNames = false,
-                assignVariableTypes = true,
-                compositeLiteralFields = true,
-                functionTypeParameters = false,
-                compositeLiteralTypes = false,
-                rangeVariableTypes = true,
-            },
-            analyses = {
-                useany = false,
-                nilness = false,
-                unusedparams = false,
-                unusedwrite = false,
-            },
-            staticcheck = false,
-            semanticTokens = false,
-            diagnosticsDelay = "5s",
-            diagnosticsTrigger = "Save", -- Edit/Save
+            hints = vim.empty_dict(),
             usePlaceholders = false,
             completeUnimported = true,
-            directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
-        }
+            staticcheck = true,
+            matcher = 'Fuzzy',
+            -- check if diagnostic update_in_insert is set
+            diagnosticsDelay = "3s",
+            diagnosticsTrigger = "Edit",
+            symbolMatcher = 'FastFuzzy',
+            semanticTokens = false, -- default to false as treesitter is better
+            vulncheck = 'Imports',
+            ['local'] = get_current_gomod(),
+            gofumpt = true, -- true|false, -- turn on for new repos, gofmpt is good but also create code turmoils
+            buildFlags = { '-tags', 'integration' },
+        },
     },
     on_attach = function(client, bufnr)
         create_cmd_goimports(bufnr)
@@ -75,4 +127,21 @@ return {
 
         format_util.enable_format_on_write(client, bufnr)
     end,
+    -- NOTE: it is important to add handler to formatting handlers
+    -- the async formatter will call these handlers when gopls respond
+    -- without these handlers, the file will not be saved
+    handlers = {
+        [range_format] = function(...)
+            vim.lsp.handlers[range_format](...)
+            if vfn.getbufinfo('%')[1].changed == 1 then
+                vim.cmd('noautocmd write')
+            end
+        end,
+        [formatting] = function(...)
+            vim.lsp.handlers[formatting](...)
+            if vfn.getbufinfo('%')[1].changed == 1 then
+                vim.cmd('noautocmd write')
+            end
+        end,
+    },
 }
