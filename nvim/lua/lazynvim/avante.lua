@@ -18,12 +18,17 @@ return {
                 api_key_name = "DEEPSEEK_API_KEY",
                 endpoint = "https://api.deepseek.com",
                 model = "deepseek-reasoner",
-                disable_tools = true,
+                -- disable_tools = true,
             },
         },
         selector = {
             provider = "telescope", -- native|mini_pick|telescope
         },
+        window = {
+            input = {
+                height = 12
+            },
+        }
     },
     build = "make", -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
     dependencies = {

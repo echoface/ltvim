@@ -31,8 +31,8 @@ keymap("n", "<leader>wl", "<C-w>l", opts)
 -- Resize with arrows
 keymap("n", "+", ":res +5<CR>", opts)
 keymap("n", "_", ":res -5<CR>", opts)
-keymap("n", "(", ":vertical resize -2<CR>", opts)
-keymap("n", ")", ":vertical resize +2<CR>", opts)
+keymap("n", "(", ":vertical resize -5<CR>", opts)
+keymap("n", ")", ":vertical resize +5<CR>", opts)
 
 -- Navigate buffers
 keymap("n", "<S-l>", ":bnext<CR>", opts)
@@ -42,8 +42,6 @@ keymap("n", "<S-h>", ":bprevious<CR>", opts)
 
 -- Clear highlights
 keymap("n", "<leader>h", "<cmd>nohlsearch<CR>", opts)
-
-keymap("n", "ge", "<cmd>lua vim.diagnostic.goto_next({buffer=0})<cr>", opts)
 
 
 -- Insert --

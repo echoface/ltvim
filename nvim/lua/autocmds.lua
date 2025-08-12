@@ -142,9 +142,11 @@ vim.diagnostic.config({
 
 -- command setup
 -- display diagnostics when cursor hold only in normal mode
+-- when updatetime={not short enough} will cause float window hangout
+-- autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focusable=false})
 vim.cmd [[
-    command! Diagnostics lua vim.diagnostic.open_float()<cr>
+    command! Diagnostics lua vim.diagnostic.open_float(nil, {focus=false})<cr>
     command! DiagnosticsPre lua vim.diagnostic.goto_prev({buffer=0})<cr>
     command! DiagnosticsNext lua vim.diagnostic.goto_next({buffer=0})<cr>
-    autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focus=false})
 ]]
+
