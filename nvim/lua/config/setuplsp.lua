@@ -103,6 +103,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
             keymap("n", "gs", "<cmd>lua vim.lsp.buf.document_symbol()<CR>", opts)
         end
         keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
+        keymap("n", "ge", "<cmd>lua vim.diagnostic.goto_next({buffer=0})<cr>", opts)
         -- lsp action instruction
         keymap("n", "F", "<cmd>LspCodeAction <cr>", opts)
         keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)

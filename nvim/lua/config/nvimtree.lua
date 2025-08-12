@@ -101,8 +101,8 @@ nvimtree.setup({
         update_root = true
     },
     on_attach = on_attach,
-    view = center_float(),
-    -- view = right_view(true),
+    -- view = center_float(),
+    view = right_view(true),
     git = {
         enable = false,
     },
