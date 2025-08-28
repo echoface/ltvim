@@ -90,31 +90,32 @@ return {
                 -- leeave most of them to default
                 -- shadow = true,
                 -- unusedvariable = true,
-                useany = true,
+                useany = false,
+                unusedparams = false,
+                unusedwrite = false,
             },
             codelenses = {
-                generate = true,    -- show the `go generate` lens.
+                generate = false,    -- show the `go generate` lens.
                 gc_details = false, -- Show a code lens toggling the display of gc's choices.
                 test = false,
                 tidy = false,
                 vendor = false,
-                regenerate_cgo = true,
+                regenerate_cgo = false,
                 upgrade_dependency = true,
             },
-            hints = vim.empty_dict(),
             usePlaceholders = false,
             completeUnimported = true,
-            staticcheck = true,
+            staticcheck = false, -- 严重影响内存和性能
             matcher = 'Fuzzy',
             -- check if diagnostic update_in_insert is set
-            diagnosticsDelay = "3s",
+            diagnosticsDelay = "5s",
             diagnosticsTrigger = "Edit",
             symbolMatcher = 'FastFuzzy',
             semanticTokens = false, -- default to false as treesitter is better
-            vulncheck = 'Imports',
             ['local'] = get_current_gomod(),
-            gofumpt = true, -- true|false, -- turn on for new repos, gofmpt is good but also create code turmoils
-            buildFlags = { '-tags', 'integration' },
+            gofumpt = true,              -- true|false, -- turn on for new repos, gofmpt is good but also create code turmoils
+            hoverKind = "SynopsisDocumentation", -- Hover 只显示简要文档
+            linksInHover = false,        -- Hover 不加载外部链接
         },
     },
     on_attach = function(client, bufnr)

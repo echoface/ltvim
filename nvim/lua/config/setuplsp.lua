@@ -7,7 +7,8 @@ vim.lsp.config("*", {
     },
 })
 vim.lsp.config("gopls", {
-    cmd = { "gopls", "-rpc.trace", "-logfile", "/tmp/gopls.log" },
+    cmd = { "gopls" },
+    -- cmd = { "gopls", "-rpc.trace", "-logfile", "/tmp/gopls.log" },
     root_markers = { 'go.mod', 'go.work', '.git' },
 })
 
@@ -40,7 +41,7 @@ vim.api.nvim_create_user_command('Format', function()
     local bufnr = vim.api.nvim_get_current_buf()
     formatutil.format_with_priority(bufnr, true, 3000, "null-ls")
 end, {})
-vim.api.nvim_create_user_command("Hover", function ()
+vim.api.nvim_create_user_command("Hover", function()
     vim.lsp.buf.hover()
 end, {})
 vim.api.nvim_create_user_command('Hover', function()
@@ -78,31 +79,13 @@ vim.api.nvim_create_autocmd('LspAttach', {
         local bufnr = args.buf
         local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
 
-        -- version = "*", 0.11 兼容问题, https://github.com/ray-x/lsp_signature.nvim/pull/355
-        -- lsp_signature.on_attach({
-        --     bind = true,
-        --     debug = false,
-        --     hint_enable = false, -- virtual hint
-        --     handler_opts = {
-        --         border = "rounded"
-        --     }
-        -- }, 0)
-
         local keymap = vim.keymap.set
         local opts = { noremap = true, silent = true, buffer = bufnr }
-        local ok, tb = pcall(require, "telescope.builtin")
-        if ok then
-            keymap('n', 'gr', tb.lsp_references, opts)
-            keymap('n', 'gd', tb.lsp_definitions, opts)
-            keymap('n', 'gi', tb.lsp_implementations, opts)
-            keymap('n', 'gs', tb.lsp_document_symbols, opts)
-        else
-            keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-            keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
-            keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
-            keymap("n", "gs", "<cmd>lua vim.lsp.buf.document_symbol()<CR>", opts)
-        end
+        keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
+        keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
         keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
+        keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
+        keymap("n", "gs", "<cmd>lua vim.lsp.buf.document_symbol()<CR>", opts)
         keymap("n", "ge", "<cmd>lua vim.diagnostic.goto_next({buffer=0})<cr>", opts)
         -- lsp action instruction
         keymap("n", "F", "<cmd>LspCodeAction <cr>", opts)
