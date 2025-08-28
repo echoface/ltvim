@@ -11,6 +11,18 @@ vim.lsp.config("gopls", {
     -- cmd = { "gopls", "-rpc.trace", "-logfile", "/tmp/gopls.log" },
     root_markers = { 'go.mod', 'go.work', '.git' },
 })
+vim.lsp.config("rgo", {
+    name = 'rgo',
+    filetypes = { 'go' },
+    cmd = { "rgo", "lsp" },
+    root_markers = { 'go.mod', 'go.work', '.git' },
+    settings = {
+      trace = {
+        server = 'verbose'
+      }
+    }
+})
+vim.lsp.enable("rgo")
 
 -- global lsp init
 local filter_kinds = {
