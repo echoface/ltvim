@@ -5,6 +5,7 @@ return {
     opts = {
         -- debug = false,
         provider = "deepseek",                  -- Recommend using Claude
+        instructions_file = "avante.md",
         auto_suggestions_provider = "deepseek", -- Since auto-suggestions are a high-frequency operation and therefore expensive, it is recommended to specify an inexpensive provider or even a free provider: copilot
         providers = {
             deepseek = {
@@ -22,13 +23,8 @@ return {
             },
         },
         selector = {
-            provider = "telescope", -- native|mini_pick|telescope
+            provider = "mini_pick", -- native|mini_pick|telescope
         },
-        window = {
-            input = {
-                height = 12
-            },
-        }
     },
     build = "make", -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
     dependencies = {
@@ -79,12 +75,10 @@ return {
         {
             -- Make sure to set this up properly if you have lazy=true
             'MeanderingProgrammer/render-markdown.nvim',
-            version = "*",
             ft = { "markdown", "Avante" },
             opts = {
                 file_types = { "markdown", "Avante" },
-                anti_conceal = { enabled = false },
-            }
+            },
         },
     },
 }
