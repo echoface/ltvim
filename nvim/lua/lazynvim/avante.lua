@@ -12,14 +12,13 @@ return {
                 __inherited_from = "openai",
                 api_key_name = "DEEPSEEK_API_KEY",
                 endpoint = "https://api.deepseek.com",
-                model = "deepseek-coder",
+                model = "deepseek-chat",
             },
             deepseekr1 = {
                 __inherited_from = "openai",
                 api_key_name = "DEEPSEEK_API_KEY",
                 endpoint = "https://api.deepseek.com",
                 model = "deepseek-reasoner",
-                -- disable_tools = true,
             },
         },
         selector = {
@@ -30,8 +29,6 @@ return {
     dependencies = {
         "MunifTanjim/nui.nvim",
         "nvim-lua/plenary.nvim",
-        "stevearc/dressing.nvim",
-        "nvim-treesitter/nvim-treesitter",
         --- The below dependencies are optional,
         "hrsh7th/nvim-cmp",              -- autocompletion for avante commands and mentions
         "nvim-tree/nvim-web-devicons",   -- or echasnovski/mini.icons

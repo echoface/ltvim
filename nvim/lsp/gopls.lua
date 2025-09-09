@@ -101,15 +101,15 @@ return {
                 tidy = false,
                 vendor = false,
                 regenerate_cgo = false,
-                upgrade_dependency = true,
+                upgrade_dependency = false,
             },
             usePlaceholders = false,
             completeUnimported = true,
             staticcheck = false, -- 严重影响内存和性能
             matcher = 'Fuzzy',
             -- check if diagnostic update_in_insert is set
-            diagnosticsDelay = "5s",
-            diagnosticsTrigger = "Edit",
+            -- diagnosticsDelay = "5s",
+            -- diagnosticsTrigger = "Edit",
             symbolMatcher = 'FastFuzzy',
             semanticTokens = false, -- default to false as treesitter is better
             ['local'] = get_current_gomod(),
