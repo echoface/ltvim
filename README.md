@@ -77,3 +77,31 @@ coc-pyright
 coc-snippets
 coc-highlight
 ```
+
+## Avante AI Assistant
+
+### Zen Mode
+
+Avante 提供了一个禅模式（Zen Mode），可以全屏显示AI助手界面：
+
+#### Neovim 命令
+```vim
+:ZenMode
+```
+
+#### Shell 别名
+在您的 shell 配置文件中添加：
+```bash
+alias avante='nvim -c "lua vim.defer_fn(function() require(\"avante.api\").zen_mode() end, 100)"'
+```
+
+使用方式：
+```bash
+avante  # 直接启动禅模式
+```
+
+#### 功能特点
+- 全屏显示AI助手界面
+- 支持代码编辑和AI对话
+- 集成文件选择器和历史记录
+- 支持多种AI提供商（DeepSeek、Claude等）
