@@ -25,7 +25,13 @@ return {
             provider = "mini_pick", -- native|mini_pick|telescope
         },
     },
-    build = "make", -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+    build = "make", -- if you want to build from source then do `make BUILD_FROM_SOURCE=true"
+    config = function(_, opts)
+        require("avante").setup(opts)
+        vim.api.nvim_create_user_command("ZenMode", function()
+            require("avante.api").zen_mode()
+        end, { desc = "Open Avante in zen mode" })
+    end,
     dependencies = {
         "MunifTanjim/nui.nvim",
         "nvim-lua/plenary.nvim",
