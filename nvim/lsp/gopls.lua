@@ -82,40 +82,20 @@ return {
     flags = { allow_incremental_sync = true, debounce_text_changes = 500 },
     settings = {
         gopls = {
-            -- more settings: https://github.com/golang/tools/blob/master/gopls/doc/settings.md
-            -- https://github.com/golang/tools/blob/master/gopls/doc/analyzers.md
-            -- not supported
             analyses = {
-                -- check analyzers for default values
-                -- leeave most of them to default
-                -- shadow = true,
-                -- unusedvariable = true,
                 useany = false,
                 unusedparams = false,
                 unusedwrite = false,
             },
-            codelenses = {
-                generate = false,    -- show the `go generate` lens.
-                gc_details = false, -- Show a code lens toggling the display of gc's choices.
-                test = false,
-                tidy = false,
-                vendor = false,
-                regenerate_cgo = false,
-                upgrade_dependency = false,
-            },
-            usePlaceholders = false,
             completeUnimported = true,
             staticcheck = false, -- 严重影响内存和性能
-            matcher = 'Fuzzy',
-            -- check if diagnostic update_in_insert is set
-            -- diagnosticsDelay = "5s",
-            -- diagnosticsTrigger = "Edit",
+            diagnosticsDelay = "2s",
+            diagnosticsTrigger = "Edit",
             symbolMatcher = 'FastFuzzy',
-            semanticTokens = false, -- default to false as treesitter is better
-            ['local'] = get_current_gomod(),
-            gofumpt = true,              -- true|false, -- turn on for new repos, gofmpt is good but also create code turmoils
+            semanticTokens = false,              -- default to false as treesitter is better
+            gofumpt = true,                      -- true|false, -- turn on for new repos, gofmpt is good but also create code turmoils
             hoverKind = "SynopsisDocumentation", -- Hover 只显示简要文档
-            linksInHover = false,        -- Hover 不加载外部链接
+            linksInHover = false,                -- Hover 不加载外部链接
         },
     },
     on_attach = function(client, bufnr)

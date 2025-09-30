@@ -1,4 +1,4 @@
--- vim.lsp.set_log_level("debug")
+vim.lsp.set_log_level("off") -- off | error | info
 
 -- 全局设置
 vim.lsp.config("*", {
@@ -78,6 +78,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(args)
         local bufnr = args.buf
         local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+
+        client.server_capabilities.semanticTokensProvider = nil
 
         local keymap = vim.keymap.set
         local opts = { noremap = true, silent = true, buffer = bufnr }
