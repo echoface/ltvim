@@ -89,7 +89,7 @@ return {
             },
             completeUnimported = true,
             staticcheck = false, -- 严重影响内存和性能
-            diagnosticsDelay = "2s",
+            diagnosticsDelay = "3s",
             diagnosticsTrigger = "Edit",
             symbolMatcher = 'FastFuzzy',
             semanticTokens = false,              -- default to false as treesitter is better

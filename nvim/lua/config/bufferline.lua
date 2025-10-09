@@ -17,6 +17,6 @@ bufferline.setup {
       { filetype = "NvimTree", text = "", padding = 1 },
     },
     separator_style = "thin", -- | "thick" | "thin" | { 'any', 'any' },
-    diagnostics = 'nvim_lsp',
+    -- diagnostics = 'nvim_lsp', -- encounter 100% cpu usage issue
   },
 }
