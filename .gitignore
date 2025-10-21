@@ -3,5 +3,6 @@
 .luarc.json
 
 *.diff
+*.patch
 vim/Plug
 nvim/lazy-lock.json

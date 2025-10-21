@@ -4,16 +4,22 @@
 -- Use 'q' to quit from common plugins
 vim.api.nvim_create_autocmd({ "FileType" }, {
     pattern = {
-        "qf", "help", "man",
-        "lspinfo", "notify", "lir",
-        "spectre_panel", "NvimTree",
+        "qf", "help", "man", "checkhealth",
+        "lspinfo", "notify", "lir", "spectre_panel",
+        "NvimTree", "mason", "lazy", "null-ls-info",
+        "markdown",
     },
-    callback = function()
-        vim.cmd [[
+    callback = function(event) -- 仅对“浮动或只读窗口”生效，避免干扰普通 markdown
+        local buf = event.buf
+        local win = vim.api.nvim_get_current_win()
+        local config = vim.api.nvim_win_get_config(win)
+        if config.relative ~= "" or vim.bo[buf].buftype == "help" or vim.bo[buf].buftype == "nofile" then
+            vim.cmd [[
             setlocal nobuflisted
             nnoremap <silent> <buffer> q :close<CR>
             nnoremap <silent> <buffer> <ESC> :close<CR>
         ]]
+        end
     end,
 })
 
@@ -149,4 +155,3 @@ vim.cmd [[
     command! DiagnosticsPre lua vim.diagnostic.goto_prev({buffer=0})<cr>
     command! DiagnosticsNext lua vim.diagnostic.goto_next({buffer=0})<cr>
 ]]
-

@@ -47,7 +47,6 @@ vim.cmd("set formatoptions-=cro")
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
-
 -- za: foldtoggle   zo: fold open  zc: fold close
 vim.opt.foldmethod = "indent" -- 设置语法折叠
 vim.opt.foldlevelstart = 10   -- don't fold any thing when open file

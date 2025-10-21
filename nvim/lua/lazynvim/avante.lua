@@ -4,41 +4,47 @@ return {
     version = false,
     opts = {
         -- debug = false,
-        provider = "deepseek",                  -- Recommend using Claude
-        instructions_file = "avante.md",
+        provider = "claude-code",
+        instructions_file = "AGENTS.md",
         auto_suggestions_provider = "deepseek", -- Since auto-suggestions are a high-frequency operation and therefore expensive, it is recommended to specify an inexpensive provider or even a free provider: copilot
         providers = {
             deepseek = {
                 __inherited_from = "openai",
-                api_key_name = "DEEPSEEK_API_KEY",
-                endpoint = "https://api.deepseek.com",
                 model = "deepseek-chat",
-            },
-            deepseekr1 = {
-                __inherited_from = "openai",
                 api_key_name = "DEEPSEEK_API_KEY",
                 endpoint = "https://api.deepseek.com",
-                model = "deepseek-reasoner",
+            },
+        },
+        acp_providers = {
+            ["claude-code"] = {
+                command = "npx",
+                args = { "@zed-industries/claude-code-acp" },
+                env = {
+                    NODE_NO_WARNINGS = "1",
+                    ANTHROPIC_BASE_URL = os.getenv("ANTHROPIC_BASE_URL"),
+                    ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_AUTH_TOKEN"),
+                    ACP_PATH_TO_CLAUDE_CODE_EXECUTABLE = vim.fn.exepath("claude"),
+                    ACP_PERMISSION_MODE = "bypassPermissions",
+                },
             },
         },
         selector = {
-            provider = "mini_pick", -- native|mini_pick|telescope
+            provider = "telescope", -- native|mini_pick|telescope
+        },
+        windows = {
+            input = {
+                prefix = "> ",
+                height = 8, -- Height of the input window in vertical layout
+            },
         },
     },
     build = "make", -- if you want to build from source then do `make BUILD_FROM_SOURCE=true"
-    config = function(_, opts)
-        require("avante").setup(opts)
-        vim.api.nvim_create_user_command("ZenMode", function()
-            require("avante.api").zen_mode()
-        end, { desc = "Open Avante in zen mode" })
-    end,
     dependencies = {
         "MunifTanjim/nui.nvim",
         "nvim-lua/plenary.nvim",
         --- The below dependencies are optional,
-        "hrsh7th/nvim-cmp",              -- autocompletion for avante commands and mentions
-        "nvim-tree/nvim-web-devicons",   -- or echasnovski/mini.icons
-        "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
+        "hrsh7th/nvim-cmp",            -- autocompletion for avante commands and mentions
+        "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
         {
             'echasnovski/mini.pick',
             version = false,

@@ -3,9 +3,15 @@ return {
     { "moll/vim-bbye",       event = "VeryLazy" },
     { "APZelos/blamer.nvim", event = "VeryLazy" },
     {
-        "morhetz/gruvbox", --"tanvirtin/monokai.nvim",
+        "morhetz/gruvbox",
         priority = 1000,
-        config = function() vim.cmd.colorscheme('gruvbox') end
+        config = function()
+            vim.g.gruvbox_bold = 1
+            vim.g.gruvbox_italic = 1
+            vim.g.gruvbox_transparent_bg = 1
+            vim.o.background = "dark" -- or "light" for light mode
+            vim.cmd.colorscheme("gruvbox")
+        end,
     },
     {
         'rcarriga/nvim-notify',

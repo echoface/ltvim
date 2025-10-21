@@ -82,8 +82,14 @@ return {
     flags = { allow_incremental_sync = true, debounce_text_changes = 500 },
     settings = {
         gopls = {
+            codelenses = {
+                tidy = false,
+                upgrade_dependency = false
+            },
             analyses = {
                 useany = false,
+                modernize = false,
+                nonewvars = false,
                 unusedparams = false,
                 unusedwrite = false,
             },
