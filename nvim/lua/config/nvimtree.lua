@@ -24,44 +24,53 @@ local function on_attach(bufnr)
     vim.keymap.set('n', 's', api.node.open.vertical, opts('Open: Vertical Split'))
 end
 
-local HEIGHT_RATIO = 0.8 -- You can change this
-local WIDTH_RATIO = 0.64 -- You can change this too
-
-local function float_view(side)
-    local screen_w = vim.opt.columns:get()
-    local screen_h = vim.opt.lines:get() - vim.opt.cmdheight:get()
-
-    local window_w = 42
-    local window_h = screen_h * 0.95
-    if side == "center" then
-        window_w = screen_w * WIDTH_RATIO
-        window_h = screen_h * HEIGHT_RATIO
-    end
-
-    local window_w_int = math.floor(window_w)
-    local window_h_int = math.floor(window_h)
-
-    -- local center_x = (screen_w - window_w) - 2
-    -- local center_y = ((vim.opt.lines:get() - window_h) / 2) - vim.opt.cmdheight:get()
+local function float_view(pos)
+    local HEIGHT_RATIO = 0.8 -- You can change this
+    local WIDTH_RATIO = 0.64 -- You can change this too
 
     return {
+        side = pos,
+        signcolumn = "no",
         -- relativenumber = true,
         adaptive_size = true,
-        -- ref: https://github.com/MarioCarrion/videos/tree/main/2023
-        side = side,
         float = {
             enable = true,
             quit_on_focus_loss = true,
-            open_win_config = {
-                border = "rounded",
-                relative = "editor",
-                -- row = center_y,
-                -- col = center_x,
-                width = window_w_int,
-                height = window_h_int,
-            }
+            open_win_config = function()
+                local screen_w = vim.opt.columns:get()
+                local screen_h = vim.opt.lines:get() - vim.opt.cmdheight:get()
+
+                local row = 1
+                local col = 0
+                local window_w_int = 42
+                local window_h_int = math.floor(screen_h - 4)
+
+                if pos == "center" then
+                    window_w_int = math.floor(screen_w * WIDTH_RATIO)
+                    window_h_int = math.floor(screen_h * HEIGHT_RATIO)
+
+                    col = (screen_w - window_w_int) / 2
+                    row = ((vim.opt.lines:get() - window_h_int) / 2 - vim.opt.cmdheight:get())
+                elseif pos == "right" then
+                    col = screen_w - window_w_int
+                end
+
+                return {
+                    border = 'rounded',
+                    relative = 'editor',
+                    row = row,
+                    col = col,
+                    width = window_w_int,
+                    height = window_h_int,
+                }
+            end
         },
-        width = window_w_int,
+        width = function()
+            if pos ~= "center" then
+                return 42
+            end
+            return math.floor(vim.opt.columns:get() * WIDTH_RATIO)
+        end,
     }
 end
 
@@ -76,7 +85,7 @@ nvimtree.setup({
         update_root = true
     },
     on_attach = on_attach,
-    view = float_view("left"),
+    view = float_view("center"),
     git = {
         enable = false,
     },

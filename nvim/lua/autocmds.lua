@@ -83,11 +83,12 @@ vim.api.nvim_create_autocmd("FileType", {
 
 
 -- Terminal
-vim.api.nvim_create_autocmd({ "TermOpen", "TermEnter" }, {
+vim.api.nvim_create_autocmd({ "FileType" }, {
+    pattern = { "terminal", "toggleterm" },
     callback = function()
         local opts = { buffer = 0 }
         vim.keymap.set('t', 'jj', [[<C-\><C-n>]], opts)
-        vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
+        -- vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
         vim.keymap.set('t', '<C-w>', [[<C-\><C-n><C-w>]], opts)
 
         vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
@@ -100,8 +101,31 @@ vim.api.nvim_create_autocmd({ "TermOpen", "TermEnter" }, {
         vim.opt_local.relativenumber = false
 
         --- vim.cmd([[ startinsert ]])
+        vim.keymap.set('n', 'q', '<cmd>hide<CR>', opts)
+        vim.keymap.set('n', 'q', '<cmd>close<CR>', opts)
     end,
 })
+
+-- vim.api.nvim_create_autocmd({ "TermOpen", "TermEnter" }, {
+--     callback = function()
+--         local opts = { buffer = 0 }
+--         vim.keymap.set('t', 'jj', [[<C-\><C-n>]], opts)
+--         -- vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
+--         vim.keymap.set('t', '<C-w>', [[<C-\><C-n><C-w>]], opts)
+
+--         vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
+--         vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
+--         vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
+--         vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
+
+--         vim.opt_local.signcolumn     = "no"
+--         vim.opt_local.number         = false
+--         vim.opt_local.relativenumber = false
+
+--         --- vim.cmd([[ startinsert ]])
+--         vim.keymap.set('n', 'q', '<cmd>hide<CR>', opts)
+--     end,
+-- })
 
 vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead", "BufEnter" }, {
     pattern = { "*.go" },

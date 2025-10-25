@@ -17,8 +17,8 @@ return {
         },
         acp_providers = {
             ["claude-code"] = {
-                command = "npx",
-                args = { "@zed-industries/claude-code-acp" },
+                command = "claude-code-acp", -- npx
+                args = {}, -- { "@zed-industries/claude-code-acp" },
                 env = {
                     NODE_NO_WARNINGS = "1",
                     ANTHROPIC_BASE_URL = os.getenv("ANTHROPIC_BASE_URL"),
@@ -79,14 +79,6 @@ return {
                     -- required for Windows users
                     use_absolute_path = true,
                 },
-            },
-        },
-        {
-            -- Make sure to set this up properly if you have lazy=true
-            'MeanderingProgrammer/render-markdown.nvim',
-            ft = { "markdown", "Avante" },
-            opts = {
-                file_types = { "markdown", "Avante" },
             },
         },
     },
