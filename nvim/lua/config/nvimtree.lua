@@ -29,7 +29,6 @@ local function float_view(pos)
     local WIDTH_RATIO = 0.64 -- You can change this too
 
     return {
-        side = pos,
         signcolumn = "no",
         -- relativenumber = true,
         adaptive_size = true,

@@ -84,7 +84,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- Terminal
 vim.api.nvim_create_autocmd({ "FileType" }, {
-    pattern = { "terminal", "toggleterm" },
+    pattern = { "terminal", "toggleterm", "snacks_terminal" },
     callback = function()
         local opts = { buffer = 0 }
         vim.keymap.set('t', 'jj', [[<C-\><C-n>]], opts)
@@ -102,7 +102,6 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 
         --- vim.cmd([[ startinsert ]])
         vim.keymap.set('n', 'q', '<cmd>hide<CR>', opts)
-        vim.keymap.set('n', 'q', '<cmd>close<CR>', opts)
     end,
 })
 

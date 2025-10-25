@@ -10,17 +10,14 @@ return {
                 width = 1.0,
                 border = "none",
                 keys = {
-                    -- claude_close = { "q", "close", mode = "n", desc = "Close" }, -- conflict
-                    claude_close = { "q", function(self) self:hide() end, mode = "n", desc = "Hide" },
-                    claude_hide = { "<leader>tc", function(self) self:hide() end, mode = "t", desc = "Hide", },
+                    claude_hide = { "<leader>cc", function(self) self:hide() end, mode = "t", desc = "Hide", },
                 },
             },
         },
     },
     keys = {
-        { "<leader>tc", "<cmd>ClaudeCode<cr>",            desc = "Toggle Claude",      mode = { "n", "x" } },
-        { "<leader>cr", "<cmd>ClaudeCode --resume<cr>",   desc = "Resume Claude" },
         { "<leader>cc", "<cmd>ClaudeCode --continue<cr>", desc = "Continue Claude" },
+        { "<leader>cf", "<cmd>ClaudeCodeFocus<cr>",       desc = "Toggle Claude",      mode = { "n", "x" } },
         { "<leader>cm", "<cmd>ClaudeCodeSelectModel<cr>", desc = "Select Claude model" },
 
         { "<leader>cb", "<cmd>ClaudeCodeAdd %<cr>",       desc = "Add current buffer" },
