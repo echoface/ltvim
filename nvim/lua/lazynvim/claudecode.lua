@@ -6,8 +6,8 @@ return {
         terminal = {
             snacks_win_opts = {
                 position = "bottom",
-                height = 0.4,
                 width = 1.0,
+                height = 0.6,
                 border = "none",
                 keys = {
                     claude_hide = { "<leader>cc", function(self) self:hide() end, mode = "t", desc = "Hide", },
@@ -16,7 +16,7 @@ return {
         },
     },
     keys = {
-        { "<leader>cc", "<cmd>ClaudeCode --continue<cr>", desc = "Continue Claude" },
+        { "<leader>cc", "<cmd>ClaudeCode<cr>",            desc = "Continue Claude" },
         { "<leader>cf", "<cmd>ClaudeCodeFocus<cr>",       desc = "Toggle Claude",      mode = { "n", "x" } },
         { "<leader>cm", "<cmd>ClaudeCodeSelectModel<cr>", desc = "Select Claude model" },
 

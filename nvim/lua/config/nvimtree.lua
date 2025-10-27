@@ -24,16 +24,17 @@ local function on_attach(bufnr)
     vim.keymap.set('n', 's', api.node.open.vertical, opts('Open: Vertical Split'))
 end
 
-local function float_view(pos)
+local function tree_view(pos, enable_float)
     local HEIGHT_RATIO = 0.8 -- You can change this
     local WIDTH_RATIO = 0.64 -- You can change this too
 
     return {
+        side = (pos == "right") and "right" or "left",
         signcolumn = "no",
         -- relativenumber = true,
         adaptive_size = true,
         float = {
-            enable = true,
+            enable = enable_float,
             quit_on_focus_loss = true,
             open_win_config = function()
                 local screen_w = vim.opt.columns:get()
@@ -84,7 +85,7 @@ nvimtree.setup({
         update_root = true
     },
     on_attach = on_attach,
-    view = float_view("center"),
+    view = tree_view("right", false),
     git = {
         enable = false,
     },
@@ -103,7 +104,7 @@ nvimtree.setup({
     },
     actions = {
         open_file = {
-            quit_on_open = true,
+            quit_on_open = false,
         },
     },
 })

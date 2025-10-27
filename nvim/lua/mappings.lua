@@ -55,5 +55,3 @@ keymap("v", ">", ">gv", opts)
 -- Better paste
 keymap("v", "p", '"_dP', opts)
 
--- terminal
-keymap('t', '<esc>', [[<C-\><C-n>]], opts)
