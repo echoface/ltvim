@@ -49,7 +49,7 @@ return {
             vim.g.better_whitespace_filetypes_blacklist = {
                 'diff', 'git', 'gitcommit', 'unite', 'qf',
                 'help', 'markdown', 'fugitive', 'alpha',
-                'NeogitStatus', 'Avante',
+                'NeogitStatus', 'Avante', 'AvanteInput', "AvanteTodos"
             }
             vim.g.better_whitespace_enabled = true
             vim.g.better_whitespace_shows_end_of_line = true
