@@ -6,22 +6,18 @@ return {
         { "neovim/nvim-lspconfig",             version = "v2.*" },
         { "williamboman/mason.nvim",           version = "v2.*" },
         {
+            "jay-babu/mason-null-ls.nvim",
+            version = "*",
+            opts = {
+                ensure_installed = {},
+                automatic_installation = false,
+            },
+        },
+        {
             "nvimtools/none-ls.nvim",
             config = function()
                 require("config.nonels")
             end,
-            dependencies = {
-                "jay-babu/mason-null-ls.nvim",
-                version = "*",
-                dependencies = {
-                    "williamboman/mason.nvim",
-                    "nvimtools/none-ls.nvim",
-                },
-                opts = {
-                    ensure_installed = {},
-                    automatic_installation = false,
-                },
-            },
         },
         {
             "ray-x/lsp_signature.nvim",

@@ -11,18 +11,6 @@ vim.lsp.config("gopls", {
     -- cmd = { "gopls", "-rpc.trace", "-logfile", "/tmp/gopls.log" },
     root_markers = { 'go.mod', 'go.work', '.git' },
 })
-vim.lsp.config("rgo", {
-    name = 'rgo',
-    filetypes = { 'go' },
-    cmd = { "rgo", "lsp" },
-    root_markers = { 'go.mod', 'go.work', '.git' },
-    settings = {
-      trace = {
-        server = 'verbose'
-      }
-    }
-})
-vim.lsp.enable("rgo")
 
 -- global lsp init
 local filter_kinds = {
@@ -52,9 +40,6 @@ formatutil.setup({
 vim.api.nvim_create_user_command('Format', function()
     local bufnr = vim.api.nvim_get_current_buf()
     formatutil.format_with_priority(bufnr, true, 3000, "null-ls")
-end, {})
-vim.api.nvim_create_user_command("Hover", function()
-    vim.lsp.buf.hover()
 end, {})
 vim.api.nvim_create_user_command('Hover', function()
     vim.lsp.buf.hover()

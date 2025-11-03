@@ -40,7 +40,7 @@ vim.opt.startofline = false -- don't jump to startofline for g,G,<C-jumpcmd>
 -- c:不会自动在注释行过长时换行
 -- r: 在注释行中按回车键时，不会自动在新行插入注释标记
 -- t:在普通模式下使用 o 或 O 命令新增行时，不会自动延续注释
-vim.cmd("set formatoptions-=cro")
+vim.opt.formatoptions:remove({ "c", "r", "o" })
 
 -- vim.opt.virtualedit = "all"                     -- keep curosr in fixed column
 -- disable netrw at the very start of your init.lua

@@ -2,11 +2,11 @@ return {
     "yetone/avante.nvim",
     event = "VeryLazy",
     version = false,
+    ---@module 'avante'
+    ---@type avante.Config
     opts = {
-        -- debug = false,
         provider = "claude-code",
         instructions_file = "AGENTS.md",
-        auto_suggestions_provider = "deepseek", -- Since auto-suggestions are a high-frequency operation and therefore expensive, it is recommended to specify an inexpensive provider or even a free provider: copilot
         providers = {
             deepseek = {
                 __inherited_from = "openai",
@@ -18,7 +18,7 @@ return {
         acp_providers = {
             ["claude-code"] = {
                 command = "claude-code-acp", -- npx
-                args = {}, -- { "@zed-industries/claude-code-acp" },
+                args = {},                   -- { "@zed-industries/claude-code-acp" },
                 env = {
                     NODE_NO_WARNINGS = "1",
                     ANTHROPIC_BASE_URL = os.getenv("ANTHROPIC_BASE_URL"),
@@ -29,13 +29,7 @@ return {
             },
         },
         selector = {
-            provider = "telescope", -- native|mini_pick|telescope
-        },
-        windows = {
-            input = {
-                prefix = "> ",
-                height = 8, -- Height of the input window in vertical layout
-            },
+            provider = "native", -- native|mini_pick|telescope
         },
     },
     build = "make", -- if you want to build from source then do `make BUILD_FROM_SOURCE=true"
@@ -45,25 +39,6 @@ return {
         --- The below dependencies are optional,
         "hrsh7th/nvim-cmp",            -- autocompletion for avante commands and mentions
         "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-        {
-            'echasnovski/mini.pick',
-            version = false,
-            config = function()
-                -- Centered on screen
-                local win_config = function()
-                    local height = math.floor(0.618 * vim.o.lines)
-                    local width = math.floor(0.618 * vim.o.columns)
-                    return {
-                        anchor = 'NW',
-                        height = height,
-                        width = width,
-                        row = math.floor(0.5 * (vim.o.lines - height)),
-                        col = math.floor(0.5 * (vim.o.columns - width)),
-                    }
-                end
-                require("mini.pick").setup({ window = { config = win_config } })
-            end
-        },
         {
             -- support for image pasting
             "HakonHarnes/img-clip.nvim",
