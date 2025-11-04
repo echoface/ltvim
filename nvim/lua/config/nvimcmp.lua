@@ -1,10 +1,7 @@
-vim.opt.completeopt = { "menuone", "noinsert", "noselect" }
+vim.opt.completeopt = { "menu", "menuone", "noinsert", "noselect" }
 
+local cmp = require("cmp")
 local luasnip = require("luasnip")
-
--- local feedkey = function(key, mode)
---     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
--- end
 
 local has_words_before = function()
     if vim.bo.buftype == 'prompt' then
@@ -15,24 +12,20 @@ local has_words_before = function()
     return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 
-local formating_fomat = function(entry, item)
+local display_fomat = function(entry, item)
     item.menu = string.format("[%s]", entry.source.name)
     return item
-end
-
-local snippet_expand = function(args)
-    luasnip.lsp_expand(args.body) -- For `luasnip` users.
 end
 
 local gen_cmp_sources = function()
     local sources = {
         { name = "nvim_lsp", group_index = 0 }, -- cmp from lsp server configure by nvim-lspconfig
         { name = "luasnip",  group_index = 0 }, -- snippets provider
-        { name = "lazydev",  group_index = 1 },
-        { name = "nvim_lua", group_index = 1 }, -- You can get the vim.lsp.util.* API with this source.
-        { name = "path",     group_index = 2 },
-        { name = "buffer",   group_index = 2 },
-        { }
+        { name = "lazydev",  group_index = 5 },
+        { name = "nvim_lua", group_index = 5 }, -- You can get the vim.lsp.util.* API with this source.
+        { name = "path",     group_index = 10 },
+        { name = "buffer",   group_index = 10 },
+        {}
     }
     if package.loaded["copilot"] ~= nil then
         table.insert(sources, { name = "copilot", group_index = 0 })
@@ -40,32 +33,24 @@ local gen_cmp_sources = function()
     return sources
 end
 
+
 M = {}
-M.setup = function()
+M.config = function()
     vim.keymap.set({ "i", "s" }, "<C-J>", function() luasnip.jump(1) end, { silent = true })
     vim.keymap.set({ "i", "s" }, "<C-K>", function() luasnip.jump(-1) end, { silent = true })
-    -- we don't need expand manually, use nvim-cmp prompt instead
-    -- vim.keymap.set({ "i" }, "<C-K>", function() luasnip.expand() end, { silent = true })
-    -- we don't need expand manually, use nvim-cmp prompt instead
-    -- vim.keymap.set({ "i", "s" }, "<C-E>", function()
-    --     if luasnip.choice_active() then
-    --         luasnip.change_choice(1)
-    --     end
-    -- end, { silent = true })
-    --
 
-    local cmp = require("cmp")
     cmp.setup({
         preselect = cmp.PreselectMode.None,
-        formatting = {
-            format = formating_fomat,
-        },
+        -- formatting = {
+        --     format = display_fomat,
+        -- },
         snippet = {
-            expand = snippet_expand,
+            expand = function(args)
+                luasnip.lsp_expand(args.body)
+            end,
         },
         completion = {
             keyword_length = 2,
-            -- autocomplete = true, -- set to fase stop autocomplete, need trigger manually
         },
         sources = gen_cmp_sources(),
         mapping = cmp.mapping.preset.insert({
@@ -78,30 +63,24 @@ M.setup = function()
                 i = cmp.mapping.abort(),
                 c = cmp.mapping.close(),
             }),
-            ['<CR>'] = cmp.mapping(function(fallback)
-                if not cmp.visible() then
+            ["<CR>"] = cmp.mapping(function(fallback)
+                if cmp.visible() and cmp.get_active_entry() then
+                    cmp.confirm({ select = false })
+                -- elseif luasnip.expandable() then
+                --     luasnip.expand({})
+                else
                     fallback()
                 end
-
-                if luasnip.expandable() then
-                    return luasnip.expand()
-                end
-
-                return cmp.confirm({
-                    select = true,
-                    -- behavior = cmp.ConfirmBehavior.Replace,
-                })
-            end),
+            end, { "i", "s" }),
 
             ["<Tab>"] = cmp.mapping(function(fallback)
-                if cmp.visible() and has_words_before() then
+                if cmp.visible() then
                     cmp.select_next_item()
-                    -- cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
-                    -- luasnap: wee use c-j/c-k to jump to next/previous item
-                    -- elseif luasnip.locally_jumpable(1) then
-                    --     luasnip.jump(1)
-                    --elseif has_words_before() then
-                    --    cmp.complete()
+                -- luasnap: wee use c-j/c-k to jump to next/previous item
+                elseif luasnip.expandable() then
+                    luasnip.expand({})
+                -- elseif has_words_before() then
+                --     cmp.complete()
                 else
                     fallback()
                 end
@@ -109,8 +88,8 @@ M.setup = function()
             ["<S-Tab>"] = cmp.mapping(function(fallback)
                 if cmp.visible() then
                     cmp.select_prev_item()
-                    --elseif vim.fn["vsnip#jumpable"](-1) == 1 then
-                    --    feedkey("<Plug>(vsnip-jump-prev)", "")
+                -- elseif luasnip.jumpable(-1) then
+                --     luasnip.jump(-1)
                 else
                     fallback()
                 end

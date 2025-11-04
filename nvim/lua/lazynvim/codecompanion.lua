@@ -8,6 +8,7 @@ return {
         "nvim-telescope/telescope.nvim",
         "MeanderingProgrammer/render-markdown.nvim",
     },
+    version = "*",
     event = "VeryLazy",
     config = function()
         -- https://github.com/olimorris/codecompanion.nvim/blob/main/lua/codecompanion/config.lua
@@ -28,10 +29,10 @@ return {
                     adapter = "claude_code",
                 },
                 inline = {
-                    adapter = "claude_code",
+                    adapter = "deepseek",
                 },
                 cmd = {
-                    adapter = "claude_code",
+                    adapter = "deepseek",
                 }
             }
         })
