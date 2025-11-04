@@ -32,10 +32,8 @@ local gen_cmp_sources = function()
         { name = "nvim_lua", group_index = 1 }, -- You can get the vim.lsp.util.* API with this source.
         { name = "path",     group_index = 2 },
         { name = "buffer",   group_index = 2 },
+        { }
     }
-    if package.loaded["trae"] ~= nil then
-        table.insert(sources, { name = "trae", group_index = 0 })
-    end
     if package.loaded["copilot"] ~= nil then
         table.insert(sources, { name = "copilot", group_index = 0 })
     end

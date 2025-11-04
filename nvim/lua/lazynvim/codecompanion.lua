@@ -1,6 +1,7 @@
 return {
     "olimorris/codecompanion.nvim",
     dependencies = {
+        "hrsh7th/nvim-cmp",
         "nvim-lua/plenary.nvim",
         "nvim-tree/nvim-web-devicons",
         "nvim-treesitter/nvim-treesitter",
@@ -11,11 +12,6 @@ return {
     config = function()
         -- https://github.com/olimorris/codecompanion.nvim/blob/main/lua/codecompanion/config.lua
         require("codecompanion").setup({
-            display = {
-                chat = {
-                    show_settings = true,
-                },
-            },
             adapters = {
                 acp = {
                     claude_code = function()
@@ -43,6 +39,6 @@ return {
     opts = {},
     keys = {
         { "<leader>cc", "<cmd>CodeCompanionChat Toggle<cr>", desc = "codecompanion chat" },
-        { "<leader>ca", "<cmd>CodeCompanionActions<cr>",     desc = "toggle code action" },
+        { "<leader>ca", "<cmd>CodeCompanionActions<cr>",     desc = "codecompanion action" },
     },
 }
