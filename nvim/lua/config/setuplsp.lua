@@ -7,9 +7,9 @@ vim.lsp.config("*", {
     },
 })
 vim.lsp.config("gopls", {
-    cmd = { "gopls" },
-    -- cmd = { "gopls", "-rpc.trace", "-logfile", "/tmp/gopls.log" },
-    root_markers = { 'go.mod', 'go.work', '.git' },
+    -- share the gopls instance if there is one already
+    cmd = { 'gopls', '-remote.debug=:0', },
+    root_markers = { 'go.work', 'go.mod', '.git', 'go.sum' },
 })
 
 -- global lsp init

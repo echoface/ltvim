@@ -97,7 +97,9 @@ return {
             staticcheck = false, -- 严重影响内存和性能
             diagnosticsDelay = "3s",
             diagnosticsTrigger = "Edit",
+            symbolScope = "workspace",
             symbolMatcher = 'FastFuzzy',
+            expandWorkspaceToModule = false,
             semanticTokens = false,              -- default to false as treesitter is better
             gofumpt = true,                      -- true|false, -- turn on for new repos, gofmpt is good but also create code turmoils
             hoverKind = "SynopsisDocumentation", -- Hover 只显示简要文档
