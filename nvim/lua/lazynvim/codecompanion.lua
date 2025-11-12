@@ -13,6 +13,13 @@ return {
     config = function()
         -- https://github.com/olimorris/codecompanion.nvim/blob/main/lua/codecompanion/config.lua
         require("codecompanion").setup({
+            display = {
+                chat = {
+                    window = {
+                        width = 0.35,
+                    }
+                }
+            },
             adapters = {
                 acp = {
                     claude_code = function()

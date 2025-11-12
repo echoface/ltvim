@@ -4,7 +4,7 @@ if not status_ok then return end
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
-vim.keymap.set("n", "tf", ":NvimTreeFindFileToggle<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "tt", ":NvimTreeFindFileToggle<CR>", { noremap = true, silent = true })
 
 local function on_attach(bufnr)
     local api = require('nvim-tree.api')
@@ -85,7 +85,7 @@ nvimtree.setup({
         update_root = true
     },
     on_attach = on_attach,
-    view = tree_view("right", false),
+    view = tree_view("right", true),
     git = {
         enable = false,
     },
@@ -108,3 +108,5 @@ nvimtree.setup({
         },
     },
 })
+
+

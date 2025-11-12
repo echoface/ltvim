@@ -31,6 +31,18 @@ return {
         selector = {
             provider = "native", -- native|mini_pick|telescope
         },
+        windows = {
+            width = 35,
+            sidebar_header = {
+                enabled = true, -- true, false to enable/disable the header
+                align = "left", -- left, center, right for title
+                rounded = true,
+            },
+            input = {
+                prefix = "> ",
+                height = 16, -- Height of the input window in vertical layout
+            },
+        }
     },
     build = "make", -- if you want to build from source then do `make BUILD_FROM_SOURCE=true"
     dependencies = {
