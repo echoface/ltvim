@@ -100,6 +100,7 @@ vim.api.nvim_create_autocmd({ "TermOpen" }, {
 
         --- vim.cmd([[ startinsert ]])
         vim.keymap.set('n', 'q', '<cmd>hide<CR>', opts)
+        vim.keymap.set('n', '<esc>', '<cmd>hide<CR>', opts)
     end,
 })
 
