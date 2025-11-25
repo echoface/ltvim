@@ -1,14 +1,12 @@
 # A out-of-box vim toolkit bundle
-在Language server变得像现在这样成熟之前, 一直配置使用YoucompleteMe作为主力插件使用, 不过随着
-LanguageServer的崛起, NeoVim、vim8的发展, 开始了一些变化, YouCompleteMe的作者也在积极的做lsp
-的整合,鉴于自己的使用习惯与对环境setup的要求, 目前配置了三套兼容且方便的配置
+
+在Language server变得像现在这样成熟之前, 一直配置使用YoucompleteMe作为主力插件使用, 不过随着LanguageServer的崛起, NeoVim、vim8的发展, 开始了一些变化, YouCompleteMe的作者也在积极的做lsp的整合,鉴于自己的使用习惯与对环境setup的要求, 目前配置了三套兼容且方便的配置
 
 ## NVIM
 
 update: now migrate to nvim
 
-nvim 的迭代和崛起, 带动了整个vim生态的前进, 最近neovim发布buildin lsp之后, 各插件大神在短短一段时间
-开发除了一系列的配套插件, 经过**简单** 的体验, 在原来基础上配置出一套nvim的插件配置.
+nvim 的迭代和崛起, 带动了整个vim生态的前进, 最近neovim发布buildin lsp之后, 各插件大神在短短一段时间开发除了一系列的配套插件, 经过**简单** 的体验, 在原来基础上配置出一套nvim的插件配置.
 
 located: `ltvim/nvim`
 目前对nvim同样配置了两套配置文件, 基于coc.nvim 与 nvim buildin lsp的配置, 目前使用buildin lsp
@@ -16,8 +14,7 @@ located: `ltvim/nvim`
 
 ## VIM8
 - base
-仅仅包行基本的插件与配置文件, 且基础的使用依赖均在仓库中带了对应可以使用的版本, 对无网络环境
-也可以做一个基本的配置使用
+仅仅包行基本的插件与配置文件, 且基础的使用依赖均在仓库中带了对应可以使用的版本, 对无网络环境也可以做一个基本的配置使用
 
 - ycm
 在base的基础上, 仅仅多了YoucomplteMe的一点点配置, 非常干净.

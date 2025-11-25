@@ -2,12 +2,12 @@
 --  插件无关的设置 ---
 
 -- Use 'q' to quit from common plugins
+-- quickfix config below standalone
 vim.api.nvim_create_autocmd({ "FileType" }, {
     pattern = {
-        "qf", "help", "man", "checkhealth",
-        "lspinfo", "notify", "lir", "spectre_panel",
+        "help", "man", "checkhealth", "lspinfo",
+        "notify", "lir", "spectre_panel", "markdown",
         "NvimTree", "mason", "lazy", "null-ls-info",
-        "markdown",
     },
     callback = function(event) -- 仅对“浮动或只读窗口”生效，避免干扰普通 markdown
         local buf = event.buf
@@ -47,12 +47,15 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
         keymap("n", "tq", ":ToggleQuickFix<CR>", opts)
 
         vim.cmd [[
+            setlocal nobuflisted
             nnoremap <buffer> k <Up>
             nnoremap <buffer> j <Down>
             nnoremap <buffer> o <CR>:cclose<CR>      " close quickfix menu after selecting choice
             nnoremap <buffer> <CR> <CR>:cclose<CR>   " close quickfix menu after selecting choice
             "nnoremap <buffer> o <CR><C-w>p          " open and keep focus on qf
             "nnoremap <buffer> <CR> <CR><C-W>p       " open and keep focus on qf
+            nnoremap <silent> <buffer> q :cclose<CR>
+            nnoremap <silent> <buffer> <ESC> :cclose<CR>
         ]]
     end
 })
@@ -62,29 +65,24 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
     pattern = { "gitcommit", "markdown" },
     callback = function()
         vim.opt_local.wrap = true
-        vim.opt_local.spell = true
-    end,
-})
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "gitcommit" },
-    callback = function()
-        vim.api.nvim_set_option_value("textwidth", 72, { scope = "local" })
-    end
-})
+        vim.opt_local.number = false
+        vim.opt_local.linebreak = true
+        vim.opt_local.breakindent = true
+        vim.opt_local.showbreak = "↪ "
+        vim.opt_local.formatoptions:append("tnlj")
+        vim.opt_local.relativenumber = false
+        vim.api.nvim_set_option_value("wrapmargin", 3, { scope = "local" })
 
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "markdown" },
-    callback = function()
-        vim.api.nvim_set_option_value("textwidth", 0, { scope = "local" })
-        vim.api.nvim_set_option_value("wrapmargin", 0, { scope = "local" })
-        vim.api.nvim_set_option_value("linebreak", true, { scope = "local" })
-    end
+        -- vim.opt_local.spell = true
+        vim.opt_local.colorcolumn = "120"
+        -- vim.api.nvim_set_option_value("textwidth", 72, { scope = "local" })
+    end,
 })
 
 
 -- Terminal
-vim.api.nvim_create_autocmd({ "FileType" }, {
-    pattern = { "terminal", "toggleterm", "snacks_terminal" },
+vim.api.nvim_create_autocmd({ "TermOpen" }, {
+    -- pattern = { "terminal", "toggleterm", "snacks_terminal" },
     callback = function()
         local opts = { buffer = 0 }
         vim.keymap.set('t', 'jj', [[<C-\><C-n>]], opts)
