@@ -4,16 +4,17 @@ if not status_ok then return end
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
-vim.api.nvim_create_user_command("ToggleTree", function()
-    local api = require("nvim-tree.api")
-    api.tree.toggle({find_file = true})
-end, { desc = "Toggle NvimTree and find current file" })
+local api = require("nvim-tree.api")
+
+-- 主切换逻辑
+local function toggle_or_focus_tree()
+    api.tree.toggle({find_file = true, focus = true})
+end
 
 vim.keymap.set("n", "tt", ":ToggleTree<CR>", { noremap = true, silent = true })
+vim.api.nvim_create_user_command("ToggleTree", toggle_or_focus_tree, { desc = "Toggle NvimTree" })
 
 local function on_attach(bufnr)
-    local api = require('nvim-tree.api')
-
     local function opts(desc)
         return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
     end
@@ -40,12 +41,12 @@ local function tree_view(pos, enable_float)
         adaptive_size = true,
         float = {
             enable = enable_float,
-            quit_on_focus_loss = false,
+            quit_on_focus_loss = true,
             open_win_config = function()
                 local screen_w = vim.opt.columns:get()
                 local screen_h = vim.opt.lines:get() - vim.opt.cmdheight:get()
 
-                local row = 1
+                local row = 0
                 local col = 0
                 local window_w_int = 42
                 local window_h_int = math.floor(screen_h - 4)
