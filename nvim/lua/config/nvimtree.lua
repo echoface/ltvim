@@ -11,7 +11,7 @@ local function toggle_or_focus_tree()
     api.tree.toggle({find_file = true, focus = true})
 end
 
-vim.keymap.set("n", "tt", ":ToggleTree<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "tf", ":ToggleTree<CR>", { noremap = true, silent = true })
 vim.api.nvim_create_user_command("ToggleTree", toggle_or_focus_tree, { desc = "Toggle NvimTree" })
 
 local function on_attach(bufnr)
