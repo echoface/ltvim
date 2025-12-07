@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ $# -lt 1 ]; then
-  echo "usage:./install [ycm|coc|hg|base|nvim|nlazy]"
+  echo "usage:./install [base|nvim]"
   exit 1
 fi
 
@@ -35,6 +35,30 @@ backupvim() {
   fi
 }
 
+setup_ghostty() {
+  if [ -d "./ghostty" ]; then
+    dt=`date "+%Y%m%d-%H%M%S"`
+    # Create ghostty config directory if it doesn't exist
+    if [ ! -d "$HOME/.config/ghostty" ]; then
+      mkdir -p $HOME/.config/ghostty
+      echo "created directory $HOME/.config/ghostty"
+    fi
+
+    # Backup existing ghostty config if it exists
+    if [ -d "$HOME/.config/ghostty" ]; then
+      if [ "$(ls -A $HOME/.config/ghostty 2>/dev/null)" ]; then
+        mv $HOME/.config/ghostty $HOME/.config/ghostty.${dt}
+        mkdir -p $HOME/.config/ghostty
+        echo "backup $HOME/.config/ghostty to $HOME/.config/ghostty.${dt}"
+      fi
+    fi
+
+    # Copy ghostty config files
+    cp -r ./ghostty/* $HOME/.config/ghostty/
+    echo "ghostty config installed to $HOME/.config/ghostty"
+  fi
+}
+
 read -r -p "setup your $! config now?[Y|n]" input
 case $input in
   [yY][eE][sS]|[yY])
@@ -50,24 +74,10 @@ case $input in
     ;;
 esac
 
-
-
-if [ "$1" == "coc" ]; then
-  backupvim
-  ln -sf `pwd`/vim $HOME/.vim
-  ln -sf `pwd`/vim/vimrc.coc $HOME/.vimrc
-elif [ "$1" == "ycm" ]; then
-  backupvim
-  ln -sf `pwd`/vim $HOME/.vim
-  ln -sf `pwd`/vim/vimrc.ycm $HOME/.vimrc
-elif [ "$1" == "base" ]; then
+if [ "$1" == "base" ]; then
   backupvim
   ln -sf `pwd`/vim $HOME/.vim
   ln -sf `pwd`/vim/vimrc.base $HOME/.vimrc
-elif [ "$1" == "hg" ]; then
-  backupvim
-  ln -sf `pwd`/vim $HOME/.vim
-  ln -sf `pwd`/vim/vimrc.hg $HOME/.vimrc
 elif [ "$1" == "nvim" ]; then
   backupnvim
   ln -sf `pwd`/nvim $HOME/.config/nvim
@@ -75,6 +85,12 @@ else
   echo "arg:$1 not supported"
   exit -1
 fi
+
+# setup tmux
+./install_tmux.sh
+
+# setup ghostty
+setup_ghostty
 
 echo "finish install and enjoy ltvim now!!!"
 echo "please install npm ripgrep to ensure working"

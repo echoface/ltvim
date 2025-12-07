@@ -14,6 +14,11 @@ return {
         end,
     },
     {
+        "scottmckendry/cyberdream.nvim",
+        lazy = false,
+        priority = 1000,
+    },
+    {
         'rcarriga/nvim-notify',
         config = function()
             vim.notify = require("notify")
