@@ -1,3 +1,10 @@
-# theme
-theme = dark:cyberdream,light:cyberdream-light
-font-size = 16
+font-size=16
+font-family="Hack Nerd Font Mono"
+
+cursor-style = block
+cursor-color = cell-foreground
+shell-integration-features = no-cursor
+
+macos-titlebar-style=tabs
+
+theme = dark:"Ghostty Default Style Dark",light:"Github Light High Contrast"

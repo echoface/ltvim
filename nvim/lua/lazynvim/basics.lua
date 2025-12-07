@@ -9,15 +9,24 @@ return {
             vim.g.gruvbox_bold = 1
             vim.g.gruvbox_italic = 1
             vim.g.gruvbox_transparent_bg = 1
-            vim.o.background = "light" -- or "light" for light mode
+            vim.o.background = "dark" -- or "light" for light mode
             vim.cmd.colorscheme("gruvbox")
         end,
     },
     {
-        "scottmckendry/cyberdream.nvim",
-        lazy = false,
-        priority = 1000,
+      'sainnhe/sonokai',
+      lazy = false,
+      priority = 1000,
+      config = function()
+        -- Optionally configure and load the colorscheme
+        -- directly inside the plugin declaration.
+        -- vim.g.sonokai_style = 'andromeda'
+        vim.g.sonokai_enable_italic = true
+        vim.g.sonokai_better_performance = 1
+        vim.cmd.colorscheme('sonokai')
+      end
     },
+    { "rebelot/kanagawa.nvim", lazy = false},
     {
         'rcarriga/nvim-notify',
         config = function()
