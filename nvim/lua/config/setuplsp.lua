@@ -1,14 +1,9 @@
 vim.lsp.set_log_level("off") -- off | error | info
 
 -- 全局设置
-vim.lsp.config("*", {
-    flags = {
-        debounce_text_changes = 300, -- Debounce settings can improve performance
-    },
-})
 vim.lsp.config("gopls", {
     -- share the gopls instance if there is one already
-    cmd = { 'gopls', '-remote.debug=:0', },
+    cmd = { 'gopls', '-remote=auto', '-remote.debug=:0' },
     root_markers = { 'go.work', 'go.mod', '.git', 'go.sum' },
 })
 

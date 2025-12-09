@@ -2,14 +2,14 @@ return {
     -- other simple enough plugin
     { "moll/vim-bbye",       event = "VeryLazy" },
     { "APZelos/blamer.nvim", event = "VeryLazy" },
-    {
-        "ellisonleao/gruvbox.nvim",
-        priority = 1000,
-        config = function()
-            require("gruvbox").setup({})
-            vim.cmd.colorscheme("gruvbox")
-        end,
-    },
+    -- {
+    --     "ellisonleao/gruvbox.nvim",
+    --     priority = 1000,
+    --     config = function()
+    --         require("gruvbox").setup({})
+    --         vim.cmd.colorscheme("gruvbox")
+    --     end,
+    -- },
     -- {
     --     "morhetz/gruvbox",
     --     priority = 1000,
@@ -27,9 +27,11 @@ return {
         config = function()
             -- Optionally configure and load the colorscheme
             -- directly inside the plugin declaration.
-            -- vim.g.sonokai_style = 'andromeda'
+            vim.g.sonokai_style = 'espresso'
+            -- 'default', 'atlantis', 'andromeda', 'shusia', 'maia', 'espresso'
             vim.g.sonokai_enable_italic = true
             vim.g.sonokai_better_performance = 1
+            -- vim.g.sonokai_transparent_background = 2
             vim.cmd.colorscheme('sonokai')
         end
     },

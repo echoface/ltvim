@@ -74,10 +74,7 @@ return {
     },
     filetypes = { 'go', 'gomod', 'gosum', 'gotmpl', 'gohtmltmpl', 'gotexttmpl' },
     message_level = vim.lsp.protocol.MessageType.Error,
-    cmd = {
-        'gopls', -- share the gopls instance if there is one already
-        '-remote.debug=:0',
-    },
+    cmd = { 'gopls', '-remote=auto', '-remote.debug=:0' },
     root_markers = { 'go.work', 'go.mod', '.git', 'go.sum' },
     flags = { allow_incremental_sync = true, debounce_text_changes = 500 },
     settings = {
