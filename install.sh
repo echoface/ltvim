@@ -7,6 +7,44 @@ command_exists() {
   command -v "$1" >/dev/null 2>&1
 }
 
+# Install Homebrew if not exists
+install_brew() {
+  if command_exists brew; then
+    echo "✓ Homebrew already installed"
+    return 0
+  fi
+
+  echo "Homebrew not found. Installing Homebrew..."
+  echo "This may take a few minutes..."
+
+  # Install Homebrew
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+  # Add Homebrew to PATH if not already there
+  if [[ -d "/opt/homebrew" ]]; then
+    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  elif [[ -d "/home/linuxbrew/.linuxbrew" ]]; then
+    echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.zprofile
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  fi
+
+  if command_exists brew; then
+    echo "✓ Homebrew installed successfully"
+
+    # Set up Homebrew bottle mirror for faster downloads in China
+    echo "Setting up Homebrew mirror for faster downloads..."
+    echo "export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.aliyun.com/homebrew/homebrew-bottles" >> ~/.zprofile
+    export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.aliyun.com/homebrew/homebrew-bottles
+
+    return 0
+  else
+    echo "✗ Failed to install Homebrew"
+    echo "Please install Homebrew manually: https://brew.sh"
+    return 1
+  fi
+}
+
 # Auto-install ripgrep
 install_ripgrep() {
   if command_exists rg; then
@@ -14,30 +52,15 @@ install_ripgrep() {
     return 0
   fi
 
-  echo "ripgrep not found. Attempting to install..."
-  if command_exists brew; then
-    echo "Installing ripgrep via Homebrew..."
-    brew install ripgrep
-  elif command_exists apt-get; then
-    echo "Installing ripgrep via apt-get..."
-    sudo apt-get update && sudo apt-get install -y ripgrep
-  elif command_exists yum; then
-    echo "Installing ripgrep via yum..."
-    sudo yum install -y ripgrep
-  elif command_exists dnf; then
-    echo "Installing ripgrep via dnf..."
-    sudo dnf install -y ripgrep
-  else
-    echo "✗ Could not detect package manager. Please install ripgrep manually."
-    echo "  Visit: https://github.com/BurntSushi/ripgrep"
-    return 1
-  fi
+  echo "ripgrep not found. Installing via Homebrew..."
+  brew install ripgrep
 
   if command_exists rg; then
     echo "✓ ripgrep installed successfully"
     return 0
   else
     echo "✗ Failed to install ripgrep"
+    echo "  Visit: https://github.com/BurntSushi/ripgrep"
     return 1
   fi
 }
@@ -49,30 +72,15 @@ install_fd() {
     return 0
   fi
 
-  echo "fd not found. Attempting to install..."
-  if command_exists brew; then
-    echo "Installing fd via Homebrew..."
-    brew install fd
-  elif command_exists apt-get; then
-    echo "Installing fd via apt-get..."
-    sudo apt-get update && sudo apt-get install -y fd-find
-  elif command_exists yum; then
-    echo "Installing fd via yum..."
-    sudo yum install -y fd
-  elif command_exists dnf; then
-    echo "Installing fd via dnf..."
-    sudo dnf install -y fd
-  else
-    echo "✗ Could not detect package manager. Please install fd manually."
-    echo "  Visit: https://github.com/sharkdp/fd"
-    return 1
-  fi
+  echo "fd not found. Installing via Homebrew..."
+  brew install fd
 
   if command_exists fd; then
     echo "✓ fd installed successfully"
     return 0
   else
     echo "✗ Failed to install fd"
+    echo "  Visit: https://github.com/sharkdp/fd"
     return 1
   fi
 }
@@ -84,30 +92,15 @@ install_nvim() {
     return 0
   fi
 
-  echo "neovim not found. Attempting to install..."
-  if command_exists brew; then
-    echo "Installing neovim via Homebrew..."
-    brew install neovim
-  elif command_exists apt-get; then
-    echo "Installing neovim via apt-get..."
-    sudo apt-get update && sudo apt-get install -y neovim
-  elif command_exists yum; then
-    echo "Installing neovim via yum..."
-    sudo yum install -y neovim
-  elif command_exists dnf; then
-    echo "Installing neovim via dnf..."
-    sudo dnf install -y neovim
-  else
-    echo "✗ Could not detect package manager. Please install neovim manually."
-    echo "  Visit: https://github.com/neovim/neovim"
-    return 1
-  fi
+  echo "neovim not found. Installing via Homebrew..."
+  brew install neovim
 
   if command_exists nvim; then
     echo "✓ neovim installed successfully"
     return 0
   else
     echo "✗ Failed to install neovim"
+    echo "  Visit: https://github.com/neovim/neovim"
     return 1
   fi
 }
@@ -119,30 +112,15 @@ install_tmux() {
     return 0
   fi
 
-  echo "tmux not found. Attempting to install..."
-  if command_exists brew; then
-    echo "Installing tmux via Homebrew..."
-    brew install tmux
-  elif command_exists apt-get; then
-    echo "Installing tmux via apt-get..."
-    sudo apt-get update && sudo apt-get install -y tmux
-  elif command_exists yum; then
-    echo "Installing tmux via yum..."
-    sudo yum install -y tmux
-  elif command_exists dnf; then
-    echo "Installing tmux via dnf..."
-    sudo dnf install -y tmux
-  else
-    echo "✗ Could not detect package manager. Please install tmux manually."
-    echo "  Visit: https://github.com/tmux/tmux"
-    return 1
-  fi
+  echo "tmux not found. Installing via Homebrew..."
+  brew install tmux
 
   if command_exists tmux; then
     echo "✓ tmux installed successfully"
     return 0
   else
     echo "✗ Failed to install tmux"
+    echo "  Visit: https://github.com/tmux/tmux"
     return 1
   fi
 }
@@ -154,36 +132,124 @@ install_ghostty() {
     return 0
   fi
 
-  echo "ghostty not found. Attempting to install..."
-  if command_exists brew; then
-    echo "Installing ghostty via Homebrew..."
-    brew install ghostty
-  elif command_exists apt-get; then
-    echo "Installing ghostty via apt-get..."
-    # Ghostty might not be in default repos, suggest manual installation
-    echo "Note: Ghostty may not be available in apt repositories."
-    echo "Please visit: https://ghostty.org/install"
-    return 1
-  elif command_exists yum; then
-    echo "Installing ghostty via yum..."
-    echo "Please visit: https://ghostty.org/install"
-    return 1
-  elif command_exists dnf; then
-    echo "Installing ghostty via dnf..."
-    echo "Please visit: https://ghostty.org/install"
-    return 1
-  else
-    echo "Please visit: https://ghostty.org/install"
-    return 1
-  fi
+  echo "ghostty not found. Installing via Homebrew..."
+  brew install ghostty
 
   if command_exists ghostty; then
     echo "✓ ghostty installed successfully"
     return 0
   else
     echo "✗ Failed to install ghostty"
+    echo "  Visit: https://ghostty.org/install"
     return 1
   fi
+}
+
+# Auto-install zoxide
+install_zoxide() {
+  if command_exists zoxide; then
+    echo "✓ zoxide already installed"
+    return 0
+  fi
+
+  echo "zoxide not found. Installing via Homebrew..."
+  brew install zoxide
+
+  if command_exists zoxide; then
+    echo "✓ zoxide installed successfully"
+    return 0
+  else
+    echo "✗ Failed to install zoxide"
+    echo "  Visit: https://github.com/ajeetdsouza/zoxide"
+    return 1
+  fi
+}
+
+# Auto-install n (node version manager)
+install_n() {
+  if command_exists n; then
+    echo "✓ n (node version manager) already installed"
+    return 0
+  fi
+
+  echo "n not found. Installing via Homebrew..."
+  brew install n
+
+  if command_exists n; then
+    echo "✓ n installed successfully"
+    echo "  Note: You may need to set up N_PREFIX and add it to your PATH"
+    echo "  Example: export N_PREFIX=$HOME/n"
+    echo "          export PATH=$N_PREFIX/bin:$PATH"
+    return 0
+  else
+    echo "✗ Failed to install n"
+    echo "  Visit: https://github.com/tj/n"
+    return 1
+  fi
+}
+
+# Auto-install uv (Python package installer)
+install_uv() {
+  if command_exists uv; then
+    echo "✓ uv already installed"
+    return 0
+  fi
+
+  echo "uv not found. Installing via Homebrew..."
+  brew install uv
+
+  if command_exists uv; then
+    echo "✓ uv installed successfully"
+    return 0
+  else
+    echo "✗ Failed to install uv"
+    echo "  Visit: https://github.com/astral-sh/uv"
+    return 1
+  fi
+}
+
+# Auto-install font-hack-nerd-font
+install_font_hack_nerd_font() {
+  if brew list font-hack-nerd-font >/dev/null 2>&1; then
+    echo "✓ font-hack-nerd-font already installed"
+    return 0
+  fi
+
+  echo "font-hack-nerd-font not found. Installing via Homebrew..."
+  brew install --cask font-hack-nerd-font
+
+  if brew list font-hack-nerd-font >/dev/null 2>&1; then
+    echo "✓ font-hack-nerd-font installed successfully"
+    echo "  Note: You may need to restart your terminal or system to use the font"
+    return 0
+  else
+    echo "✗ Failed to install font-hack-nerd-font"
+    echo "  You can install it manually from: https://github.com/ryanoasis/nerd-fonts"
+    return 1
+  fi
+}
+
+# Install all dependencies at once
+install_all_dependencies() {
+  echo "Installing all required dependencies via Homebrew..."
+  echo ""
+
+  # First ensure brew is installed
+  install_brew
+
+  # Install all dependencies
+  install_n
+  install_uv
+  install_fd
+  install_nvim
+  install_tmux
+  install_zoxide
+  install_ripgrep
+  install_font_hack_nerd_font
+
+  echo ""
+  echo "✓ All dependencies installation attempt completed"
+  echo ""
 }
 
 backupnvim () {
@@ -237,6 +303,10 @@ setup_vim() {
       echo "Installing required tools for vim..."
       install_ripgrep
       install_fd
+      install_zoxide
+      install_n
+      install_uv
+      install_font_hack_nerd_font
       ;;
     2)
       echo "Selected: nvim (neovim)"
@@ -271,6 +341,10 @@ setup_vim() {
       echo "Installing required tools for nvim..."
       install_ripgrep
       install_fd
+      install_zoxide
+      install_n
+      install_uv
+      install_font_hack_nerd_font
       ;;
     *)
       echo "✗ Invalid choice"
@@ -358,35 +432,44 @@ show_menu() {
   echo ""
   echo "=== LTVIM Setup Menu ==="
   echo "What would you like to configure?"
-  echo "  1) vim/nvim"
-  echo "  2) tmux"
-  echo "  3) ghostty"
-  echo "  4) quit"
+  echo "  1) Install all dependencies (brew, ripgrep, fd, nvim, tmux, ghostty, zoxide, n, uv, font)"
+  echo "  2) vim/nvim"
+  echo "  3) tmux"
+  echo "  4) ghostty"
+  echo "  5) quit"
   echo ""
 }
 
 main_menu() {
+  # First ensure brew is available
+  install_brew
+
   while true; do
     show_menu
-    read -p "Select an option [1-4]: " choice
+    read -p "Select an option [1-5]: " choice
 
     case $choice in
       1)
         echo ""
+        echo "--- Installing all dependencies ---"
+        install_all_dependencies
+        ;;
+      2)
+        echo ""
         echo "--- Configuring vim/nvim ---"
         setup_vim
         ;;
-      2)
+      3)
         echo ""
         echo "--- Configuring tmux ---"
         setup_tmux
         ;;
-      3)
+      4)
         echo ""
         echo "--- Configuring ghostty ---"
         setup_ghostty
         ;;
-      4)
+      5)
         echo ""
         echo "=== Installation Complete ==="
         echo "Enjoy ltvim now!!!"
@@ -397,16 +480,20 @@ main_menu() {
         echo "  ✓ nvim"
         echo "  ✓ tmux"
         echo "  ✓ ghostty"
+        echo "  ✓ zoxide"
+        echo "  ✓ n (node version manager)"
+        echo "  ✓ uv (Python package installer)"
+        echo "  ✓ font-hack-nerd-font"
         echo ""
         echo "Optional:"
-        echo "  - npm: wget https://raw.githubusercontent.com/tj/n/master/bin/n -O /usr/bin/n"
+        echo "  - npm: Use 'n' to install Node.js versions"
         echo ""
         echo "...............................BYE..."
         exit 0
         ;;
       *)
         echo ""
-        echo "✗ Invalid option. Please select 1-4."
+        echo "✗ Invalid option. Please select 1-5."
         ;;
     esac
   done

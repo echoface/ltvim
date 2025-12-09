@@ -1,7 +1,8 @@
 font-size=16
 font-family="Hack Nerd Font Mono"
 
-cursor-style = block
+cursor-style = bar
+adjust-cursor-thickness = 4
 cursor-color = cell-foreground
 shell-integration-features = no-cursor
 
