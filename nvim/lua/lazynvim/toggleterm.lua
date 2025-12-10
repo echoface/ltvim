@@ -7,7 +7,7 @@ return {
         require("toggleterm").setup({
             direction = 'float',
             persist_mode = true, -- if set to true (default) the previous terminal mode will be remembered
-            start_in_insert = true,
+            start_in_insert = false,
             float_opts = {
                 border = {"", "", "", "", "", "⣀", "", ""},
                 width = vim.o.columns, -- Adjust the width
@@ -19,7 +19,7 @@ return {
             --     -- vim.keymap.set("t", "<Esc>", function() term:toggle() end, { buffer = 0 })
             -- end,
         })
-        vim.keymap.set({"t", "n"}, "tt", "<cmd>ToggleTerm<CR>", { desc = "Toggle terminal" })
+        vim.keymap.set({"n"}, "tt", "<cmd>ToggleTerm<CR>", { desc = "Toggle terminal" })
     end
 }
 
