@@ -469,7 +469,7 @@ main_menu() {
         echo "--- Installing all dependencies ---"
         install_all_dependencies
         ;;
-      5)
+      q)
         echo ""
         echo "=== Installation Complete ==="
         echo "Enjoy ltvim now!!!"
