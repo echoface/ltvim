@@ -432,11 +432,11 @@ show_menu() {
   echo ""
   echo "=== LTVIM Setup Menu ==="
   echo "What would you like to configure?"
-  echo "  1) Install all dependencies (brew, ripgrep, fd, nvim, tmux, ghostty, zoxide, n, uv, font)"
-  echo "  2) vim/nvim"
-  echo "  3) tmux"
-  echo "  4) ghostty"
-  echo "  5) quit"
+  echo "  1) tmux"
+  echo "  2) ghostty"
+  echo "  3) vim/nvim"
+  echo "  4) Install all dependencies (brew, ripgrep, fd, nvim, tmux, ghostty, zoxide, n, uv, font)"
+  echo "q|5) quit"
   echo ""
 }
 
@@ -451,36 +451,36 @@ main_menu() {
     case $choice in
       1)
         echo ""
-        echo "--- Installing all dependencies ---"
-        install_all_dependencies
-        ;;
-      2)
-        echo ""
-        echo "--- Configuring vim/nvim ---"
-        setup_vim
-        ;;
-      3)
-        echo ""
         echo "--- Configuring tmux ---"
         setup_tmux
         ;;
-      4)
+      2)
         echo ""
         echo "--- Configuring ghostty ---"
         setup_ghostty
         ;;
-      5)
+      3)
+        echo ""
+        echo "--- Configuring vim/nvim ---"
+        setup_vim
+        ;;
+      4)
+        echo ""
+        echo "--- Installing all dependencies ---"
+        install_all_dependencies
+        ;;
+      q)
         echo ""
         echo "=== Installation Complete ==="
         echo "Enjoy ltvim now!!!"
         echo ""
         echo "Required tools (auto-installed if missing):"
-        echo "  ✓ ripgrep (rg)"
         echo "  ✓ fd"
         echo "  ✓ nvim"
         echo "  ✓ tmux"
-        echo "  ✓ ghostty"
         echo "  ✓ zoxide"
+        echo "  ✓ ghostty"
+        echo "  ✓ ripgrep (rg)"
         echo "  ✓ n (node version manager)"
         echo "  ✓ uv (Python package installer)"
         echo "  ✓ font-hack-nerd-font"

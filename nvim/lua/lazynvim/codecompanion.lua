@@ -14,10 +14,17 @@ return {
         -- https://github.com/olimorris/codecompanion.nvim/blob/main/lua/codecompanion/config.lua
         require("codecompanion").setup({
             display = {
+                action_palette = {
+                    provider = "telescope",
+                },
                 chat = {
                     window = {
-                        width = 0.35,
-                    }
+                        width = 0.3,
+                        -- layout = "float",
+                        border = "rounded",
+                    },
+                    -- show_settings = true,
+                    -- start_in_insert_mode = true
                 }
             },
             adapters = {

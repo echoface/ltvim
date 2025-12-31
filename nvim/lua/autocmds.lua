@@ -8,8 +8,9 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
         "help", "man", "checkhealth", "lspinfo",
         "notify", "lir", "spectre_panel", "markdown",
         "NvimTree", "mason", "lazy", "null-ls-info",
+        "codecompanion", "Avante", "AvanteInput", "AvanteTodos"
     },
-    callback = function(event) -- 仅对“浮动或只读窗口”生效，避免干扰普通 markdown
+    callback = function(event)
         local buf = event.buf
         local win = vim.api.nvim_get_current_win()
         local config = vim.api.nvim_win_get_config(win)
@@ -62,8 +63,9 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 
 -- Set wrap and spell in markdown and gitcommit
 vim.api.nvim_create_autocmd({ "FileType" }, {
-    pattern = { "gitcommit", "markdown" },
+    pattern = { "gitcommit", "markdown", "codecompanion"},
     callback = function()
+        vim.opt_local.signcolumn = "no"
         vim.opt_local.wrap = true
         vim.opt_local.number = false
         vim.opt_local.linebreak = true
