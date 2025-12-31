@@ -5,7 +5,7 @@ return {
     ---@module 'avante'
     ---@type avante.Config
     opts = {
-        provider = "claude-code",
+        provider = "deepseek",
         instructions_file = "AGENTS.md",
         providers = {
             deepseek = {

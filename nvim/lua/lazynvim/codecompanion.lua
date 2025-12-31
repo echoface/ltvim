@@ -33,7 +33,7 @@ return {
             },
             strategies = {
                 chat = {
-                    adapter = "claude_code",
+                    adapter = "deepseek",
                 },
                 inline = {
                     adapter = "deepseek",
