@@ -33,24 +33,15 @@ return {
         },
         windows = {
             width = 30,
-            sidebar_header = {
-                enabled = true, -- true, false to enable/disable the header
-                align = "left", -- left, center, right for title
-                rounded = true,
-            },
             input = {
                 prefix = ">",
-                height = 14, -- Height of the input window in vertical layout
+                height = 12, -- Height of the input window in vertical layout
+                provider = "snacks",
+                provider_opts = {
+                    title = "Avante Input", -- Additional snacks.input options
+                    icon = " ",
+                },
             },
-            edit = {
-                border = "rounded",
-                start_insert = true, -- Start insert mode when opening the edit window
-            },
-            ask = {                  -- chat and ask sidebar
-                floating = false,
-                border = "rounded",
-                start_insert = false,  -- Start insert mode when opening the edit window
-            }
         }
     },
     build = "make", -- if you want to build from source then do `make BUILD_FROM_SOURCE=true"
@@ -58,6 +49,7 @@ return {
         "MunifTanjim/nui.nvim",
         "nvim-lua/plenary.nvim",
         --- The below dependencies are optional,
+        "folke/snacks.nvim",           -- for input provider snacks
         "hrsh7th/nvim-cmp",            -- autocompletion for avante commands and mentions
         "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
         "nvim-telescope/telescope.nvim",

@@ -1,5 +1,4 @@
 
-
 return {
     'akinsho/toggleterm.nvim',
     version = "*",
@@ -9,10 +8,10 @@ return {
             persist_mode = true, -- if set to true (default) the previous terminal mode will be remembered
             start_in_insert = false,
             float_opts = {
-                border = {"", "", "", "", "", "⣀", "", ""},
+                row = 0,
+                -- border = {"", "", "", "", "", "⣀", "", ""},
                 width = vim.o.columns, -- Adjust the width
                 height = math.floor(vim.o.lines * 0.65),  -- Adjust the height
-                row = 0,
             },
             -- on_open = function(term)
             --     vim.cmd("startinsert!")

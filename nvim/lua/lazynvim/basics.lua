@@ -1,42 +1,45 @@
 return {
     -- other simple enough plugin
-    { "moll/vim-bbye",       event = "VeryLazy" },
-    { "APZelos/blamer.nvim", event = "VeryLazy" },
+    { "moll/vim-bbye",                event = "VeryLazy" },
+    { "APZelos/blamer.nvim",          event = "VeryLazy" },
+    { "f-person/auto-dark-mode.nvim", opts = {} },
+    { "savq/melange-nvim", priority=1000, config=function ()
+        vim.cmd.colorscheme("melange")
+    end },
     -- {
-    --     "ellisonleao/gruvbox.nvim",
+    --     "loctvl842/monokai-pro.nvim",
     --     priority = 1000,
     --     config = function()
-    --         require("gruvbox").setup({
-    --            contrast = "soft"
+    --         require("monokai-pro").setup({
+    --             day_night = {
+    --                 enable = true,        -- turn off by default
+    --                 day_filter = "light", -- classic | octagon | pro | machine | ristretto | spectrum
+    --                 night_filter = "pro", -- classic | octagon | pro | machine | ristretto | spectrum
+    --             },
     --         })
-    --         vim.cmd.colorscheme("gruvbox")
+    --     end
+    -- },
+    -- {
+    --     'sainnhe/sonokai',
+    --     -- priority = 1000,
+    --     config = function()
+    --         vim.g.sonokai_style = 'espresso'
+    --         -- 'default', 'atlantis', 'andromeda', 'shusia', 'maia', 'espresso'
+    --         vim.g.sonokai_enable_italic = true
+    --         vim.g.sonokai_better_performance = 1
+    --         -- vim.cmd.colorscheme('sonokai')
+    --     end
+    -- },
+    -- {
+    --     "morhetz/gruvbox",
+    --     priority = 1000,
+    --     config = function()
+    --         vim.g.gruvbox_bold = 1
+    --         vim.g.gruvbox_italic = 1
+    --         vim.g.gruvbox_contrast_light = "soft"
+    --         -- vim.cmd.colorscheme("gruvbox")
     --     end,
     -- },
-    {
-        "morhetz/gruvbox",
-        priority = 1000,
-        config = function()
-            vim.g.gruvbox_bold = 1
-            vim.g.gruvbox_italic = 1
-            vim.g.gruvbox_contrast_light = "soft"
-            vim.cmd.colorscheme("gruvbox")
-        end,
-        dependencies = {
-            "f-person/auto-dark-mode.nvim",
-        },
-    },
-    {"f-person/auto-dark-mode.nvim",opts = {}},
-    {
-        'sainnhe/sonokai',
-        priority = 1000,
-        config = function()
-            vim.g.sonokai_style = 'espresso'
-            -- 'default', 'atlantis', 'andromeda', 'shusia', 'maia', 'espresso'
-            vim.g.sonokai_enable_italic = true
-            vim.g.sonokai_better_performance = 1
-            -- vim.cmd.colorscheme('sonokai')
-        end
-    },
     {
         'rcarriga/nvim-notify',
         config = function()

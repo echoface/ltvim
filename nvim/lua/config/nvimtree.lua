@@ -49,7 +49,7 @@ local function tree_view(pos, enable_float)
                 local row = 0
                 local col = 0
                 local window_w_int = 42
-                local window_h_int = math.floor(screen_h - 4)
+                local window_h_int = math.floor(screen_h - 3)
 
                 if pos == "center" then
                     window_w_int = math.floor(screen_w * WIDTH_RATIO)
