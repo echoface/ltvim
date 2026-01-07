@@ -8,8 +8,8 @@ adjust-cursor-thickness = 4
 
 macos-titlebar-style=tabs
 
-theme = dark:"Ghostty Default Style Dark",light:"Gruvbox Material Light"
-
+#theme = dark:"Molokai Pro",light:"Molokai Pro Light"
+theme = dark:"Melange Dark",light:"Melange Light"
 
 # Vim-mode keybindings for Ghostty.
 #
