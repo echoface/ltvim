@@ -1,8 +1,107 @@
-.ltvim8
+# OS generated files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Vim
+[._]*.un~
+Session.vim
+.netrwhist
+*~
+tags
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+Sessionx
+.netrwhist
+*~
+debug.log
+gdb.log
+vim/Plug
 .luarc.json
 
-*.diff
-*.patch
-vim/Plug
+# Neovim
+.session
+*.log
+.session.sqlite
+.session.sqlite-journal
 nvim/lazy-lock.json
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.orig
+*.rej
+*.swp
+*.tmp
+
+# Build directories
+build/
+dist/
+target/
+*.o
+*.so
+*.dylib
+*.dll
+
+# IDE
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+.atom/
+.eclipse/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.pip/
+.mypy_cache/
+.pytest_cache/
+
+# Node.js
+node_modules/
+.npm/
+.eslintcache
+.npm
+.yarn-integrity
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# Go
+/vendor/
+/.vscode/
+
+# Rust
+target/
+Cargo.lock
+
+# Tmux
+.tmux/plugins/tpm/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Cache
+.cache/
+.parcel-cache/

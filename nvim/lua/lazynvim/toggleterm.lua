@@ -6,7 +6,7 @@ return {
         require("toggleterm").setup({
             direction = 'float',
             persist_mode = true, -- if set to true (default) the previous terminal mode will be remembered
-            start_in_insert = false,
+            start_in_insert = true,
             float_opts = {
                 row = 0,
                 -- border = {"", "", "", "", "", "⣀", "", ""},
