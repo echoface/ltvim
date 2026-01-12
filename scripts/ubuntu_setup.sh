@@ -4,8 +4,8 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_DIR="$(dirname "$SCRIPT_DIR")"
-ENV_FILE="$REPO_DIR/env/ubuntu"
-TARGET_ENV="$HOME/.env"
+ENV_FILE="${SCRIPT_DIR}/envrc/macos"
+TARGET_ENV="$HOME/.envrc"
 
 # optional modules
 INSTALL_GOLANG=false
@@ -59,7 +59,7 @@ export N_PREFIX="$HOME/.n"
 mkdir -p "$N_PREFIX"
 n install lts
 
-# copy env file to ~/.env (with backup)
+# copy env file to ~/.envrc (with backup)
 if [ -f "$TARGET_ENV" ]; then
     cp "$TARGET_ENV" "${TARGET_ENV}.bak.$(date +%Y%m%d_%H%M%S)"
     echo "Backed up existing $TARGET_ENV"
@@ -70,10 +70,10 @@ echo "Environment file copied to $TARGET_ENV"
 # add source to shell rc files
 add_env_source() {
     local rc_file="$1"
-    local source_line='[ -f "$HOME/.env" ] && source "$HOME/.env"'
+    local source_line='[ -f "$HOME/.envrc" ] && source "$HOME/.envrc"'
 
     if [ -f "$rc_file" ]; then
-        if ! grep -qF '.env' "$rc_file"; then
+        if ! grep -qF '.envrc' "$rc_file"; then
             echo "" >> "$rc_file"
             echo "# Load custom environment" >> "$rc_file"
             echo "$source_line" >> "$rc_file"
@@ -127,4 +127,4 @@ EOF
     echo "Docker installed (re-login required for group permissions)"
 fi
 
-echo "Setup complete! Please restart your shell or run: source ~/.env"
+echo "Setup complete! Please restart your shell or run: source ~/.envrc"

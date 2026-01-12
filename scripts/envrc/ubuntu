@@ -1,0 +1,35 @@
+# Homebrew mirrors (USTC)
+export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.ustc.edu.cn/brew.git"
+export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.ustc.edu.cn/homebrew-core.git"
+export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles"
+export HOMEBREW_API_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles/api"
+
+# Linuxbrew
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
+# Node.js (n)
+export N_PREFIX="$HOME/.n"
+export PATH="$N_PREFIX/bin:$PATH"
+
+# Zoxide (detect current shell)
+if [ -n "$ZSH_VERSION" ]; then
+    eval "$(zoxide init zsh --cmd j)"
+elif [ -n "$BASH_VERSION" ]; then
+    eval "$(zoxide init bash --cmd j)"
+fi
+
+# UV (Python)
+export UV_INDEX_URL="https://mirrors.aliyun.com/pypi/simple/"
+
+# Golang (if installed)
+if command -v go &> /dev/null; then
+    export GOPATH="$HOME/go"
+    export PATH="$GOPATH/bin:$PATH"
+    export GOPROXY="https://goproxy.cn,https://goproxy.io,direct"
+    export GOSUMDB="sum.golang.google.cn"
+    export GOPRIVATE=""
+fi
+
+alias vim=nvim
+alias docker-compose='docker compose'
+alias dockerps='docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"'
