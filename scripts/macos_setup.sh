@@ -4,8 +4,8 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_DIR="$(dirname "$SCRIPT_DIR")"
-ENV_FILE="${SCRIPT_DIR}/envrc/macos"
-TARGET_ENV="$HOME/.envrc"
+ENV_FILE="${SCRIPT_DIR}/ltenv/macos"
+TARGET_ENV="$HOME/.ltenv"
 
 # optional modules
 INSTALL_GOLANG=false
@@ -108,7 +108,7 @@ export N_PREFIX="$HOME/.n"
 mkdir -p "$N_PREFIX"
 n install lts
 
-# Copy env file to ~/.envrc (with backup)
+# Copy env file to ~/.ltenv (with backup)
 echo ""
 echo "Setting up environment configuration..."
 if [ -f "$TARGET_ENV" ]; then
@@ -121,14 +121,14 @@ echo "Environment file copied to $TARGET_ENV"
 # Add source to shell rc files
 add_env_source() {
     local rc_file="$1"
-    local source_line='[ -f "$HOME/.envrc" ] && source "$HOME/.envrc"'
+    local source_line='[ -f "$HOME/.ltenv" ] && source "$HOME/.ltenv"'
 
     if [ -f "$rc_file" ]; then
-        if ! grep -qF '.envrc' "$rc_file" 2>/dev/null; then
+        if ! grep -qF '.ltenv' "$rc_file" 2>/dev/null; then
             echo "" >> "$rc_file"
             echo "# Load custom environment" >> "$rc_file"
             echo "$source_line" >> "$rc_file"
-            echo "Added envrc source to $rc_file"
+            echo "Added ltenv source to $rc_file"
         else
             echo "Env source already exists in $rc_file"
         fi
@@ -235,4 +235,4 @@ if [ "$INSTALL_ZED" = true ]; then
 fi
 
 echo ""
-echo "Setup complete! Please restart your shell or run: source ~/.envrc"
+echo "Setup complete! Please restart your shell or run: source ~/.ltenv"
