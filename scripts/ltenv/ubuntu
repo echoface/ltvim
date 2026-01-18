@@ -10,6 +10,7 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 # Node.js (n)
 export N_PREFIX="$HOME/.n"
 export PATH="$N_PREFIX/bin:$PATH"
+export NODE_MIRROR=https://mirrors.ustc.edu.cn/node/
 
 # Zoxide (detect current shell)
 if [ -n "$ZSH_VERSION" ]; then

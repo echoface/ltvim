@@ -89,12 +89,12 @@ else
 fi
 
 # Ensure brew works
-eval "$(/opt/homebrew/bin/brew shellenv)"
+eval "$(/usr/local/bin/brew shellenv)"
 
 # Install essential tools via Homebrew
 echo ""
 echo "Installing essential tools via Homebrew..."
-brew install git nvim n zoxide tmux fd uv ripgrep
+brew install nvim n zoxide tmux fd uv ripgrep
 
 # Install Nerd Font
 echo ""
@@ -105,6 +105,7 @@ brew install --cask font-hack-nerd-font
 echo ""
 echo "Installing Node.js LTS..."
 export N_PREFIX="$HOME/.n"
+export NODE_MIRROR=https://mirrors.ustc.edu.cn/node/
 mkdir -p "$N_PREFIX"
 n install lts
 
