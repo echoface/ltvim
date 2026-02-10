@@ -89,7 +89,11 @@ else
 fi
 
 # Ensure brew works
-eval "$(/usr/local/bin/brew shellenv)"
+if [[ -f "/opt/homebrew/bin/brew" ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -f "/usr/local/bin/brew" ]]; then
+    eval "$(/usr/local/bin/brew shellenv)"
+fi
 
 # Install essential tools via Homebrew
 echo ""
@@ -137,11 +141,13 @@ add_env_source() {
 }
 
 # Detect shell and add env source
-if [ -n "$ZSH_VERSION" ]; then
-    echo "Detected Zsh shell"
+if [ -f "$HOME/.zshrc" ]; then
+    echo "Detected Zsh configuration"
     add_env_source "$HOME/.zshrc"
-elif [ -n "$BASH_VERSION" ]; then
-    echo "Detected Bash shell"
+fi
+
+if [ -f "$HOME/.bashrc" ] || [ -f "$HOME/.bash_profile" ]; then
+    echo "Detected Bash configuration"
     add_env_source "$HOME/.bash_profile"
     add_env_source "$HOME/.bashrc"
 fi
