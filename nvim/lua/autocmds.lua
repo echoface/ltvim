@@ -95,6 +95,7 @@ vim.api.nvim_create_autocmd({ "TermOpen" }, {
         vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
         vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
 
+        vim.bo.buflisted = false
         vim.opt_local.signcolumn     = "no"
         vim.opt_local.number         = false
         vim.opt_local.relativenumber = false
