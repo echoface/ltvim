@@ -3,7 +3,7 @@ vim.lsp.log.set_level("off") -- off | error | info
 -- 全局设置
 vim.lsp.config("gopls", {
     -- share the gopls instance if there is one already
-    cmd = { 'trae-gopls', '-remote=auto', '-remote.debug=:0'},
+    cmd = { 'gopls', '-remote=auto', '-remote.debug=:0'},
     root_markers = { 'go.work', 'go.mod', '.git', 'go.sum' },
 })
 
