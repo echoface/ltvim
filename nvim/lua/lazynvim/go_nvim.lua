@@ -4,7 +4,6 @@ return {
     dependencies = {
         'ray-x/guihua.lua', -- optional
         'neovim/nvim-lspconfig',
-        'nvim-treesitter/nvim-treesitter',
     },
     opts = {}, -- by default lsp_cfg = false
     -- opts = { lsp_cfg = true } -- use go.nvim will setup gopls

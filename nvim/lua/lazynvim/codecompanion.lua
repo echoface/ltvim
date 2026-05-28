@@ -4,7 +4,6 @@ return {
         "hrsh7th/nvim-cmp",
         "nvim-lua/plenary.nvim",
         "nvim-tree/nvim-web-devicons",
-        "nvim-treesitter/nvim-treesitter",
         "nvim-telescope/telescope.nvim",
         "MeanderingProgrammer/render-markdown.nvim",
     },
