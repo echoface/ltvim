@@ -85,9 +85,15 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 -- Terminal
 vim.api.nvim_create_autocmd({ "TermOpen" }, {
     -- pattern = { "terminal", "toggleterm", "snacks_terminal" },
-    callback = function()
-        local opts = { buffer = 0 }
-        vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
+    callback = function(event)
+        local opts = { buffer = event.buf }
+        local filetype = vim.bo[event.buf].filetype
+
+        -- lazygit 本身依赖 <Esc>，不要在 terminal 模式里抢占这个按键
+        if filetype ~= "lazygit" then
+            vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
+        end
+
         vim.keymap.set('t', '<C-w>', [[<C-\><C-n><C-w>]], opts)
 
         vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
