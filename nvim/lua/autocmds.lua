@@ -8,7 +8,7 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
         "help", "man", "checkhealth", "lspinfo",
         "notify", "lir", "spectre_panel", "markdown",
         "NvimTree", "mason", "lazy", "null-ls-info",
-        "codecompanion", "Avante", "AvanteInput", "AvanteTodos"
+        "Avante", "AvanteInput", "AvanteTodos"
     },
     callback = function(event)
         local buf = event.buf
@@ -63,7 +63,7 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 
 -- Set wrap and spell in markdown and gitcommit
 vim.api.nvim_create_autocmd({ "FileType" }, {
-    pattern = { "gitcommit", "markdown", "codecompanion"},
+    pattern = { "gitcommit", "markdown"},
     callback = function()
         vim.opt_local.signcolumn = "no"
         vim.opt_local.wrap = true
