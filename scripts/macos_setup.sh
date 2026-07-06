@@ -4,7 +4,7 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_DIR="$(dirname "$SCRIPT_DIR")"
-ENV_FILE="${SCRIPT_DIR}/ltenv/macos"
+ENV_FILE="${SCRIPT_DIR}/ltenv/env"
 TARGET_ENV="$HOME/.ltenv"
 
 # optional modules
@@ -98,12 +98,22 @@ fi
 # Install essential tools via Homebrew
 echo ""
 echo "Installing essential tools via Homebrew..."
-brew install nvim n zoxide tmux fd uv ripgrep
+for tool in nvim n zoxide tmux fd uv ripgrep; do
+    if ! command -v $tool >/dev/null 2>&1; then
+        brew install $tool
+    else
+        echo "✓ $tool already installed"
+    fi
+done
 
 # Install Nerd Font
 echo ""
 echo "Installing Nerd Font..."
-brew install --cask font-hack-nerd-font
+if ! brew list --cask | grep -q "font-hack-nerd-font"; then
+    brew install --cask font-hack-nerd-font
+else
+    echo "✓ font-hack-nerd-font already installed"
+fi
 
 # Install node lts
 echo ""
@@ -111,7 +121,11 @@ echo "Installing Node.js LTS..."
 export N_PREFIX="$HOME/.n"
 export NODE_MIRROR=https://mirrors.ustc.edu.cn/node/
 mkdir -p "$N_PREFIX"
-n install lts
+if ! command -v node >/dev/null 2>&1; then
+    n install lts
+else
+    echo "✓ node already installed"
+fi
 
 # Copy env file to ~/.ltenv (with backup)
 echo ""
@@ -171,74 +185,110 @@ echo "Tmux config installed"
 # Optional: Golang
 if [ "$INSTALL_GOLANG" = true ]; then
     echo ""
-    echo "Installing Golang..."
-    brew install go
-    mkdir -p "$HOME/go"
-    echo "Golang installed"
+    if command -v go >/dev/null 2>&1; then
+        echo "✓ Golang already installed"
+    else
+        echo "Installing Golang..."
+        brew install go
+        mkdir -p "$HOME/go"
+        echo "Golang installed"
+    fi
 fi
 
 # Optional: Sequel Ace
 if [ "$INSTALL_SEQUEL_ACE" = true ]; then
     echo ""
-    echo "Installing Sequel Ace..."
-    brew install --cask sequel-ace
-    echo "Sequel Ace installed successfully"
+    if brew list --cask | grep -q "sequel-ace"; then
+        echo "✓ Sequel Ace already installed"
+    else
+        echo "Installing Sequel Ace..."
+        brew install --cask sequel-ace
+        echo "Sequel Ace installed successfully"
+    fi
 fi
 
 # Optional: Ghostty
 if [ "$INSTALL_GHOSTTY" = true ]; then
     echo ""
-    echo "Installing Ghostty..."
-    brew install --cask ghostty
-    echo "Ghostty installed successfully"
+    if brew list --cask | grep -q "ghostty"; then
+        echo "✓ Ghostty already installed"
+    else
+        echo "Installing Ghostty..."
+        brew install --cask ghostty
+        echo "Ghostty installed successfully"
+    fi
 fi
 
 # Optional: Keycastr
 if [ "$INSTALL_KEYCASTR" = true ]; then
     echo ""
-    echo "Installing Keycastr..."
-    brew install --cask keycastr
-    echo "Keycastr installed successfully"
+    if brew list --cask | grep -q "keycastr"; then
+        echo "✓ Keycastr already installed"
+    else
+        echo "Installing Keycastr..."
+        brew install --cask keycastr
+        echo "Keycastr installed successfully"
+    fi
 fi
 
 # Optional: Pearcleaner
 if [ "$INSTALL_PEARCLEANER" = true ]; then
     echo ""
-    echo "Installing Pearcleaner..."
-    brew install --cask pearcleaner
-    echo "Pearcleaner installed successfully"
+    if brew list --cask | grep -q "pearcleaner"; then
+        echo "✓ Pearcleaner already installed"
+    else
+        echo "Installing Pearcleaner..."
+        brew install --cask pearcleaner
+        echo "Pearcleaner installed successfully"
+    fi
 fi
 
 # Optional: IINA
 if [ "$INSTALL_IINA" = true ]; then
     echo ""
-    echo "Installing IINA..."
-    brew install --cask iina
-    echo "IINA installed successfully"
+    if brew list --cask | grep -q "iina"; then
+        echo "✓ IINA already installed"
+    else
+        echo "Installing IINA..."
+        brew install --cask iina
+        echo "IINA installed successfully"
+    fi
 fi
 
 # Optional: Licecap
 if [ "$INSTALL_LICECAP" = true ]; then
     echo ""
-    echo "Installing Licecap..."
-    brew install --cask licecap
-    echo "Licecap installed successfully"
+    if brew list --cask | grep -q "licecap"; then
+        echo "✓ Licecap already installed"
+    else
+        echo "Installing Licecap..."
+        brew install --cask licecap
+        echo "Licecap installed successfully"
+    fi
 fi
 
 # Optional: Raycast
 if [ "$INSTALL_RAYCAST" = true ]; then
     echo ""
-    echo "Installing Raycast..."
-    brew install --cask raycast
-    echo "Raycast installed successfully"
+    if brew list --cask | grep -q "raycast"; then
+        echo "✓ Raycast already installed"
+    else
+        echo "Installing Raycast..."
+        brew install --cask raycast
+        echo "Raycast installed successfully"
+    fi
 fi
 
 # Optional: Zed
 if [ "$INSTALL_ZED" = true ]; then
     echo ""
-    echo "Installing Zed..."
-    brew install --cask zed
-    echo "Zed installed successfully"
+    if brew list --cask | grep -q "zed"; then
+        echo "✓ Zed already installed"
+    else
+        echo "Installing Zed..."
+        brew install --cask zed
+        echo "Zed installed successfully"
+    fi
 fi
 
 echo ""

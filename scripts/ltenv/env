@@ -1,4 +1,4 @@
-# Homebrew (macOS)
+# ── Homebrew ──────────────────────────────────────────────
 export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.ustc.edu.cn/brew.git"
 export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.ustc.edu.cn/homebrew-core.git"
 export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles"
@@ -9,15 +9,17 @@ if [[ -z "${HOMEBREW_PREFIX:-}" ]]; then
         eval "$(/opt/homebrew/bin/brew shellenv)"
     elif [[ -x "/usr/local/bin/brew" ]]; then
         eval "$(/usr/local/bin/brew shellenv)"
+    elif [[ -x "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
+        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
     fi
 fi
 
-# Node.js (n)
+# ── Node.js (n) ───────────────────────────────────────────
 export N_PREFIX="$HOME/.n"
 export PATH="$N_PREFIX/bin:$PATH"
-export NODE_MIRROR=https://mirrors.ustc.edu.cn/node/
+export NODE_MIRROR="https://mirrors.ustc.edu.cn/node/"
 
-# Zoxide (detect current shell)
+# ── Zoxide ────────────────────────────────────────────────
 if command -v zoxide >/dev/null 2>&1; then
     if [ -n "$ZSH_VERSION" ]; then
         eval "$(zoxide init zsh --cmd j)"
@@ -26,10 +28,10 @@ if command -v zoxide >/dev/null 2>&1; then
     fi
 fi
 
-# UV (Python)
+# ── UV (Python mirror) ────────────────────────────────────
 export UV_INDEX_URL="https://mirrors.aliyun.com/pypi/simple/"
 
-# Golang (if installed)
+# ── Golang ────────────────────────────────────────────────
 if command -v go >/dev/null 2>&1; then
     export GOPATH="$HOME/go"
     export PATH="$GOPATH/bin:$PATH"
@@ -38,8 +40,9 @@ if command -v go >/dev/null 2>&1; then
     export GOPRIVATE=""
 fi
 
+# ── Aliases ───────────────────────────────────────────────
 alias vim=nvim
 alias docker-compose='docker compose'
 alias dockerps='docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"'
-
-alias tmuxa="tmux attach -t $(tmux list-sessions -F '#{session_name}' | head -n1) || tmux new"
+alias tmux='tmux new-session -A'
+alias tmuxa='tmux attach -t $(tmux list-sessions -F "#{session_name}" | head -n1) || tmux new'

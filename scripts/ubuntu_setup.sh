@@ -4,7 +4,7 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_DIR="$(dirname "$SCRIPT_DIR")"
-ENV_FILE="${SCRIPT_DIR}/ltenv/ubuntu"
+ENV_FILE="${SCRIPT_DIR}/ltenv/env"
 TARGET_ENV="$HOME/.ltenv"
 
 # optional modules
@@ -33,7 +33,17 @@ while [[ $# -gt 0 ]]; do
 done
 
 # install essentials
-sudo apt install -y build-essential git bash-completion unzip cloc ripgrep curl
+missing_apt=()
+for pkg in build-essential git bash-completion unzip cloc ripgrep curl; do
+    if ! dpkg -s "$pkg" >/dev/null 2>&1; then
+        missing_apt+=("$pkg")
+    fi
+done
+if [ ${#missing_apt[@]} -gt 0 ]; then
+    sudo apt install -y "${missing_apt[@]}"
+else
+    echo "✓ All apt packages already installed"
+fi
 
 # linuxbrew
 if ! [ -x "$(command -v brew)" ]; then
@@ -49,7 +59,18 @@ fi
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 # brew things
-brew install nvim n zoxide tmux fd uv ripgrep font-hack-nerd-font
+for tool in nvim n zoxide tmux fd uv ripgrep; do
+    if ! command -v $tool >/dev/null 2>&1; then
+        brew install $tool
+    else
+        echo "✓ $tool already installed"
+    fi
+done
+if brew list --cask | grep -q "font-hack-nerd-font"; then
+    echo "✓ font-hack-nerd-font already installed"
+else
+    brew install font-hack-nerd-font
+fi
 
 # refresh font cache
 fc-cache -fv
@@ -57,7 +78,11 @@ fc-cache -fv
 # install node lts
 export N_PREFIX="$HOME/.n"
 mkdir -p "$N_PREFIX"
-n install lts
+if ! command -v node >/dev/null 2>&1; then
+    n install lts
+else
+    echo "✓ node already installed"
+fi
 
 # copy env file to ~/.ltenv (with backup)
 if [ -f "$TARGET_ENV" ]; then
@@ -103,28 +128,36 @@ echo "Tmux config installed"
 
 # optional: Golang
 if [ "$INSTALL_GOLANG" = true ]; then
-    echo "Installing Golang..."
-    brew install go
-    mkdir -p "$HOME/go"
-    echo "Golang installed"
+    if command -v go >/dev/null 2>&1; then
+        echo "✓ Golang already installed"
+    else
+        echo "Installing Golang..."
+        brew install go
+        mkdir -p "$HOME/go"
+        echo "Golang installed"
+    fi
 fi
 
 # optional: Docker (with China mirror)
 if [ "$INSTALL_DOCKER" = true ]; then
-    echo "Installing Docker..."
-    curl -fsSL https://get.docker.com -o /tmp/get-docker.sh
-    sudo DOWNLOAD_URL=https://mirrors.ustc.edu.cn/docker-ce sh /tmp/get-docker.sh
-    sudo usermod -aG docker "$USER"
+    if command -v docker >/dev/null 2>&1; then
+        echo "✓ Docker already installed"
+    else
+        echo "Installing Docker..."
+        curl -fsSL https://get.docker.com -o /tmp/get-docker.sh
+        sudo DOWNLOAD_URL=https://mirrors.ustc.edu.cn/docker-ce sh /tmp/get-docker.sh
+        sudo usermod -aG docker "$USER"
 
-    # configure Docker registry mirror
-    sudo mkdir -p /etc/docker
-    sudo tee /etc/docker/daemon.json > /dev/null <<'EOF'
+        # configure Docker registry mirror
+        sudo mkdir -p /etc/docker
+        sudo tee /etc/docker/daemon.json > /dev/null <<'EOF'
 {
     "registry-mirrors": ["https://docker.mirrors.ustc.edu.cn"]
 }
 EOF
-    sudo systemctl restart docker || true
-    echo "Docker installed (re-login required for group permissions)"
+        sudo systemctl restart docker || true
+        echo "Docker installed (re-login required for group permissions)"
+    fi
 fi
 
 echo "Setup complete! Please restart your shell or run: source ~/.ltenv"
