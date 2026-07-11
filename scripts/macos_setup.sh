@@ -214,6 +214,8 @@ show_main_menu() {
         echo "       macOS Setup — LTVIM"
         echo "═══════════════════════════════════════"
         echo "  1) Install Essential Tools"
+        echo "     (nvim, zoxide, tmux, fd, ripgrep,"
+        echo "      Nerd Font, n, uv, Node.js, shell env)"
         echo "  2) Install Golang"
         echo "  3) Install Sequel Ace"
         echo "  4) Install Ghostty"

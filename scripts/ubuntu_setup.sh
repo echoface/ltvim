@@ -201,6 +201,8 @@ show_main_menu() {
         echo "       Ubuntu Setup — LTVIM"
         echo "═══════════════════════════════════════"
         echo "  1) Install Essential Tools"
+        echo "     (build-essential, git, ripgrep, n, uv, Node.js,"
+        echo "      neovim, tmux config, shell env)"
         echo "  2) Install Golang"
         echo "  3) Install Docker"
         echo "  4) Harden SSH (port + disable password)"
