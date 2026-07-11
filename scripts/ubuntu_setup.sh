@@ -117,6 +117,20 @@ EOF
     fi
 }
 
+install_tailscale() {
+    if command -v tailscale >/dev/null 2>&1; then
+        echo "✓ Tailscale already installed"
+    else
+        echo "Installing Tailscale..."
+        curl -fsSL https://tailscale.com/install.sh | sh
+    fi
+    if [ -f /etc/apt/sources.list.d/tailscale.list ]; then
+        sudo sed -i 's,pkgs.tailscale.com/stable,mirrors.ustc.edu.cn/tailscale,g' /etc/apt/sources.list.d/tailscale.list
+        sudo apt update
+        echo "Tailscale USTC mirror configured"
+    fi
+}
+
 # ── SSH Hardening ─────────────────────────────────────────
 harden_ssh() {
     local sshd_config="/etc/ssh/sshd_config"
@@ -206,10 +220,11 @@ show_main_menu() {
         echo "  2) Install Golang"
         echo "  3) Install Docker"
         echo "  4) Harden SSH (port + disable password)"
-        echo "  5) Full Setup (all)"
-        echo "  6) Exit"
+        echo "  5) Install Tailscale (USTC mirror)"
+        echo "  6) Full Setup (all)"
+        echo "  7) Exit"
         echo "═══════════════════════════════════════"
-        read -p "Choose [1-6]: " choice
+        read -p "Choose [1-7]: " choice
 
         case $choice in
             1)
@@ -241,6 +256,10 @@ show_main_menu() {
                 harden_ssh
                 ;;
             5)
+                echo "→ Installing Tailscale..."
+                install_tailscale
+                ;;
+            6)
                 echo "→ Full setup..."
                 INSTALL_GOLANG=true
                 INSTALL_DOCKER=true
@@ -256,8 +275,9 @@ show_main_menu() {
                 install_common_tools
                 install_golang
                 install_docker
+                install_tailscale
                 ;;
-            6)
+            7)
                 echo "Exiting."
                 exit 0
                 ;;
