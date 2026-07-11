@@ -77,13 +77,24 @@ echo ""
 # Install Homebrew if not exists
 if ! command -v brew >/dev/null 2>&1; then
     echo "Installing Homebrew..."
-    export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.ustc.edu.cn/brew.git"
-    export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.ustc.edu.cn/homebrew-core.git"
-    export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles"
-    export HOMEBREW_API_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles/api"
+    USE_MIRROR=y
+    if [ -t 0 ]; then
+        read -p "Use USTC mirror for brew installation? [Y/n]: " USE_MIRROR
+    fi
+    case "$USE_MIRROR" in
+        [nN]|[nN][oO])
+            echo "Installing Homebrew from official source..."
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+            ;;
+        *)
+            export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.ustc.edu.cn/brew.git"
+            export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.ustc.edu.cn/homebrew-core.git"
+            export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles"
+            export HOMEBREW_API_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles/api"
 
-    /bin/bash -c "$(curl -fsSL https://mirrors.ustc.edu.cn/misc/brew-install.sh)"
-    #/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+            /bin/bash -c "$(curl -fsSL https://mirrors.ustc.edu.cn/misc/brew-install.sh)"
+            ;;
+    esac
 else
     echo "✓ Homebrew already installed"
 fi
@@ -98,7 +109,7 @@ fi
 # Install essential tools via Homebrew
 echo ""
 echo "Installing essential tools via Homebrew..."
-for tool in nvim n zoxide tmux fd uv ripgrep; do
+for tool in nvim zoxide tmux fd ripgrep; do
     if ! command -v $tool >/dev/null 2>&1; then
         brew install $tool
     else
@@ -113,6 +124,21 @@ if ! brew list --cask | grep -q "font-hack-nerd-font"; then
     brew install --cask font-hack-nerd-font
 else
     echo "✓ font-hack-nerd-font already installed"
+fi
+
+# Install n (Node.js version manager)
+echo ""
+if ! command -v n >/dev/null 2>&1; then
+    echo "Installing n (Node.js version manager)..."
+    curl -fsSL https://raw.githubusercontent.com/tj/n/master/bin/n -o /tmp/n
+    sudo install -m 0755 /tmp/n /usr/local/bin/n
+    echo "n installed"
+fi
+
+# Install uv
+if ! command -v uv >/dev/null 2>&1; then
+    echo "Installing uv (Python package manager)..."
+    curl -fsSL https://astral.sh/uv/install.sh | sh
 fi
 
 # Install node lts

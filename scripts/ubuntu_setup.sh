@@ -10,11 +10,13 @@ TARGET_ENV="$HOME/.ltenv"
 # optional modules
 INSTALL_GOLANG=false
 INSTALL_DOCKER=false
+SERVER_MODE=false
 
 show_help() {
     echo "Usage: $0 [OPTIONS]"
     echo ""
     echo "Options:"
+    echo "  --server    Server mode (apt-based, no brew/fonts)"
     echo "  --golang    Install Golang"
     echo "  --docker    Install Docker (with China mirror)"
     echo "  --all       Install all optional modules"
@@ -24,6 +26,7 @@ show_help() {
 # parse arguments
 while [[ $# -gt 0 ]]; do
     case $1 in
+        --server) SERVER_MODE=true; shift ;;
         --golang) INSTALL_GOLANG=true; shift ;;
         --docker) INSTALL_DOCKER=true; shift ;;
         --all) INSTALL_GOLANG=true; INSTALL_DOCKER=true; shift ;;
@@ -32,7 +35,7 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# install essentials
+# ── APT essentials ──────────────────────────────────────────
 missing_apt=()
 for pkg in build-essential git bash-completion unzip cloc ripgrep curl; do
     if ! dpkg -s "$pkg" >/dev/null 2>&1; then
@@ -45,37 +48,76 @@ else
     echo "✓ All apt packages already installed"
 fi
 
-# linuxbrew
-if ! [ -x "$(command -v brew)" ]; then
-    export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.ustc.edu.cn/brew.git"
-    export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.ustc.edu.cn/homebrew-core.git"
-    export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles"
-    export HOMEBREW_API_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles/api"
-
-    /bin/bash -c "$(curl -fsSL https://mirrors.ustc.edu.cn/misc/brew-install.sh)"
-fi
-
-# ensure brew works
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-
-# brew things
-for tool in nvim n zoxide tmux fd uv ripgrep; do
-    if ! command -v $tool >/dev/null 2>&1; then
-        brew install $tool
-    else
-        echo "✓ $tool already installed"
+if [ "$SERVER_MODE" = true ]; then
+    # ── Server path: apt-based ────────────────────────────
+    missing_apt_server=()
+    for pkg in neovim tmux zoxide fd-find; do
+        if ! dpkg -s "$pkg" >/dev/null 2>&1; then
+            missing_apt_server+=("$pkg")
+        fi
+    done
+    if [ ${#missing_apt_server[@]} -gt 0 ]; then
+        sudo apt install -y "${missing_apt_server[@]}"
     fi
-done
-if brew list --cask | grep -q "font-hack-nerd-font"; then
-    echo "✓ font-hack-nerd-font already installed"
+
 else
-    brew install font-hack-nerd-font
+    # ── Desktop path: brew-based ──────────────────────────
+    # linuxbrew
+    if ! [ -x "$(command -v brew)" ]; then
+        USE_MIRROR=y
+        if [ -t 0 ]; then
+            read -p "Use USTC mirror for brew installation? [Y/n]: " USE_MIRROR
+        fi
+        case "$USE_MIRROR" in
+            [nN]|[nN][oO])
+                echo "Installing Homebrew from official source..."
+                /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+                ;;
+            *)
+                export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.ustc.edu.cn/brew.git"
+                export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.ustc.edu.cn/homebrew-core.git"
+                export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles"
+                export HOMEBREW_API_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles/api"
+
+                /bin/bash -c "$(curl -fsSL https://mirrors.ustc.edu.cn/misc/brew-install.sh)"
+                ;;
+        esac
+    fi
+
+    # ensure brew works
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
+    # brew things
+    for tool in nvim zoxide tmux fd ripgrep; do
+        if ! command -v $tool >/dev/null 2>&1; then
+            brew install $tool
+        else
+            echo "✓ $tool already installed"
+        fi
+    done
+    if brew list --cask | grep -q "font-hack-nerd-font"; then
+        echo "✓ font-hack-nerd-font already installed"
+    else
+        brew install font-hack-nerd-font
+    fi
+
+    # refresh font cache
+    fc-cache -fv
 fi
 
-# refresh font cache
-fc-cache -fv
+# ── n (Node.js version manager) ─────────────────────────────
+if ! command -v n >/dev/null 2>&1; then
+    curl -fsSL https://raw.githubusercontent.com/tj/n/master/bin/n -o /tmp/n
+    sudo install -m 0755 /tmp/n /usr/local/bin/n
+    echo "n installed"
+fi
 
-# install node lts
+# ── uv ────────────────────────────────────────────────────────
+if ! command -v uv >/dev/null 2>&1; then
+    curl -fsSL https://astral.sh/uv/install.sh | sh
+fi
+
+# ── Install Node.js LTS ─────────────────────────────────────
 export N_PREFIX="$HOME/.n"
 mkdir -p "$N_PREFIX"
 if ! command -v node >/dev/null 2>&1; then
@@ -84,7 +126,7 @@ else
     echo "✓ node already installed"
 fi
 
-# copy env file to ~/.ltenv (with backup)
+# ── Copy env file ───────────────────────────────────────────
 if [ -f "$TARGET_ENV" ]; then
     cp "$TARGET_ENV" "${TARGET_ENV}.bak.$(date +%Y%m%d_%H%M%S)"
     echo "Backed up existing $TARGET_ENV"
@@ -92,7 +134,7 @@ fi
 cp "$ENV_FILE" "$TARGET_ENV"
 echo "Environment file copied to $TARGET_ENV"
 
-# add source to shell rc files
+# ── Shell rc ────────────────────────────────────────────────
 add_env_source() {
     local rc_file="$1"
     local source_line='[ -f "$HOME/.ltenv" ] && source "$HOME/.ltenv"'
@@ -112,7 +154,7 @@ add_env_source() {
 add_env_source "$HOME/.bashrc"
 add_env_source "$HOME/.zshrc"
 
-# tmux config
+# ── Tmux config ─────────────────────────────────────────────
 if [ -f "$HOME/.tmux.conf" ]; then
     mv "$HOME/.tmux.conf" "$HOME/.tmux.conf.bak.$(date +%Y%m%d_%H%M%S)"
     echo "Backed up existing ~/.tmux.conf"
@@ -126,7 +168,7 @@ fi
 cp "$REPO_DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
 echo "Tmux config installed"
 
-# optional: Golang
+# ── Optional: Golang ────────────────────────────────────────
 if [ "$INSTALL_GOLANG" = true ]; then
     if command -v go >/dev/null 2>&1; then
         echo "✓ Golang already installed"
@@ -138,7 +180,7 @@ if [ "$INSTALL_GOLANG" = true ]; then
     fi
 fi
 
-# optional: Docker (with China mirror)
+# ── Optional: Docker (with China mirror) ────────────────────
 if [ "$INSTALL_DOCKER" = true ]; then
     if command -v docker >/dev/null 2>&1; then
         echo "✓ Docker already installed"

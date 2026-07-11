@@ -35,13 +35,15 @@ export UV_INDEX_URL="https://mirrors.aliyun.com/pypi/simple/"
 if command -v go >/dev/null 2>&1; then
     export GOPATH="$HOME/go"
     export PATH="$GOPATH/bin:$PATH"
-    export GOPROXY="https://goproxy.cn,https://goproxy.io,direct"
     export GOSUMDB="sum.golang.google.cn"
-    export GOPRIVATE=""
+    export GOPROXY="https://goproxy.cn,https://goproxy.io,direct"
 fi
 
 # ── Aliases ───────────────────────────────────────────────
 alias vim=nvim
+if command -v fdfind >/dev/null 2>&1; then
+    alias fd=fdfind
+fi
 alias docker-compose='docker compose'
 alias dockerps='docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"'
 alias tmux='tmux new-session -A'
