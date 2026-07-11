@@ -340,7 +340,7 @@ harden_ssh() {
     fi
 
     # restart sshd
-    sudo systemctl restart sshd
+    sudo systemctl restart sshd || echo "⚠ sshd restart failed — manual intervention required"
     echo "SSHD restarted with new configuration."
 
     # ufw handling
