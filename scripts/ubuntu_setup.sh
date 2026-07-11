@@ -202,4 +202,79 @@ EOF
     fi
 fi
 
+# ── SSH Hardening ─────────────────────────────────────────
+harden_ssh() {
+    local sshd_config="/etc/ssh/sshd_config"
+    local backup="${sshd_config}.bak.$(date +%Y%m%d_%H%M%S)"
+    local new_port
+    local current_port
+
+    echo ""
+    echo "═══════════════════════════════════════"
+    echo "        SSH Hardening"
+    echo "═══════════════════════════════════════"
+
+    # detect current port
+    if [ -f "$sshd_config" ]; then
+        current_port=$(sed -n 's/^Port[[:space:]]*\([0-9]*\).*/\1/p' "$sshd_config")
+    fi
+    : "${current_port:=22}"
+
+    echo "Current SSH port: $current_port"
+    echo ""
+
+    # prompt for new port
+    read -p "Enter new SSH port [6022]: " new_port
+    new_port="${new_port:-6022}"
+
+    # validate port
+    if ! [[ "$new_port" =~ ^[0-9]+$ ]] || [ "$new_port" -lt 1 ] || [ "$new_port" -gt 65535 ]; then
+        echo "Invalid port. Using default: 6022"
+        new_port=6022
+    fi
+
+    # backup
+    echo "Backing up $sshd_config to $backup"
+    sudo cp "$sshd_config" "$backup"
+
+    # update port
+    if grep -q '^Port' "$sshd_config"; then
+        sudo sed -i "s/^Port.*/Port $new_port/" "$sshd_config"
+    else
+        echo "Port $new_port" | sudo tee -a "$sshd_config" > /dev/null
+    fi
+
+    # disable password auth
+    if grep -q '^PasswordAuthentication' "$sshd_config"; then
+        sudo sed -i 's/^PasswordAuthentication.*/PasswordAuthentication no/' "$sshd_config"
+    else
+        echo "PasswordAuthentication no" | sudo tee -a "$sshd_config" > /dev/null
+    fi
+
+    # restart sshd
+    sudo systemctl restart sshd
+    echo "SSHD restarted with new configuration."
+
+    # ufw handling
+    if command -v ufw >/dev/null 2>&1 && sudo ufw status | grep -q active; then
+        echo "UFW is active — allowing port $new_port..."
+        sudo ufw allow "$new_port"/tcp
+        if [ "$new_port" != "$current_port" ]; then
+            echo "Note: Port $current_port may still be open in UFW."
+            echo "Remove it later with: sudo ufw delete allow $current_port/tcp"
+        fi
+    fi
+
+    echo ""
+    echo "═══════════════════════════════════════"
+    echo " SSH hardening applied:"
+    echo "   Port: $current_port → $new_port"
+    echo "   PasswordAuthentication: no"
+    echo "═══════════════════════════════════════"
+    echo "⚠  Keep your current SSH session open!"
+    echo "   Test new connection in another terminal before closing."
+    echo ""
+    read -p "Press Enter to continue..."
+}
+
 echo "Setup complete! Please restart your shell or run: source ~/.ltenv"
