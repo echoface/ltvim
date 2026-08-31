@@ -85,6 +85,9 @@ install_common_tools() {
     fi
     cp "$REPO_DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
     echo "Tmux config installed"
+
+    cp "$REPO_DIR/bin/wt" "$HOME/bin/wt"
+    echo "git worktree bash-util installed"
 }
 
 install_golang() {
@@ -215,8 +218,7 @@ show_main_menu() {
         echo "       Ubuntu Setup — LTVIM"
         echo "═══════════════════════════════════════"
         echo "  1) Install Essential Tools"
-        echo "     (build-essential, git, ripgrep, n, uv, Node.js,"
-        echo "      neovim, tmux config, shell env)"
+        echo "     (build-essential, git, ripgrep, n, uv, neovim, tmux config, shell env)"
         echo "  2) Install Golang"
         echo "  3) Install Docker"
         echo "  4) Harden SSH (port + disable password)"

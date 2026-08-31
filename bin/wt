@@ -1,0 +1,385 @@
+#!/bin/bash
+#
+# wt — git worktree + tmux session workflow helper
+#
+# Binds one git worktree to one tmux session so that switching branches is just
+# "attach a session": tmux carries the working directory and keeps each branch's
+# editors/servers/panes alive independently.
+#
+#   wt new <branch> [base]   create/checkout worktree + tmux session, then attach
+#   wt ls                    list worktrees with branch + session state
+#   wt sw [branch]           attach/switch to a worktree session (fzf if no arg)
+#   wt rm [branch] [-b]      kill session + remove worktree (-b: delete branch too)
+#   wt main                  jump to the main worktree session
+#   wt path [branch]         print a worktree path (for scripting / cd)
+#   wt cd [branch]           cd the current shell into a worktree (needs install)
+#   wt prune                 prune stale worktrees + dead sessions
+#   wt install [bash|zsh]    wire shell function + completion into your rc file
+#
+# Layout: worktrees are created under  <main-repo>.worktrees/<branch>
+# Override the base dir with $WT_HOME.
+
+set -euo pipefail
+
+# ---------------------------------------------------------------------------
+# output helpers
+# ---------------------------------------------------------------------------
+if [[ -t 1 ]]; then
+    C_RESET=$'\033[0m'; C_DIM=$'\033[2m'; C_RED=$'\033[31m'
+    C_GRN=$'\033[32m'; C_YEL=$'\033[33m'; C_BLU=$'\033[34m'; C_BOLD=$'\033[1m'
+else
+    C_RESET=; C_DIM=; C_RED=; C_GRN=; C_YEL=; C_BLU=; C_BOLD=
+fi
+
+die()  { printf '%swt: %s%s\n' "$C_RED" "$*" "$C_RESET" >&2; exit 1; }
+info() { printf '%s>%s %s\n' "$C_BLU" "$C_RESET" "$*" >&2; }
+ok()   { printf '%s✓%s %s\n' "$C_GRN" "$C_RESET" "$*" >&2; }
+
+# ---------------------------------------------------------------------------
+# repo / naming resolution
+# ---------------------------------------------------------------------------
+require_repo() {
+    git rev-parse --is-inside-work-tree >/dev/null 2>&1 \
+        || die "not inside a git repository"
+}
+
+# Absolute path of the main worktree (the repo root that owns .git).
+main_root() {
+    local common
+    common=$(git rev-parse --path-format=absolute --git-common-dir)
+    dirname "$common"
+}
+
+repo_name()  { basename "$(main_root)"; }
+wt_home()    { echo "${WT_HOME:-$(main_root).worktrees}"; }
+
+# Sanitize an arbitrary branch name into a filesystem/tmux-safe token.
+sanitize() { echo "$1" | tr -c 'a-zA-Z0-9_-' '-' | sed 's/-\{2,\}/-/g; s/^-//; s/-$//'; }
+
+# Deterministic tmux session name for a branch.
+session_name() { echo "$(repo_name)-$(sanitize "$1")"; }
+
+# Filesystem path for a branch's worktree.
+worktree_dir() { echo "$(wt_home)/$(sanitize "$1")"; }
+
+# ---------------------------------------------------------------------------
+# tmux helpers
+# ---------------------------------------------------------------------------
+has_session() { tmux has-session -t "=$1" 2>/dev/null; }
+
+ensure_session() {  # <session> <dir>
+    local s=$1 dir=$2
+    if ! has_session "$s"; then
+        tmux new-session -d -s "$s" -c "$dir"
+    fi
+}
+
+attach_session() {  # <session>
+    local s=$1
+    if [[ -n "${TMUX:-}" ]]; then
+        tmux switch-client -t "=$s"
+    else
+        tmux attach-session -t "=$s"
+    fi
+}
+
+# ---------------------------------------------------------------------------
+# worktree introspection
+# ---------------------------------------------------------------------------
+# Emits "<path>\t<branch>" per worktree (branch = "(detached)" if none).
+list_worktrees() {
+    local path='' branch=''
+    while IFS= read -r line; do
+        case $line in
+            worktree\ *) path=${line#worktree } ;;
+            branch\ *)   branch=${line#branch refs/heads/} ;;
+            detached)    branch='(detached)' ;;
+            '')          [[ -n $path ]] && printf '%s\t%s\n' "$path" "${branch:-(detached)}"
+                         path=''; branch='' ;;
+        esac
+    done < <(git worktree list --porcelain; echo)
+}
+
+# Resolve a branch (or fzf-pick) to its worktree path. Prints path on stdout.
+resolve_worktree() {  # [branch]
+    local want=${1:-}
+    if [[ -n $want ]]; then
+        local p b
+        while IFS=$'\t' read -r p b; do
+            [[ $b == "$want" ]] && { echo "$p"; return 0; }
+        done < <(list_worktrees)
+        # fall back to matching the sanitized dir leaf
+        while IFS=$'\t' read -r p b; do
+            [[ $(basename "$p") == "$(sanitize "$want")" ]] && { echo "$p"; return 0; }
+        done < <(list_worktrees)
+        return 1
+    fi
+    # interactive pick
+    command -v fzf >/dev/null || die "no branch given and fzf is not installed"
+    local sel
+    sel=$(list_worktrees | awk -F'\t' '{printf "%-30s %s\n", $2, $1}' \
+            | fzf --prompt="worktree> " --height=40% --reverse) || return 1
+    echo "${sel##* }"
+}
+
+# ---------------------------------------------------------------------------
+# commands
+# ---------------------------------------------------------------------------
+cmd_new() {
+    local branch=${1:-} base=${2:-}
+    [[ -n $branch ]] || die "usage: wt new <branch> [base]"
+    require_repo
+
+    local dir; dir=$(worktree_dir "$branch")
+    local s;   s=$(session_name "$branch")
+
+    if [[ -d $dir ]]; then
+        info "worktree already exists at $dir"
+    elif git show-ref --verify --quiet "refs/heads/$branch"; then
+        info "checking out existing branch '$branch'"
+        git worktree add "$dir" "$branch" >&2
+    elif git show-ref --verify --quiet "refs/remotes/origin/$branch"; then
+        info "tracking origin/$branch"
+        git worktree add --track -b "$branch" "$dir" "origin/$branch" >&2
+    else
+        info "creating new branch '$branch' from ${base:-HEAD}"
+        git worktree add -b "$branch" "$dir" "${base:-HEAD}" >&2
+    fi
+
+    ensure_session "$s" "$dir"
+    ok "worktree $C_BOLD$branch$C_RESET → session $C_BOLD$s$C_RESET"
+    attach_session "$s"
+}
+
+cmd_ls() {
+    require_repo
+    local cur_sess=''
+    [[ -n "${TMUX:-}" ]] && cur_sess=$(tmux display-message -p '#S' 2>/dev/null || true)
+
+    printf '%s%-28s %-40s %s%s\n' "$C_DIM" "BRANCH" "PATH" "SESSION" "$C_RESET"
+    local p b s state
+    while IFS=$'\t' read -r p b; do
+        s=$(session_name "$b")
+        if [[ $b == "(detached)" ]]; then s=""; state="${C_DIM}–${C_RESET}"
+        elif [[ $s == "$cur_sess" ]]; then state="${C_GRN}● attached${C_RESET}"
+        elif has_session "$s";        then state="${C_YEL}○ running${C_RESET}"
+        else                                state="${C_DIM}– none${C_RESET}"
+        fi
+        printf '%-28s %s%-40s%s %b\n' "$b" "$C_DIM" "$p" "$C_RESET" "$state"
+    done < <(list_worktrees)
+}
+
+cmd_sw() {
+    require_repo
+    local dir; dir=$(resolve_worktree "${1:-}") || die "no worktree selected"
+    local branch s
+    branch=$(list_worktrees | awk -F'\t' -v d="$dir" '$1==d{print $2}')
+    s=$(session_name "$branch")
+    ensure_session "$s" "$dir"
+    attach_session "$s"
+}
+
+cmd_main() {
+    require_repo
+    local root; root=$(main_root)
+    local branch s
+    branch=$(git -C "$root" symbolic-ref --quiet --short HEAD 2>/dev/null || echo main)
+    s=$(session_name "$branch")
+    ensure_session "$s" "$root"
+    attach_session "$s"
+}
+
+cmd_path() {
+    require_repo
+    resolve_worktree "${1:-}"
+}
+
+cmd_rm() {
+    require_repo
+    local del_branch=0 branch=''
+    for a in "$@"; do
+        case $a in
+            -b|--branch) del_branch=1 ;;
+            *) branch=$a ;;
+        esac
+    done
+
+    local dir; dir=$(resolve_worktree "$branch") || die "no worktree selected"
+    local real_branch
+    real_branch=$(list_worktrees | awk -F'\t' -v d="$dir" '$1==d{print $2}')
+
+    [[ $dir == "$(main_root)" ]] && die "refusing to remove the main worktree"
+
+    local s; s=$(session_name "$real_branch")
+    if has_session "$s"; then
+        tmux kill-session -t "=$s" 2>/dev/null && info "killed session $s"
+    fi
+
+    git worktree remove "$dir" 2>/dev/null \
+        || { info "worktree has changes; use --force"; git worktree remove --force "$dir"; }
+    ok "removed worktree $dir"
+
+    if [[ $del_branch -eq 1 && $real_branch != "(detached)" ]]; then
+        git branch -D "$real_branch" >&2 && ok "deleted branch $real_branch"
+    fi
+}
+
+cmd_prune() {
+    require_repo
+    git worktree prune -v >&2 || true
+    # kill sessions whose worktree no longer exists
+    local prefix; prefix="$(repo_name)-"
+    local live=()
+    local p b
+    while IFS=$'\t' read -r p b; do live+=("$(session_name "$b")"); done < <(list_worktrees)
+    while IFS= read -r s; do
+        [[ $s == "$prefix"* ]] || continue
+        local keep=0
+        for l in "${live[@]}"; do [[ $l == "$s" ]] && { keep=1; break; }; done
+        if [[ $keep -eq 0 ]]; then
+            tmux kill-session -t "=$s" 2>/dev/null && info "killed orphan session $s"
+        fi
+    done < <(tmux list-sessions -F '#S' 2>/dev/null || true)
+    ok "prune complete"
+}
+
+cmd_cd() {
+    # Only reachable when the shell-function wrapper is NOT active (i.e. wt is
+    # the raw script). A subprocess cannot change the parent shell's directory,
+    # so guide the user toward the integration instead of failing silently.
+    require_repo
+    local dir; dir=$(resolve_worktree "${1:-}") || die "no worktree selected"
+    printf '%s\n' "$dir"
+    info "'wt cd' needs the shell integration to actually change directory."
+    info "run: ${C_BOLD}wt install${C_RESET}  (or: cd \"\$(wt path <branch>)\")"
+}
+
+# Hidden helper used by shell completion. Emits candidate words on stdout.
+cmd_complete() {
+    case ${1:-} in
+        cmds)     printf '%s\n' new ls sw rm main path prune cd install shell-init help ;;
+        branches) require_repo 2>/dev/null && list_worktrees | cut -f2 | grep -v '^(detached)$' ;;
+    esac
+}
+
+# Emit shell integration code (function wrapper + completion) for eval.
+cmd_shell_init() {
+    local shell=${1:-}
+    [[ -z $shell ]] && case $(basename "${SHELL:-bash}") in zsh) shell=zsh ;; *) shell=bash ;; esac
+
+    cat <<'WTINIT'
+# wt: shell-function wrapper so `wt cd` can change the current shell's dir.
+wt() {
+    case "${1:-}" in
+        cd)
+            local __wt_dir
+            __wt_dir="$(command wt path "${2:-}")" || return 1
+            [ -n "$__wt_dir" ] && cd "$__wt_dir"
+            ;;
+        *) command wt "$@" ;;
+    esac
+}
+
+# wt: tab completion (bash-style; reused under zsh via bashcompinit).
+_wt_complete() {
+    local cur prev cword
+    if [ -n "${ZSH_VERSION:-}" ]; then
+        cur=${words[CURRENT]}; prev=${words[CURRENT-1]}; cword=$((CURRENT-1))
+    else
+        cur=${COMP_WORDS[COMP_CWORD]}; prev=${COMP_WORDS[COMP_CWORD-1]}; cword=$COMP_CWORD
+    fi
+    local candidates
+    if [ "$cword" -le 1 ]; then
+        candidates=$(command wt __complete cmds 2>/dev/null)
+    else
+        case "$prev" in
+            sw|switch|s|co|rm|remove|del|path|p|cd|new|n)
+                candidates=$(command wt __complete branches 2>/dev/null) ;;
+            install|shell-init)
+                candidates="bash zsh" ;;
+            *) candidates="" ;;
+        esac
+    fi
+    COMPREPLY=($(compgen -W "$candidates" -- "$cur"))
+}
+WTINIT
+
+    if [[ $shell == zsh ]]; then
+        cat <<'WTZSH'
+autoload -Uz +X bashcompinit 2>/dev/null && bashcompinit 2>/dev/null
+WTZSH
+    fi
+    echo 'complete -F _wt_complete wt'
+}
+
+# Idempotently wire the integration into a shell rc file.
+cmd_install() {
+    local shell=${1:-}
+    [[ -z $shell ]] && case $(basename "${SHELL:-bash}") in zsh) shell=zsh ;; *) shell=bash ;; esac
+    local rc
+    case $shell in
+        bash) rc="$HOME/.bashrc" ;;
+        zsh)  rc="${ZDOTDIR:-$HOME}/.zshrc" ;;
+        *)    die "unsupported shell '$shell' (use: bash | zsh)" ;;
+    esac
+
+    local begin="# >>> wt shell integration >>>"
+    local end="# <<< wt shell integration <<<"
+    touch "$rc"
+
+    # Idempotent: strip any prior wt block, then append a fresh one.
+    local tmp; tmp=$(mktemp)
+    awk -v b="$begin" -v e="$end" '
+        $0==b {skip=1} skip && $0==e {skip=0; next} !skip' "$rc" > "$tmp"
+    # drop trailing blank lines left behind, then write block
+    {
+        cat "$tmp"
+        printf '%s\n' "$begin"
+        printf 'command -v wt >/dev/null 2>&1 && eval "$(command wt shell-init %s)"\n' "$shell"
+        printf '%s\n' "$end"
+    } > "$rc"
+    rm -f "$tmp"
+
+    ok "installed wt integration into $C_BOLD$rc$C_RESET (idempotent)"
+    info "activate now:  ${C_BOLD}source $rc${C_RESET}"
+    info "or this shell: ${C_BOLD}eval \"\$(wt shell-init $shell)\"${C_RESET}"
+}
+
+usage() {
+    cat >&2 <<EOF
+${C_BOLD}wt${C_RESET} — git worktree + tmux workflow
+
+  ${C_GRN}wt new${C_RESET} <branch> [base]   create/checkout worktree + session, attach
+  ${C_GRN}wt ls${C_RESET}                    list worktrees with branch + session state
+  ${C_GRN}wt sw${C_RESET} [branch]           attach/switch a worktree session (fzf if omitted)
+  ${C_GRN}wt cd${C_RESET} [branch]           cd current shell into a worktree (needs install)
+  ${C_GRN}wt rm${C_RESET} [branch] [-b]      kill session + remove worktree (-b: delete branch)
+  ${C_GRN}wt main${C_RESET}                  jump to the main worktree session
+  ${C_GRN}wt path${C_RESET} [branch]         print a worktree path
+  ${C_GRN}wt prune${C_RESET}                 prune stale worktrees + dead sessions
+  ${C_GRN}wt install${C_RESET} [bash|zsh]    add shell function + completion to your rc file
+  ${C_GRN}wt shell-init${C_RESET} [bash|zsh] print integration code (for eval)
+
+Worktrees live under: ${C_DIM}<repo>.worktrees/<branch>${C_RESET}  (override with \$WT_HOME)
+EOF
+}
+
+# ---------------------------------------------------------------------------
+# dispatch
+# ---------------------------------------------------------------------------
+cmd=${1:-}; shift || true
+case $cmd in
+    new|n)          cmd_new "$@" ;;
+    ls|list)        cmd_ls "$@" ;;
+    sw|switch|s|co) cmd_sw "$@" ;;
+    rm|remove|del)  cmd_rm "$@" ;;
+    main|m)         cmd_main "$@" ;;
+    path|p)         cmd_path "$@" ;;
+    cd)             cmd_cd "$@" ;;
+    prune)          cmd_prune "$@" ;;
+    install)        cmd_install "$@" ;;
+    shell-init)     cmd_shell_init "$@" ;;
+    __complete)     cmd_complete "$@" ;;
+    ''|-h|--help|help) usage ;;
+    *) die "unknown command '$cmd' (try: wt help)" ;;
+esac

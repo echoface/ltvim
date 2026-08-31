@@ -112,6 +112,9 @@ install_common_tools() {
     fi
     cp "$REPO_DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
     echo "Tmux config installed"
+
+    cp "$REPO_DIR/bin/wt" "$HOME/bin/wt"
+    echo "git worktree bash-util installed"
 }
 
 install_golang() {
@@ -214,8 +217,7 @@ show_main_menu() {
         echo "       macOS Setup — LTVIM"
         echo "═══════════════════════════════════════"
         echo "  1) Install Essential Tools"
-        echo "     (nvim, zoxide, tmux, fd, ripgrep,"
-        echo "      Nerd Font, n, uv, Node.js, shell env)"
+        echo "     (nvim, zoxide, tmux, fd, ripgrep, fonts, n, uv, shell env)"
         echo "  2) Install Golang"
         echo "  3) Install Sequel Ace"
         echo "  4) Install Ghostty"
