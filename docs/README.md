@@ -92,10 +92,10 @@ This will:
 
 ```
 ltvim/
-├── scripts/              # Installation scripts
+├── scripts/             # Installation scripts
 │   ├── install.sh       # Editor configuration installer
 │   ├── ubuntu_setup.sh  # Ubuntu system setup
-│   └── install_vim8.sh # Legacy vim8 installer
+│   └── install_vim8.sh  # Legacy vim8 installer
 ├── nvim/                # Neovim configuration
 ├── vim/                 # Vim configuration
 ├── tmux/                # Tmux configuration
