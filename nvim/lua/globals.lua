@@ -51,5 +51,3 @@ vim.g.loaded_netrwPlugin = 1
 vim.opt.foldmethod = "indent" -- 设置语法折叠
 vim.opt.foldlevelstart = 10   -- don't fold any thing when open file
 
--- vim.lsp.set_log_level 'debug'
--- require('vim.lsp.log').set_format_func(vim.inspect)
