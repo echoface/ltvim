@@ -46,5 +46,4 @@ if command -v fdfind >/dev/null 2>&1; then
 fi
 alias docker-compose='docker compose'
 alias dockerps='docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"'
-alias tmux='tmux new-session -A'
 alias tmuxa='tmux attach -t $(tmux list-sessions -F "#{session_name}" | head -n1) || tmux new'
